@@ -1324,7 +1324,7 @@ document.getElementById('admin-input').addEventListener('keydown', e => {
 });
 // ── FIM ADMIN ──
 // ── CONFIGURAÇÃO ──
-const API_URL = 'https://script.google.com/macros/s/AKfycbyh6BNDQdTv8uny24OUt7TzVePHZUU5k_C5QnDhbxH6rdhRzHPTrcLy5uILEScoxScG/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxjigh9kz4rp-Vmlc7Rd2y5N6X0X63d3HWK10hwKQgzJJ94AV_0V2NTZAvzKGGqlHw/exec';
 
 const PASSWORDS = {
   1: 'tempo',
@@ -1386,6 +1386,28 @@ function showLoginScreen() {
   document.getElementById('drt-login').style.display = 'block';
 }
 
+// ── JSONP helper (evita bloqueio CORS do Apps Script) ──
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cb_' + Math.random().toString(36).slice(2);
+    const script = document.createElement('script');
+    const timeout = setTimeout(() => {
+      delete window[cbName];
+      script.remove();
+      reject(new Error('timeout'));
+    }, 8000);
+    window[cbName] = (data) => {
+      clearTimeout(timeout);
+      delete window[cbName];
+      script.remove();
+      resolve(data);
+    };
+    script.src = url + '&callback=' + cbName;
+    script.onerror = () => { clearTimeout(timeout); reject(new Error('script error')); };
+    document.head.appendChild(script);
+  });
+}
+
 async function loginDRT() {
   const input = document.getElementById('drt-input');
   const status = document.getElementById('drt-status');
@@ -1397,33 +1419,28 @@ async function loginDRT() {
   status.style.color = 'var(--muted)';
 
   try {
-    const res = await fetch(`${API_URL}?action=get&drt=${encodeURIComponent(drt)}`);
-    const data = await res.json();
+    const data = await jsonp(`${API_URL}?action=get&drt=${encodeURIComponent(drt)}`);
 
     currentDRT = drt;
 
-    // Ocultar login, mostrar carrossel
     document.getElementById('drt-login').style.display = 'none';
     const carousel = document.getElementById('unlock-carousel');
     const dotsArea = document.getElementById('carousel-dots-area');
     if (carousel) carousel.style.display = 'flex';
     if (dotsArea) dotsArea.style.display = 'flex';
 
-    // Mostrar DRT logado
     showLoggedUser(drt);
 
-    // Restaurar progresso
     if (data.found) {
       const levels = [data.e1, data.e2, data.e3, data.e4];
       levels.forEach((unlocked, i) => {
         if (unlocked === true || unlocked === 'TRUE' || unlocked === 'true') {
           const lvl = i + 1;
-          _unlocked.push(lvl);
+          if (!_unlocked.includes(lvl)) _unlocked.push(lvl);
           revealLevel(lvl);
         }
       });
-      // Habilitar o próximo após o último desbloqueado
-      const last = Math.max(0, ..._unlocked);
+      const last = _unlocked.length > 0 ? Math.max(..._unlocked) : 0;
       if (last < 4) enableCard(last + 1);
     } else {
       enableCard(1);
@@ -1556,10 +1573,10 @@ function tryUnlock(level) {
     if (!unlocked.includes(level)) {
       unlocked.push(level);
       saveUnlocked(unlocked);
-      // Salvar no Google Sheets
+      // Salvar no Google Sheets via JSONP
       if (currentDRT) {
-        fetch(`${API_URL}?action=unlock&drt=${encodeURIComponent(currentDRT)}&level=${level}`)
-          .catch(() => {}); // silencioso se falhar
+        jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(currentDRT)}&level=${level}`)
+          .catch(() => {});
       }
     }
     status.textContent = '';
