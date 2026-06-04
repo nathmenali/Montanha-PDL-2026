@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Evolução do Líder Mackenzista</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #04020a;
+    --deep: #0d0720;
+    --mid: #1a0e38;
+    --purple: #6b21d4;
+    --violet: #9b4dff;
+    --glow: #c084fc;
+    --pink: #f0abfc;
+    --gold: #f5c842;
+    --rose: #ff6b9d;
+    --text: #e8e0f7;
+    --muted: #8b7aa8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── STARFIELD ── */
+  #stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--glow);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 10vw, 120px);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+
+  .hero-title span {
+    display: block;
+    background: linear-gradient(135deg, var(--glow), var(--pink), var(--rose));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: clamp(72px, 14vw, 160px);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-weight: 300;
+    color: var(--text);
+    max-width: 540px;
+    margin: 32px auto 0;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s 1.5s forwards;
+  }
+
+  .scroll-hint span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--violet), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+
+  /* ── CONCEITO ── */
+  .section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--glow);
+  }
+
+  .section-body {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 520px;
+  }
+
+  /* ── CONCEITO GRID ── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-top: 80px;
+  }
+
+  .concept-items {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .concept-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 24px;
+    border: 1px solid rgba(107, 33, 212, 0.2);
+    border-radius: 12px;
+    background: rgba(107, 33, 212, 0.04);
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+
+  .concept-item:hover {
+    border-color: rgba(155, 77, 255, 0.5);
+    background: rgba(107, 33, 212, 0.1);
+  }
+
+  .concept-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(155, 77, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .concept-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .concept-item p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* ── MOUNTAIN VISUAL ── */
+  .mountain-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .acrylic-panel {
+    position: relative;
+    width: 220px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(155, 77, 255, 0.3), 0 0 120px rgba(107, 33, 212, 0.15);
+  }
+
+  .acrylic-panel svg {
+    display: block;
+    width: 100%;
+  }
+
+  .panel-base {
+    height: 24px;
+    background: linear-gradient(180deg, #1a1a1a, #0a0a0a);
+    border-radius: 0 0 4px 4px;
+    position: relative;
+  }
+
+  .panel-base::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 6px;
+    background: #0a0a0a;
+    border-radius: 0 0 4px 4px;
+  }
+
+  /* ── JORNADA STEPS ── */
+  .journey-section {
+    background: linear-gradient(180deg, transparent, rgba(107, 33, 212, 0.06), transparent);
+    padding: 120px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .journey-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .stages-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-top: 64px;
+    align-items: end;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .stage-acrylic {
+    position: relative;
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    border: 1px solid rgba(155, 77, 255, 0.15);
+    transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
+    cursor: default;
+  }
+
+  .stage-acrylic svg {
+    display: block;
+    width: 100%;
+    height: 260px;
+  }
+
+  .stage-label {
+    text-align: center;
+    min-height: 40px;
+  }
+
+  .stage-label .stage-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+    transition: opacity 0.6s ease, color 0.6s ease;
+  }
+
+  .stage-label .stage-subtitle {
+    font-size: 11px;
+    color: var(--violet);
+    transition: opacity 0.6s ease, color 0.6s ease;
+  }
+
+  .stage-base-strip {
+    height: 14px;
+    background: linear-gradient(180deg, #1c1c1c, #080808);
+    border-radius: 0 0 4px 4px;
+    width: 100%;
+    transition: opacity 0.9s ease;
+  }
+
+  .stage-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    transition: opacity 0.9s ease;
+  }
+
+  /* ── BOOKMARKS ── */
+  .bookmarks-section {
+    padding: 100px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .bookmarks-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .bookmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .bookmark {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .bookmark:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(155, 77, 255, 0.3);
+  }
+
+  .bookmark svg {
+    display: block;
+    width: 100%;
+  }
+
+  .bookmark-label {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-section {
+    background: rgba(107, 33, 212, 0.04);
+    border-top: 1px solid rgba(107, 33, 212, 0.15);
+    border-bottom: 1px solid rgba(107, 33, 212, 0.15);
+    padding: 100px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .how-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .steps-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 64px;
+    position: relative;
+  }
+
+  .steps-flow::before {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 12.5%;
+    width: 75%;
+    height: 1px;
+    background: linear-gradient(to right, var(--purple), var(--violet), var(--glow), var(--pink));
+    z-index: 0;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-num {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .step-num::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--glow));
+    z-index: -1;
+  }
+
+  .step-num-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .step h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .step p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 160px;
+  }
+
+  .step-verb {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--violet);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 60px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(107, 33, 212, 0.15);
+  }
+
+  footer p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(14px, 2vw, 20px);
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  footer strong {
+    color: var(--glow);
+    font-weight: 400;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--purple), transparent);
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+    max-width: 900px;
+    width: 90%;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(155,77,255,0.4)); }
+    50% { filter: drop-shadow(0 0 20px rgba(155,77,255,0.8)); }
+  }
+
+  @keyframes glowPulseBlock {
+    0%, 100% { box-shadow: 0 0 20px rgba(155,77,255,0.15); border-color: rgba(155,77,255,0.3); }
+    50% { box-shadow: 0 0 40px rgba(155,77,255,0.35); border-color: rgba(155,77,255,0.6); }
+  }
+
+  @keyframes ringExpand {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.15); opacity: 0; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .concept-grid { grid-template-columns: 1fr; }
+    .mountain-wrap { order: -1; }
+    .stages-row { grid-template-columns: repeat(3, 1fr); }
+    .stages-row .stage:nth-child(4),
+    .stages-row .stage:nth-child(5) { grid-column: span 1; }
+    .bookmarks-inner { grid-template-columns: 1fr; gap: 48px; }
+    .steps-flow { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .steps-flow::before { display: none; }
+  }
+  /* ── UNLOCK CARDS ── */
+  .unlock-card {
+    border: 1px solid rgba(155, 77, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(107, 33, 212, 0.07);
+    padding: 20px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+  }
+
+  .unlock-card.locked-card {
+    opacity: 0.35;
+    border-color: rgba(155, 77, 255, 0.1);
+    background: rgba(107, 33, 212, 0.02);
+  }
+
+  .unlock-card.unlocked {
+    border-color: rgba(134, 239, 172, 0.5);
+    background: rgba(22, 101, 52, 0.12);
+    box-shadow: 0 0 30px rgba(134, 239, 172, 0.12);
+    opacity: 1;
+  }
+
+  .unlock-card.error-shake {
+    animation: shake 0.4s ease;
+    border-color: rgba(255, 100, 100, 0.5);
+  }
+
+  .ucard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .ucard-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--glow);
+  }
+
+  .ucard-lock {
+    font-size: 16px;
+    transition: all 0.4s;
+  }
+
+  .ucard-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    width: 100%;
+    text-align: left;
+  }
+
+  .ucard-input-wrap {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .ucard-input {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(155, 77, 255, 0.25);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.3s;
+    min-width: 0;
+  }
+
+  .ucard-input:focus {
+    border-color: rgba(155, 77, 255, 0.7);
+  }
+
+  .ucard-input:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ucard-btn {
+    background: rgba(107, 33, 212, 0.4);
+    border: 1px solid rgba(155, 77, 255, 0.3);
+    border-radius: 6px;
+    color: var(--glow);
+    font-size: 16px;
+    padding: 0 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+
+  .ucard-btn:hover:not(:disabled) {
+    background: rgba(107, 33, 212, 0.7);
+  }
+
+  .ucard-btn:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+
+  .ucard-status {
+    font-size: 11px;
+    height: 14px;
+    color: rgba(134, 239, 172, 0.8);
+    letter-spacing: 1px;
+  }
+
+  .ucard-status.err {
+    color: rgba(255, 120, 120, 0.8);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-6px); }
+    40%       { transform: translateX(6px); }
+    60%       { transform: translateX(-4px); }
+    80%       { transform: translateX(4px); }
+  }
+
+  @keyframes unlockPop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  @media (max-width: 768px) {
+    #unlock-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Programa de Desenvolvimento de Liderança</div>
+  <h1 class="hero-title">
+    A Evolução do
+    <span>Líder Mackenzista</span>
+  </h1>
+  <div class="hero-sub">Programa de Desenvolvimento de Liderança · 2026</div>
+  <p class="hero-tagline">
+    Quatro encontros. Uma trajetória construída por você,<br>
+    evento a evento, do ponto de partida ao topo.
+  </p>
+  <div class="scroll-hint">
+    <span>Explorar</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONCEITO -->
+<section class="section">
+  <div class="section-label">O Conceito</div>
+  <h2 class="section-title">Um símbolo concreto<br>do seu <em>desenvolvimento</em></h2>
+  <p class="section-body">
+    Antes do primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
+  </p>
+
+  <div class="concept-grid">
+    <div class="concept-items">
+      <div class="concept-item">
+        <div class="concept-icon">⛰️</div>
+        <div>
+          <h3>Acrílico Base</h3>
+          <p>Você recebe antes do 1º encontro uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
+        </div>
+      </div>
+      <div class="concept-item" id="concept-card-2" style="border-color:rgba(155,77,255,0.08);background:rgba(107,33,212,0.02);cursor:default;transition:all 0.8s ease;">
+        <div class="concept-icon" style="filter:blur(2px);transition:filter 0.8s ease;" id="concept-icon-2">🔒</div>
+        <div style="filter:blur(4px);transition:filter 0.8s ease;user-select:none;" id="concept-content-2">
+          <h3>Marca-Páginas</h3>
+          <p>Cada encontro revela uma parte do percurso. Cada uma adiciona cor e ilumina um novo passo da trilha.</p>
+        </div>
+      </div>
+      <div class="concept-item" id="concept-card-3" style="border-color:rgba(155,77,255,0.06);background:rgba(107,33,212,0.01);cursor:default;opacity:0.5;transition:all 0.8s ease;">
+        <div class="concept-icon" style="filter:blur(2px);transition:filter 0.8s ease;" id="concept-icon-3">🚩</div>
+        <div style="filter:blur(4px);transition:filter 0.8s ease;user-select:none;" id="concept-content-3">
+          <h3>PDL Completo</h3>
+          <p>Ao final dos 4 encontros, seu acrílico estará completo — iluminado com todas as conquistas do líder mackenzista.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mountain-wrap">
+      <!-- ACRÍLICO PREVIEW -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <div class="acrylic-panel" style="animation: glowPulse 3s ease-in-out infinite;">
+          <svg viewBox="0 0 220 340" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="skyFull" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a0550"/>
+                <stop offset="40%" stop-color="#3d1278"/>
+                <stop offset="70%" stop-color="#7b1fa2"/>
+                <stop offset="85%" stop-color="#e91e8c"/>
+                <stop offset="100%" stop-color="#ff6b35"/>
+              </linearGradient>
+              <linearGradient id="mountain1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a0040"/>
+                <stop offset="100%" stop-color="#0d001a"/>
+              </linearGradient>
+              <linearGradient id="trail" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#c084fc"/>
+                <stop offset="100%" stop-color="#f0abfc"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- sky -->
+            <rect width="220" height="340" fill="url(#skyFull)"/>
+            <!-- glow horizon -->
+            <ellipse cx="110" cy="260" rx="110" ry="40" fill="rgba(233,30,140,0.25)"/>
+            <!-- back mountains -->
+            <polygon points="0,280 50,160 110,200 180,130 220,200 220,340 0,340" fill="rgba(20,0,50,0.7)"/>
+            <!-- main mountain -->
+            <polygon points="10,340 80,120 110,70 140,120 210,340" fill="url(#mountain1)"/>
+            <!-- snow cap -->
+            <polygon points="95,95 110,70 125,95 110,100" fill="rgba(200,180,255,0.5)"/>
+            <!-- trail dots -->
+            <g filter="url(#glow)">
+              <circle cx="110" cy="82" r="3" fill="#f0abfc"/>
+              <circle cx="115" cy="105" r="2.5" fill="#c084fc"/>
+              <circle cx="122" cy="128" r="2.5" fill="#a855f7"/>
+              <circle cx="130" cy="155" r="2" fill="#9b4dff"/>
+              <circle cx="135" cy="180" r="2" fill="#8b3dff"/>
+              <circle cx="140" cy="210" r="2" fill="#7c22e0"/>
+              <circle cx="145" cy="240" r="1.5" fill="#6b21a8"/>
+            </g>
+            <!-- flag -->
+            <line x1="110" y1="72" x2="110" y2="55" stroke="#c084fc" stroke-width="1.5"/>
+            <polygon points="110,55 124,61 110,67" fill="#f0abfc"/>
+            <!-- glow dots scattered -->
+            <circle cx="30" cy="250" r="1" fill="rgba(155,77,255,0.5)"/>
+            <circle cx="55" cy="230" r="1.5" fill="rgba(155,77,255,0.4)"/>
+            <circle cx="170" cy="245" r="1" fill="rgba(155,77,255,0.5)"/>
+            <circle cx="195" cy="220" r="1.5" fill="rgba(155,77,255,0.3)"/>
+            <!-- reflection overlay -->
+            <rect width="220" height="340" fill="rgba(255,255,255,0.03)"/>
+            <!-- glass edge shine -->
+            <rect width="3" height="340" fill="rgba(255,255,255,0.08)"/>
+          </svg>
+        </div>
+        <div class="panel-base" style="width:220px;"></div>
+        <p style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px;">PDL Completo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- JORNADA EM ETAPAS -->
+<section class="journey-section">
+  <div class="journey-inner">
+    <div class="section-label">A Progressão</div>
+    <h2 class="section-title">Cada encontro<br><em>abre o próximo nível</em></h2>
+
+    <div class="stages-row">
+
+      <!-- Stage 0: Base — sempre visível -->
+      <div class="stage">
+        <div class="stage-label">
+          <div class="stage-title">Antes do 1º Encontro</div>
+          <div class="stage-subtitle">Acrílico Base</div>
+        </div>
+        <div class="stage-acrylic">
+          <svg viewBox="0 0 100 260" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="260" fill="#181818"/>
+            <polygon points="5,260 40,90 50,55 60,90 95,260" fill="#323232"/>
+            <polygon points="40,105 50,78 60,105 50,110" fill="rgba(200,200,200,0.25)"/>
+            <line x1="50" y1="57" x2="50" y2="44" stroke="#777" stroke-width="1.2"/>
+            <polygon points="50,44 62,49 50,54" fill="#999"/>
+            <rect width="100" height="260" fill="rgba(255,255,255,0.02)"/>
+            <rect width="2" height="260" fill="rgba(255,255,255,0.05)"/>
+          </svg>
+        </div>
+        <div class="stage-base-strip"></div>
+        <div class="stage-num">0</div>
+      </div>
+
+      <!-- Stage 1 — BLOQUEADO / Gestão do Tempo -->
+      <div class="stage" id="stage-level-1">
+        <div class="stage-label">
+          <div class="stage-title" id="stitle-1">1º Encontro</div>
+          <div class="stage-subtitle" id="ssub-1">🔒 Bloqueado</div>
+        </div>
+        <div class="stage-acrylic" id="sacrylic-1" style="filter:blur(5px);opacity:0.25;">
+          <svg viewBox="0 0 100 260" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s1g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d0230"/>
+                <stop offset="60%" stop-color="#2d0e6e"/>
+                <stop offset="100%" stop-color="#1a0550"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="260" fill="url(#s1g)"/>
+            <polygon points="5,260 35,110 50,68 65,110 95,260" fill="rgba(8,0,28,0.75)"/>
+            <polygon points="42,85 50,62 58,85 50,90" fill="rgba(120,80,220,0.3)"/>
+            <circle cx="50" cy="70" r="2" fill="#c084fc"/>
+            <circle cx="53" cy="88" r="1.5" fill="#a855f7"/>
+            <line x1="50" y1="64" x2="50" y2="52" stroke="#8b5cf6" stroke-width="1.2"/>
+            <polygon points="50,52 60,57 50,62" fill="#a855f7"/>
+            <rect width="100" height="260" fill="rgba(255,255,255,0.02)"/>
+            <rect width="2" height="260" fill="rgba(255,255,255,0.06)"/>
+          </svg>
+        </div>
+        <div class="stage-base-strip" id="sbase-1" style="opacity:0.25;"></div>
+        <div class="stage-num" id="snum-1" style="opacity:0.25;">🔒</div>
+      </div>
+
+      <!-- Stage 2 — BLOQUEADO / Feedback -->
+      <div class="stage" id="stage-level-2">
+        <div class="stage-label">
+          <div class="stage-title" id="stitle-2">2º Encontro</div>
+          <div class="stage-subtitle" id="ssub-2">🔒 Bloqueado</div>
+        </div>
+        <div class="stage-acrylic" id="sacrylic-2" style="filter:blur(5px);opacity:0.18;">
+          <svg viewBox="0 0 100 260" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s2g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d0230"/>
+                <stop offset="45%" stop-color="#4c1d95"/>
+                <stop offset="80%" stop-color="#6d28d9"/>
+                <stop offset="100%" stop-color="#3b0764"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="260" fill="url(#s2g)"/>
+            <polygon points="0,260 28,140 50,72 72,140 100,260" fill="rgba(8,0,28,0.65)"/>
+            <polygon points="42,90 50,65 58,90 50,95" fill="rgba(140,80,230,0.35)"/>
+            <circle cx="50" cy="74" r="2" fill="#c084fc"/>
+            <circle cx="54" cy="94" r="1.8" fill="#a855f7"/>
+            <circle cx="57" cy="116" r="1.5" fill="#8b3dff"/>
+            <line x1="50" y1="67" x2="50" y2="53" stroke="#a855f7" stroke-width="1.2"/>
+            <polygon points="50,53 60,58 50,63" fill="#c084fc"/>
+            <rect width="100" height="260" fill="rgba(255,255,255,0.02)"/>
+            <rect width="2" height="260" fill="rgba(255,255,255,0.06)"/>
+          </svg>
+        </div>
+        <div class="stage-base-strip" id="sbase-2" style="opacity:0.18;"></div>
+        <div class="stage-num" id="snum-2" style="opacity:0.18;">🔒</div>
+      </div>
+
+      <!-- Stage 3 — BLOQUEADO / Gestão de Conflitos -->
+      <div class="stage" id="stage-level-3">
+        <div class="stage-label">
+          <div class="stage-title" id="stitle-3">3º Encontro</div>
+          <div class="stage-subtitle" id="ssub-3">🔒 Bloqueado</div>
+        </div>
+        <div class="stage-acrylic" id="sacrylic-3" style="filter:blur(5px);opacity:0.12;">
+          <svg viewBox="0 0 100 260" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s3g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d0230"/>
+                <stop offset="38%" stop-color="#6d28d9"/>
+                <stop offset="68%" stop-color="#a21caf"/>
+                <stop offset="100%" stop-color="#831843"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="260" fill="url(#s3g)"/>
+            <polygon points="0,260 24,148 50,72 76,148 100,260" fill="rgba(8,0,28,0.58)"/>
+            <polygon points="42,90 50,65 58,90 50,95" fill="rgba(160,80,230,0.38)"/>
+            <ellipse cx="50" cy="240" rx="58" ry="16" fill="rgba(180,24,93,0.12)"/>
+            <circle cx="50" cy="74" r="2.5" fill="#f0abfc"/>
+            <circle cx="54" cy="95" r="2" fill="#c084fc"/>
+            <circle cx="58" cy="120" r="1.5" fill="#a855f7"/>
+            <circle cx="61" cy="148" r="1.5" fill="#9333ea"/>
+            <line x1="50" y1="67" x2="50" y2="52" stroke="#c084fc" stroke-width="1.2"/>
+            <polygon points="50,52 61,57 50,62" fill="#f0abfc"/>
+            <rect width="100" height="260" fill="rgba(255,255,255,0.02)"/>
+            <rect width="2" height="260" fill="rgba(255,255,255,0.06)"/>
+          </svg>
+        </div>
+        <div class="stage-base-strip" id="sbase-3" style="opacity:0.12;"></div>
+        <div class="stage-num" id="snum-3" style="opacity:0.12;">🔒</div>
+      </div>
+
+      <!-- Stage 4 — BLOQUEADO / Encerramento -->
+      <div class="stage" id="stage-level-4">
+        <div class="stage-label">
+          <div class="stage-title" id="stitle-4">4º Encontro</div>
+          <div class="stage-subtitle" id="ssub-4">🔒 Bloqueado</div>
+        </div>
+        <div class="stage-acrylic" id="sacrylic-4" style="filter:blur(5px);opacity:0.07;">
+          <svg viewBox="0 0 100 260" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s4g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d0025"/>
+                <stop offset="28%" stop-color="#4a0080"/>
+                <stop offset="52%" stop-color="#8b00c8"/>
+                <stop offset="72%" stop-color="#e91e8c"/>
+                <stop offset="88%" stop-color="#ff6b35"/>
+                <stop offset="100%" stop-color="#ff9500"/>
+              </linearGradient>
+              <filter id="glow4b">
+                <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect width="100" height="260" fill="url(#s4g)"/>
+            <polygon points="0,260 18,155 44,205 68,136 100,195 100,260" fill="rgba(8,0,40,0.48)"/>
+            <polygon points="0,260 18,155 50,68 82,155 100,260" fill="rgba(4,0,20,0.62)"/>
+            <polygon points="42,88 50,65 58,88 50,93" fill="rgba(220,200,255,0.4)"/>
+            <ellipse cx="50" cy="248" rx="58" ry="14" fill="rgba(255,107,53,0.18)"/>
+            <g filter="url(#glow4b)">
+              <circle cx="50" cy="73" r="2.5" fill="#f0abfc"/>
+              <circle cx="54" cy="93" r="2" fill="#e879f9"/>
+              <circle cx="57" cy="115" r="1.8" fill="#c084fc"/>
+              <circle cx="60" cy="140" r="1.8" fill="#a855f7"/>
+              <circle cx="63" cy="167" r="1.5" fill="#9333ea"/>
+              <circle cx="65" cy="196" r="1.5" fill="#7c3aed"/>
+            </g>
+            <line x1="50" y1="67" x2="50" y2="50" stroke="#f5c842" stroke-width="1.5"/>
+            <polygon points="50,50 63,56 50,62" fill="#f5c842"/>
+            <text x="8" y="18" fill="rgba(240,171,252,0.6)" font-size="8">⏱</text>
+            <text x="32" y="18" fill="rgba(240,171,252,0.6)" font-size="8">💬</text>
+            <text x="56" y="18" fill="rgba(240,171,252,0.6)" font-size="8">🤝</text>
+            <text x="78" y="18" fill="rgba(240,171,252,0.6)" font-size="8">🚩</text>
+            <rect width="100" height="260" fill="rgba(255,255,255,0.025)"/>
+            <rect width="2" height="260" fill="rgba(255,255,255,0.07)"/>
+          </svg>
+        </div>
+        <div class="stage-base-strip" id="sbase-4" style="opacity:0.07;"></div>
+        <div class="stage-num" id="snum-4" style="opacity:0.07;">🔒</div>
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- UNLOCK SECTION -->
+<section class="bookmarks-section" style="text-align:center;">
+  <div style="max-width:680px;margin:0 auto;padding:0 24px;">
+    <div class="section-label" style="text-align:center;">Acesso por Encontro</div>
+    <h2 class="section-title" style="text-align:center;">Cada encontro entrega<br><em>sua senha.</em></h2>
+    <p class="section-body" style="margin:0 auto 56px;text-align:center;">
+      Ao participar de cada encontro do PDL, você recebe uma senha exclusiva. Insira abaixo para desbloquear o próximo nível.
+    </p>
+
+    <!-- UNLOCK CARDS -->
+    <div id="unlock-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px;">
+
+      <!-- Card 1 -->
+      <div class="unlock-card" id="card-1" data-level="1">
+        <div class="ucard-header">
+          <span class="ucard-num">1º</span>
+          <span class="ucard-lock" id="lock-1">🔒</span>
+        </div>
+        <div class="ucard-label">Encontro</div>
+        <div class="ucard-input-wrap" id="input-wrap-1">
+          <input class="ucard-input" id="input-1" type="password" placeholder="Senha" maxlength="20">
+          <button class="ucard-btn" onclick="tryUnlock(1)">→</button>
+        </div>
+        <div class="ucard-status" id="status-1"></div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="unlock-card locked-card" id="card-2" data-level="2">
+        <div class="ucard-header">
+          <span class="ucard-num">2º</span>
+          <span class="ucard-lock" id="lock-2">🔒</span>
+        </div>
+        <div class="ucard-label">Encontro</div>
+        <div class="ucard-input-wrap" id="input-wrap-2">
+          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20" disabled>
+          <button class="ucard-btn" onclick="tryUnlock(2)" disabled>→</button>
+        </div>
+        <div class="ucard-status" id="status-2"></div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="unlock-card locked-card" id="card-3" data-level="3">
+        <div class="ucard-header">
+          <span class="ucard-num">3º</span>
+          <span class="ucard-lock" id="lock-3">🔒</span>
+        </div>
+        <div class="ucard-label">Encontro</div>
+        <div class="ucard-input-wrap" id="input-wrap-3">
+          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20" disabled>
+          <button class="ucard-btn" onclick="tryUnlock(3)" disabled>→</button>
+        </div>
+        <div class="ucard-status" id="status-3"></div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="unlock-card locked-card" id="card-4" data-level="4">
+        <div class="ucard-header">
+          <span class="ucard-num">4º</span>
+          <span class="ucard-lock" id="lock-4">🔒</span>
+        </div>
+        <div class="ucard-label">Encontro</div>
+        <div class="ucard-input-wrap" id="input-wrap-4">
+          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20" disabled>
+          <button class="ucard-btn" onclick="tryUnlock(4)" disabled>→</button>
+        </div>
+        <div class="ucard-status" id="status-4"></div>
+      </div>
+
+    </div>
+
+    <p id="unlock-hint" style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);">
+      Insira a senha recebida no encontro
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong>Cada encontro constrói o líder.</strong><br>
+    Cada líder transforma o time.
+  </p>
+  <p style="margin-top:24px;font-size:11px;letter-spacing:3px;text-transform:uppercase;">
+    PDL · Programa de Desenvolvimento de Liderança · Mackenzie · 2026
+  </p>
+
+  <!-- ADMIN: clique triplo no ponto abaixo para abrir painel -->
+  <div id="admin-trigger" title="Admin" style="margin-top:32px;width:8px;height:8px;border-radius:50%;background:rgba(155,77,255,0.15);margin-left:auto;margin-right:auto;cursor:default;transition:background 0.3s;"></div>
+
+  <!-- PAINEL ADMIN (oculto por padrão) -->
+  <div id="admin-panel" style="display:none;margin-top:20px;max-width:320px;margin-left:auto;margin-right:auto;background:rgba(107,33,212,0.08);border:1px solid rgba(155,77,255,0.25);border-radius:12px;padding:24px;text-align:center;">
+    <p style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Acesso Administrativo</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
+      <input id="admin-input" type="password" placeholder="Senha admin" style="background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 12px;outline:none;flex:1;">
+      <button onclick="adminLogin()" style="background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--glow);font-size:14px;padding:0 14px;cursor:pointer;">→</button>
+    </div>
+    <div id="admin-status" style="font-size:11px;color:rgba(255,120,120,0.8);min-height:16px;"></div>
+
+    <!-- Ações admin (aparecem após login) -->
+    <div id="admin-actions" style="display:none;margin-top:16px;display:none;">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Desbloqueios ativos: <strong id="admin-count" style="color:var(--glow);">—</strong></p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button onclick="adminReset()" style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:6px;color:rgba(252,165,165,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:1px;padding:10px;cursor:pointer;">🔄 Resetar todos os desbloqueios</button>
+        <button onclick="adminUnlockAll()" style="background:rgba(22,101,52,0.15);border:1px solid rgba(134,239,172,0.25);border-radius:6px;color:rgba(134,239,172,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:1px;padding:10px;cursor:pointer;">✦ Desbloquear tudo</button>
+        <button onclick="closeAdmin()" style="background:transparent;border:1px solid rgba(155,77,255,0.15);border-radius:6px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;padding:8px;cursor:pointer;">Fechar</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── SENHAS DE DESBLOQUEIO ──
+// Altere aqui as senhas de cada encontro
+const PASSWORDS = {
+  1: 'tempo',       // 1º encontro — Gestão do Tempo
+  2: 'feedback',    // 2º encontro — Feedback
+  3: 'conflito',    // 3º encontro — Gestão de Conflitos
+  4: 'topo'         // 4º encontro — Encerramento / O Topo
+};
+
+// Estado de desbloqueio salvo em localStorage
+const STORAGE_KEY = 'pdl_unlocked';
+
+function getUnlocked() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveUnlocked(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+const THEME_LABELS = {
+  1: 'Gestão do Tempo',
+  2: 'Feedback',
+  3: 'Gestão de Conflitos',
+  4: 'Encerramento'
+};
+
+function revealLevel(level) {
+  const card = document.getElementById('card-' + level);
+  const lockIcon = document.getElementById('lock-' + level);
+  const wrap = document.getElementById('input-wrap-' + level);
+
+  // Unlock card UI
+  if (card) {
+    card.classList.remove('locked-card', 'error-shake');
+    card.classList.add('unlocked');
+    card.style.animation = 'unlockPop 0.5s ease';
+  }
+  if (lockIcon) { lockIcon.textContent = '✓'; lockIcon.style.color = 'rgba(134,239,172,0.9)'; }
+  if (wrap) wrap.innerHTML = '<span style="font-size:11px;color:rgba(134,239,172,0.8);letter-spacing:1px;">Desbloqueado ✓</span>';
+
+  // Stage reveal — remove blur/opacity
+  const acrylic = document.getElementById('sacrylic-' + level);
+  const base    = document.getElementById('sbase-' + level);
+  const num     = document.getElementById('snum-' + level);
+  const title   = document.getElementById('stitle-' + level);
+  const sub     = document.getElementById('ssub-' + level);
+
+  if (acrylic) { acrylic.style.filter = 'none'; acrylic.style.opacity = '1'; acrylic.style.borderColor = 'rgba(155,77,255,0.4)'; }
+  if (base)    { base.style.opacity = '1'; }
+  if (num)     { num.style.opacity = '1'; num.textContent = level; }
+  if (title)   { title.style.opacity = '1'; title.style.color = ''; }
+  if (sub)     { sub.style.opacity = '1'; sub.textContent = THEME_LABELS[level]; sub.style.color = 'var(--violet)'; }
+
+  // 4º encontro — golden glow
+  if (level === 4 && acrylic) {
+    acrylic.style.boxShadow = '0 0 40px rgba(245,200,66,0.25)';
+    acrylic.style.borderColor = 'rgba(245,200,66,0.4)';
+    if (num) { num.style.color = 'var(--gold)'; num.textContent = '✦'; }
+    if (sub) { sub.style.color = 'var(--gold)'; }
+  }
+
+  // Ao desbloquear o 1º encontro, revela também os cards de conceito
+  if (level === 1) {
+    const cc2 = document.getElementById('concept-card-2');
+    const ci2 = document.getElementById('concept-icon-2');
+    const cn2 = document.getElementById('concept-content-2');
+    const cc3 = document.getElementById('concept-card-3');
+    const ci3 = document.getElementById('concept-icon-3');
+    const cn3 = document.getElementById('concept-content-3');
+    if (cc2) { cc2.style.borderColor = 'rgba(107,33,212,0.2)'; cc2.style.background = 'rgba(107,33,212,0.04)'; cc2.style.opacity = '1'; }
+    if (ci2) { ci2.style.filter = 'none'; }
+    if (cn2) { cn2.style.filter = 'none'; cn2.style.userSelect = 'auto'; }
+    if (cc3) { cc3.style.borderColor = 'rgba(107,33,212,0.2)'; cc3.style.background = 'rgba(107,33,212,0.04)'; cc3.style.opacity = '1'; }
+    if (ci3) { ci3.style.filter = 'none'; }
+    if (cn3) { cn3.style.filter = 'none'; cn3.style.userSelect = 'auto'; }
+  }
+
+  // Enable next card
+  const next = level + 1;
+  if (next <= 4) {
+    const nextCard = document.getElementById('card-' + next);
+    if (nextCard) {
+      nextCard.classList.remove('locked-card');
+      nextCard.style.opacity = '1';
+      const inp = document.getElementById('input-' + next);
+      const btn = nextCard.querySelector('.ucard-btn');
+      if (inp) inp.disabled = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  // Final hint
+  const allUnlocked = getUnlocked();
+  if (allUnlocked.length === 4) {
+    const hint = document.getElementById('unlock-hint');
+    if (hint) { hint.textContent = '✦ PDL completo — todos os encontros desbloqueados'; hint.style.color = 'var(--gold)'; }
+  }
+}
+
+function tryUnlock(level) {
+  const input = document.getElementById('input-' + level);
+  const status = document.getElementById('status-' + level);
+  const card = document.getElementById('card-' + level);
+  const val = input ? input.value.trim().toLowerCase() : '';
+
+  if (val === PASSWORDS[level].toLowerCase()) {
+    const unlocked = getUnlocked();
+    if (!unlocked.includes(level)) { unlocked.push(level); saveUnlocked(unlocked); }
+    status.textContent = '';
+    revealLevel(level);
+  } else {
+    card.classList.add('error-shake');
+    status.textContent = 'Senha incorreta';
+    status.className = 'ucard-status err';
+    setTimeout(() => {
+      card.classList.remove('error-shake');
+      status.textContent = '';
+      status.className = 'ucard-status';
+    }, 1800);
+    if (input) input.value = '';
+  }
+}
+
+// Permitir Enter no input
+for (let i = 1; i <= 4; i++) {
+  const inp = document.getElementById('input-' + i);
+  if (inp) inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(i); });
+}
+
+// Restaurar estado salvo ao carregar
+window.addEventListener('DOMContentLoaded', () => {
+  const unlocked = getUnlocked();
+  // Primeiro desbloqueia em ordem para liberar cadeia de cards
+  const sorted = [...unlocked].sort((a,b) => a-b);
+  // Ativa o card 1 por padrão (sempre disponível)
+  for (let i = 1; i <= 4; i++) {
+    if (sorted.includes(i)) revealLevel(i);
+    else if (i > 1 && sorted.includes(i-1)) {
+      // Libera input do próximo
+      const c = document.getElementById('card-' + i);
+      if (c) c.classList.remove('locked-card');
+      const inp = document.getElementById('input-' + i);
+      const btn = c ? c.querySelector('.ucard-btn') : null;
+      if (inp) inp.disabled = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+});
+</script>
+
+<script>
+// STARFIELD
+(function() {
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function init() {
+    stars = [];
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2,
+        o: Math.random(),
+        speed: 0.002 + Math.random() * 0.006
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const t = Date.now() * 0.001;
+    stars.forEach(s => {
+      const o = 0.15 + 0.85 * (0.5 + 0.5 * Math.sin(t * s.speed * 60 + s.o * 100));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,180,255,${o})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); draw();
+})();
+</script>
+</body>
+</html>
