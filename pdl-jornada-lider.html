@@ -334,10 +334,10 @@
     width: 100%;
     height: 260px;
     border-radius: 6px 6px 0 0;
-    overflow: visible;
-    border: none;
-    transition: filter 0.9s ease, opacity 0.9s ease;
-    cursor: default;
+    overflow: hidden;
+    border: 1px solid rgba(155, 77, 255, 0.15);
+    transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
+    cursor: pointer;
     perspective: 1000px;
   }
 
@@ -351,11 +351,10 @@
   .flip-inner {
     position: relative;
     width: 100%;
-    height: 260px;
+    height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.7s cubic-bezier(0.4,0.2,0.2,1);
     border-radius: 6px 6px 0 0;
-    border: 1px solid rgba(155,77,255,0.15);
     overflow: hidden;
     cursor: pointer;
   }
@@ -669,6 +668,7 @@
       margin: 0 auto;
     }
     .stage-acrylic svg { height: 180px; }
+    .stage-acrylic { height: 180px; }
 
     /* Bookmarks */
     .bookmarks-inner { grid-template-columns: 1fr; gap: 48px; }
@@ -690,6 +690,7 @@
     /* Stages em coluna única em telas muito pequenas */
     .stages-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .stage-acrylic svg { height: 150px; }
+    .stage-acrylic { height: 150px; }
 
     /* Unlock grid mantém 2 colunas mas comprime */
     /* unlock-carousel gap — handled inline */
