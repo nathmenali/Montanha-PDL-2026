@@ -895,7 +895,7 @@
     </p>
     <div id="unlock-section" style="max-width:480px;margin:0 auto 40px;"></div>
 
-    <div class="stages-row">
+    <div class="stages-row" id="stages-row" style="display:none;">
 
       <!-- Stage 0: Base — sempre visível -->
       <div class="stage">
@@ -1188,7 +1188,7 @@ function showLoginScreen() {
         Digite seu DRT para acessar<br>ou retomar seu progresso.
       </p>
       <div style="display:flex;gap:10px;justify-content:center;">
-        <input id="drt-input" type="text" placeholder="Seu DRT" maxlength="20"
+        <input id="drt-input" type="text" placeholder="Seu DRT" maxlength="20" inputmode="numeric" pattern="[0-9]*"
           style="flex:1;background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.35);border-radius:8px;
           color:#fff;font-family:'Poppins',sans-serif;font-size:16px;padding:12px 14px;outline:none;">
         <button onclick="loginDRT()"
@@ -1201,6 +1201,9 @@ function showLoginScreen() {
 
     document.getElementById('drt-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') loginDRT();
+    });
+    document.getElementById('drt-input').addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/\D/g, '');
     });
   }
   document.getElementById('drt-login').style.display = 'block';
@@ -1244,6 +1247,9 @@ async function loginDRT() {
     currentDRT = drt;
 
     document.getElementById('drt-login').style.display = 'none';
+    // Mostrar progressão
+    const stagesRow = document.getElementById('stages-row');
+    if (stagesRow) stagesRow.style.display = 'grid';
     // Mostrar input do 1º stage (os outros abrem com revealLevel)
     const w1 = document.getElementById('input-wrap-1');
     if (w1) w1.classList.add('active');
@@ -1287,7 +1293,8 @@ function logoutDRT() {
   _unlocked = [];
   const logged = document.getElementById('drt-logged');
   if (logged) logged.remove();
-  // Resetar visual dos cards
+  const stagesRow = document.getElementById('stages-row');
+  if (stagesRow) stagesRow.style.display = 'none';
   adminReset();
   showLoginScreen();
 }
