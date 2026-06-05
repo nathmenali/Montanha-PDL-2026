@@ -18,13 +18,13 @@
     --deep: #120a2a;
     --mid: #1e1040;
     --purple: #6b21d4;
-    --violet: #9b4dff;
+    --violet: #c084fc;
     --glow: #c084fc;
     --pink: #f0abfc;
     --gold: #f5c842;
     --rose: #ff6b9d;
     --text: #ffffff;
-    --muted: #ccc4dd;
+    --muted: #d4c8e8;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -311,6 +311,7 @@
   .journey-inner {
     max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
   }
 
   .stages-row {
@@ -790,6 +791,8 @@
   }
 
   /* unlock-carousel mobile — handled above in main @media block */
+  .stage-input-wrap { display:none; }
+  .stage-input-wrap.active { display:flex; }
 </style>
 </head>
 <body>
@@ -845,17 +848,23 @@
         </div>
       </div>
       <div class="concept-item" id="concept-card-2" style="border-color:rgba(155,77,255,0.08);background:rgba(107,33,212,0.02);cursor:default;transition:all 0.8s ease;">
-        <div class="concept-icon" style="filter:blur(2px);transition:filter 0.8s ease;" id="concept-icon-2">🔒</div>
-        <div style="filter:blur(4px);transition:filter 0.8s ease;user-select:none;" id="concept-content-2">
-          <h3>Marca-Páginas</h3>
-          <p>Cada encontro revela uma parte do percurso. Cada uma adiciona cor e ilumina um novo passo da trilha.</p>
+        <div class="concept-icon" style="transition:filter 0.8s ease;" id="concept-icon-2">🔒</div>
+        <div style="transition:filter 0.8s ease;" id="concept-content-2">
+          <div style="filter:blur(4px);user-select:none;">
+            <h3>Marca-Páginas</h3>
+            <p>Cada encontro revela uma parte do percurso. Cada uma adiciona cor e ilumina um novo passo da trilha.</p>
+          </div>
+          <p style="margin-top:12px;font-size:12px;color:#e0aaff;letter-spacing:1px;text-transform:uppercase;filter:none;">🔒 Desbloqueado no 1º encontro · 23.06</p>
         </div>
       </div>
       <div class="concept-item" id="concept-card-3" style="border-color:rgba(155,77,255,0.06);background:rgba(107,33,212,0.01);cursor:default;opacity:0.5;transition:all 0.8s ease;">
-        <div class="concept-icon" style="filter:blur(2px);transition:filter 0.8s ease;" id="concept-icon-3">🚩</div>
-        <div style="filter:blur(4px);transition:filter 0.8s ease;user-select:none;" id="concept-content-3">
-          <h3>PDL Completo</h3>
-          <p>Ao final dos 4 encontros, seu acrílico estará completo — iluminado com todas as conquistas do líder mackenzista.</p>
+        <div class="concept-icon" style="transition:filter 0.8s ease;" id="concept-icon-3">🚩</div>
+        <div style="transition:filter 0.8s ease;" id="concept-content-3">
+          <div style="filter:blur(4px);user-select:none;">
+            <h3>PDL Completo</h3>
+            <p>Ao final dos 4 encontros, seu acrílico estará completo — iluminado com todas as conquistas do líder mackenzista.</p>
+          </div>
+          <p style="margin-top:12px;font-size:12px;color:#e0aaff;letter-spacing:1px;text-transform:uppercase;filter:none;opacity:1;">🔒 Desbloqueado no encerramento · 02.12</p>
         </div>
       </div>
     </div>
@@ -881,6 +890,10 @@
   <div class="journey-inner">
     <div class="section-label">A Progressão</div>
     <h2 class="section-title">Cada encontro<br><em>abre o próximo nível</em></h2>
+    <p class="section-body" style="margin:0 auto 32px;text-align:center;max-width:600px;">
+      Ao participar de cada encontro do PDL, você recebe uma senha exclusiva. Insira abaixo para desbloquear o próximo nível.
+    </p>
+    <div id="unlock-section" style="max-width:480px;margin:0 auto 40px;"></div>
 
     <div class="stages-row">
 
@@ -901,44 +914,80 @@
       <div class="stage" id="stage-level-1">
         <div class="stage-label">
           <div class="stage-title" id="stitle-1">1º Encontro<br>Gestão do Tempo</div>
+          <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">23.06</div>
           <div class="stage-subtitle" id="ssub-1">🔒 Bloqueado</div>
         </div>
         <div class="stage-acrylic" id="sacrylic-1" style="filter:blur(5px);opacity:0.25;"><img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png" alt="1º Encontro" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         <div class="stage-base-strip" id="sbase-1" style="opacity:0.25;"></div>
         <div class="stage-num" id="snum-1" style="opacity:0.25;">🔒</div>
+        <div class="stage-input-wrap" id="input-wrap-1" style="margin-top:10px;display:flex;gap:6px;align-items:center;justify-content:center;">
+          <input class="ucard-input" id="input-1" type="password" placeholder="Senha" maxlength="20"
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(1)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="ucard-btn" onclick="tryUnlock(1)" style="padding:0 12px;min-height:38px;">→</button>
+        </div>
+        <div class="ucard-status" id="status-1" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
       <!-- Stage 2 — BLOQUEADO / Feedback -->
       <div class="stage" id="stage-level-2">
         <div class="stage-label">
           <div class="stage-title" id="stitle-2">2º Encontro<br>Feedback</div>
+          <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">10.09</div>
           <div class="stage-subtitle" id="ssub-2">🔒 Bloqueado</div>
         </div>
         <div class="stage-acrylic" id="sacrylic-2" style="filter:blur(5px);opacity:0.18;"><img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png" alt="2º Encontro" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         <div class="stage-base-strip" id="sbase-2" style="opacity:0.18;"></div>
         <div class="stage-num" id="snum-2" style="opacity:0.18;">🔒</div>
+        <div class="stage-input-wrap" id="input-wrap-2" style="margin-top:10px;display:flex;gap:6px;align-items:center;justify-content:center;">
+          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20" disabled
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(2)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="ucard-btn" onclick="tryUnlock(2)" disabled style="padding:0 12px;min-height:38px;">→</button>
+        </div>
+        <div class="ucard-status" id="status-2" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
       <!-- Stage 3 — BLOQUEADO / Gestão de Conflitos -->
       <div class="stage" id="stage-level-3">
         <div class="stage-label">
           <div class="stage-title" id="stitle-3">3º Encontro<br>Gestão de Conflitos</div>
+          <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">12.11</div>
           <div class="stage-subtitle" id="ssub-3">🔒 Bloqueado</div>
         </div>
         <div class="stage-acrylic" id="sacrylic-3" style="filter:blur(5px);opacity:0.12;"><img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png" alt="3º Encontro" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         <div class="stage-base-strip" id="sbase-3" style="opacity:0.12;"></div>
         <div class="stage-num" id="snum-3" style="opacity:0.12;">🔒</div>
+        <div class="stage-input-wrap" id="input-wrap-3" style="margin-top:10px;display:flex;gap:6px;align-items:center;justify-content:center;">
+          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20" disabled
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(3)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="ucard-btn" onclick="tryUnlock(3)" disabled style="padding:0 12px;min-height:38px;">→</button>
+        </div>
+        <div class="ucard-status" id="status-3" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
       <!-- Stage 4 — BLOQUEADO / Encerramento -->
       <div class="stage" id="stage-level-4">
         <div class="stage-label">
           <div class="stage-title" id="stitle-4">4º Encontro<br>Encerramento</div>
+          <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">02.12</div>
           <div class="stage-subtitle" id="ssub-4">🔒 Bloqueado</div>
         </div>
         <div class="stage-acrylic" id="sacrylic-4" style="filter:blur(5px);opacity:0.07;"><img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png" alt="4º Encontro" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         <div class="stage-base-strip" id="sbase-4" style="opacity:0.07;"></div>
         <div class="stage-num" id="snum-4" style="opacity:0.07;">🔒</div>
+        <div class="stage-input-wrap" id="input-wrap-4" style="margin-top:10px;display:flex;gap:6px;align-items:center;justify-content:center;">
+          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20" disabled
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(4)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="ucard-btn" onclick="tryUnlock(4)" disabled style="padding:0 12px;min-height:38px;">→</button>
+        </div>
+        <div class="ucard-status" id="status-4" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
     </div>
@@ -947,148 +996,6 @@
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- UNLOCK SECTION -->
-<section class="bookmarks-section" style="text-align:center;">
-  <div id="unlock-section" style="max-width:680px;margin:0 auto;padding:0 24px;">
-    <div class="section-label" style="text-align:center;">Acesso por Encontro</div>
-    <h2 class="section-title" style="text-align:center;">Cada encontro entrega<br><em>sua senha.</em></h2>
-    <p class="section-body" style="margin:0 auto 56px;text-align:center;">
-      Ao participar de cada encontro do PDL, você recebe uma senha exclusiva. Insira abaixo para desbloquear o próximo nível.
-    </p>
-
-    <!-- UNLOCK CARDS -->
-    <div id="unlock-carousel" style="
-      display:flex;
-      gap:16px;
-      overflow-x:auto;
-      scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling:touch;
-      padding:8px 32px 24px;
-      margin:0 -20px 16px;
-      scrollbar-width:none;
-    ">
-    <style>
-      #unlock-carousel::-webkit-scrollbar { display:none; }
-      #unlock-carousel .unlock-card {
-        scroll-snap-align:center;
-        flex:0 0 260px;
-        min-width:260px;
-      }
-      @media(max-width:480px){
-        #unlock-carousel .unlock-card { flex:0 0 82vw; min-width:82vw; }
-      }
-    </style>
-
-      <!-- Card 1 -->
-      <div class="unlock-card" id="card-1" data-level="1">
-        <div class="ucard-header">
-          <span class="ucard-num">1º</span>
-          <span class="ucard-lock" id="lock-1">🔒</span>
-        </div>
-        <div class="ucard-label">Gestão do Tempo</div>
-        <div class="ucard-input-wrap" id="input-wrap-1">
-          <input class="ucard-input" id="input-1" type="password" placeholder="Senha" maxlength="20">
-          <button class="ucard-eye" onclick="toggleEye(1)" tabindex="-1" title="Mostrar/ocultar senha"
-            style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 6px;-webkit-tap-highlight-color:transparent;" id="eye-1">👁</button>
-          <button class="ucard-btn" onclick="tryUnlock(1)">→</button>
-        </div>
-        <div class="ucard-status" id="status-1"></div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="unlock-card locked-card" id="card-2" data-level="2">
-        <div class="ucard-header">
-          <span class="ucard-num">2º</span>
-          <span class="ucard-lock" id="lock-2">🔒</span>
-        </div>
-        <div class="ucard-label">Feedback</div>
-        <div class="ucard-input-wrap" id="input-wrap-2">
-          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20" disabled>
-          <button class="ucard-eye" onclick="toggleEye(2)" tabindex="-1" title="Mostrar/ocultar senha"
-            style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 6px;-webkit-tap-highlight-color:transparent;" id="eye-2">👁</button>
-          <button class="ucard-btn" onclick="tryUnlock(2)" disabled>→</button>
-        </div>
-        <div class="ucard-status" id="status-2"></div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="unlock-card locked-card" id="card-3" data-level="3">
-        <div class="ucard-header">
-          <span class="ucard-num">3º</span>
-          <span class="ucard-lock" id="lock-3">🔒</span>
-        </div>
-        <div class="ucard-label">Gestão de Conflitos</div>
-        <div class="ucard-input-wrap" id="input-wrap-3">
-          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20" disabled>
-          <button class="ucard-eye" onclick="toggleEye(3)" tabindex="-1" title="Mostrar/ocultar senha"
-            style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 6px;-webkit-tap-highlight-color:transparent;" id="eye-3">👁</button>
-          <button class="ucard-btn" onclick="tryUnlock(3)" disabled>→</button>
-        </div>
-        <div class="ucard-status" id="status-3"></div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="unlock-card locked-card" id="card-4" data-level="4">
-        <div class="ucard-header">
-          <span class="ucard-num">4º</span>
-          <span class="ucard-lock" id="lock-4">🔒</span>
-        </div>
-        <div class="ucard-label">Encerramento</div>
-        <div class="ucard-input-wrap" id="input-wrap-4">
-          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20" disabled>
-          <button class="ucard-eye" onclick="toggleEye(4)" tabindex="-1" title="Mostrar/ocultar senha"
-            style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 6px;-webkit-tap-highlight-color:transparent;" id="eye-4">👁</button>
-          <button class="ucard-btn" onclick="tryUnlock(4)" disabled>→</button>
-        </div>
-        <div class="ucard-status" id="status-4"></div>
-      </div>
-
-    </div>
-
-    <!-- Swipe hint + dots -->
-    <div id="carousel-dots-area" style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:32px;">
-      <div style="display:flex;align-items:center;gap:20px;">
-        <button id="carousel-prev" onclick="moveCarousel(-1)" style="background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.4);color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;-webkit-tap-highlight-color:transparent;">‹</button>
-        <div id="carousel-dots" style="display:flex;gap:8px;">
-          <span class="cdot active" data-i="0"></span>
-          <span class="cdot" data-i="1"></span>
-          <span class="cdot" data-i="2"></span>
-          <span class="cdot" data-i="3"></span>
-        </div>
-        <button id="carousel-next" onclick="moveCarousel(1)" style="background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.4);color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;-webkit-tap-highlight-color:transparent;">›</button>
-      </div>
-    </div>
-    <style>
-      .cdot{width:8px;height:8px;border-radius:50%;background:rgba(155,77,255,0.3);cursor:pointer;transition:background 0.3s,transform 0.3s;}
-      .cdot.active{background:var(--violet);transform:scale(1.3);}
-    </style>
-    <script>
-      (function(){
-        const carousel=document.getElementById('unlock-carousel');
-        const dots=document.querySelectorAll('.cdot');
-        if(!carousel)return;
-        function getCardW(){ return carousel.querySelector('.unlock-card').offsetWidth+16; }
-        function updateDots(){
-          const idx=Math.round(carousel.scrollLeft/getCardW());
-          dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
-        }
-        carousel.addEventListener('scroll',updateDots,{passive:true});
-        dots.forEach(d=>{
-          d.addEventListener('click',()=>{
-            carousel.scrollTo({left:getCardW()*parseInt(d.dataset.i),behavior:'smooth'});
-          });
-        });
-        window.moveCarousel=function(dir){
-          const idx=Math.round(carousel.scrollLeft/getCardW());
-          const next=Math.max(0,Math.min(3,idx+dir));
-          carousel.scrollTo({left:getCardW()*next,behavior:'smooth'});
-        };
-      })();
-    </script>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
@@ -1265,11 +1172,11 @@ function showLoginScreen() {
   const section = document.getElementById('unlock-section');
   if (!section) return;
 
-  // Ocultar carrossel e dots
-  const carousel = document.getElementById('unlock-carousel');
-  const dotsArea = document.getElementById('carousel-dots-area');
-  if (carousel) carousel.style.display = 'none';
-  if (dotsArea) dotsArea.style.display = 'none';
+  // Ocultar inputs das montanhas
+  for (let i = 1; i <= 4; i++) {
+    const w = document.getElementById('input-wrap-' + i);
+    if (w) w.classList.remove('active');
+  }
 
   // Criar tela de login se não existir
   if (!document.getElementById('drt-login')) {
@@ -1337,10 +1244,9 @@ async function loginDRT() {
     currentDRT = drt;
 
     document.getElementById('drt-login').style.display = 'none';
-    const carousel = document.getElementById('unlock-carousel');
-    const dotsArea = document.getElementById('carousel-dots-area');
-    if (carousel) carousel.style.display = 'flex';
-    if (dotsArea) dotsArea.style.display = 'flex';
+    // Mostrar input do 1º stage (os outros abrem com revealLevel)
+    const w1 = document.getElementById('input-wrap-1');
+    if (w1) w1.classList.add('active');
 
     showLoggedUser(drt);
 
@@ -1373,8 +1279,7 @@ function showLoggedUser(drt) {
   el.style.cssText = 'font-size:13px;color:var(--muted);margin-bottom:16px;letter-spacing:1px;';
   el.innerHTML = `DRT: <strong style="color:var(--glow)">${drt}</strong> &nbsp;·&nbsp; <span onclick="logoutDRT()" style="cursor:pointer;text-decoration:underline;opacity:0.6;">sair</span>`;
   const section = document.getElementById('unlock-section');
-  const carousel = document.getElementById('unlock-carousel');
-  if (section && carousel) section.insertBefore(el, carousel);
+  if (section) section.appendChild(el);
 }
 
 function logoutDRT() {
@@ -1388,13 +1293,12 @@ function logoutDRT() {
 }
 
 function enableCard(level) {
-  const card = document.getElementById('card-' + level);
-  if (!card) return;
-  card.classList.remove('locked-card');
   const inp = document.getElementById('input-' + level);
-  const btn = card.querySelector('.ucard-btn');
+  const wrap = document.getElementById('input-wrap-' + level);
+  const btn = wrap ? wrap.querySelector('.ucard-btn') : null;
   if (inp) inp.disabled = false;
   if (btn) btn.disabled = false;
+  if (wrap) wrap.classList.add('active');
 }
 
 // Iniciar com tela de login
@@ -1403,18 +1307,15 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function revealLevel(level) {
-  const card = document.getElementById('card-' + level);
   const lockIcon = document.getElementById('lock-' + level);
   const wrap = document.getElementById('input-wrap-' + level);
 
-  // Unlock card UI
-  if (card) {
-    card.classList.remove('locked-card', 'error-shake');
-    card.classList.add('unlocked');
-    card.style.animation = 'unlockPop 0.5s ease';
+  // Marcar input como desbloqueado
+  if (wrap) {
+    wrap.classList.add('active');
+    wrap.innerHTML = '<span style="font-size:12px;color:rgba(134,239,172,0.9);letter-spacing:1px;padding:6px 0;">✓ Desbloqueado</span>';
   }
   if (lockIcon) { lockIcon.textContent = '✓'; lockIcon.style.color = 'rgba(134,239,172,0.9)'; }
-  if (wrap) wrap.innerHTML = '<span style="font-size:11px;color:rgba(134,239,172,0.8);letter-spacing:1px;">Desbloqueado ✓</span>';
 
   // Stage reveal — remove blur/opacity
   const acrylic = document.getElementById('sacrylic-' + level);
@@ -1481,10 +1382,10 @@ function toggleEye(level) {
   if (!input) return;
   if (input.type === 'password') {
     input.type = 'text';
-    eye.textContent = '🙈';
+    eye.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
   } else {
     input.type = 'password';
-    eye.textContent = '👁';
+    eye.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
   }
 }
 
