@@ -959,11 +959,11 @@
         <div class="stage-base-strip" id="sbase-2" style="opacity:0.18;"></div>
         <div class="stage-num" id="snum-2" style="opacity:0.18;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-2">
-          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20" disabled
+          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20"
             style="flex:1;max-width:140px;font-size:15px;">
           <button class="ucard-eye" onclick="toggleEye(2)" tabindex="-1"
             style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          <button class="ucard-btn" onclick="tryUnlock(2)" disabled style="padding:0 12px;min-height:38px;">→</button>
+          <button class="ucard-btn" onclick="tryUnlock(2)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-2" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
@@ -979,11 +979,11 @@
         <div class="stage-base-strip" id="sbase-3" style="opacity:0.12;"></div>
         <div class="stage-num" id="snum-3" style="opacity:0.12;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-3">
-          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20" disabled
+          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20"
             style="flex:1;max-width:140px;font-size:15px;">
           <button class="ucard-eye" onclick="toggleEye(3)" tabindex="-1"
             style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          <button class="ucard-btn" onclick="tryUnlock(3)" disabled style="padding:0 12px;min-height:38px;">→</button>
+          <button class="ucard-btn" onclick="tryUnlock(3)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-3" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
@@ -999,11 +999,11 @@
         <div class="stage-base-strip" id="sbase-4" style="opacity:0.07;"></div>
         <div class="stage-num" id="snum-4" style="opacity:0.07;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-4">
-          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20" disabled
+          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20"
             style="flex:1;max-width:140px;font-size:15px;">
           <button class="ucard-eye" onclick="toggleEye(4)" tabindex="-1"
             style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          <button class="ucard-btn" onclick="tryUnlock(4)" disabled style="padding:0 12px;min-height:38px;">→</button>
+          <button class="ucard-btn" onclick="tryUnlock(4)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-4" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
@@ -1268,9 +1268,11 @@ async function loginDRT() {
     // Mostrar progressão
     const stagesRow = document.getElementById('stages-row');
     if (stagesRow) stagesRow.style.display = 'grid';
-    // Mostrar input do 1º stage (os outros abrem com revealLevel)
-    const w1 = document.getElementById('input-wrap-1');
-    if (w1) w1.classList.add('active');
+    // Mostrar inputs de todos os stages
+    for (let i = 1; i <= 4; i++) {
+      const w = document.getElementById('input-wrap-' + i);
+      if (w) w.classList.add('active');
+    }
 
     showLoggedUser(drt);
 
@@ -1283,10 +1285,6 @@ async function loginDRT() {
           revealLevel(lvl);
         }
       });
-      const last = _unlocked.length > 0 ? Math.max(..._unlocked) : 0;
-      if (last < 4) enableCard(last + 1);
-    } else {
-      enableCard(1);
     }
 
   } catch(err) {
@@ -1385,19 +1383,7 @@ function revealLevel(level) {
     if (cn3) { cn3.style.filter = 'none'; cn3.style.userSelect = 'auto'; }
   }
 
-  // Enable next card
-  const next = level + 1;
-  if (next <= 4) {
-    const nextCard = document.getElementById('card-' + next);
-    if (nextCard) {
-      nextCard.classList.remove('locked-card');
-      nextCard.style.opacity = '1';
-      const inp = document.getElementById('input-' + next);
-      const btn = nextCard.querySelector('.ucard-btn');
-      if (inp) inp.disabled = false;
-      if (btn) btn.disabled = false;
-    }
-  }
+
 
   // Final hint
   const allUnlocked = getUnlocked();
