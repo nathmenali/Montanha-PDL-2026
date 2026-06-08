@@ -1362,6 +1362,15 @@ function revealLevel(level) {
     acrylic.style.borderColor = 'rgba(155,77,255,0.4)';
     acrylic.style.cursor = 'pointer';
     acrylic.onclick = () => toggleFlip(level);
+    // Adicionar badge de flip
+    if (!acrylic.querySelector('.flip-badge')) {
+      const badge = document.createElement('div');
+      badge.className = 'flip-badge';
+      badge.style.cssText = 'position:absolute;bottom:10px;right:10px;z-index:10;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.85);letter-spacing:1px;pointer-events:none;display:flex;align-items:center;gap:5px;';
+      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg> virar';
+      acrylic.style.position = 'relative';
+      acrylic.appendChild(badge);
+    }
   }
   if (base)  { base.style.opacity = '1'; }
   if (num)   { num.style.opacity = '1'; num.textContent = 'Etapa ' + level; }
@@ -1374,10 +1383,24 @@ function revealLevel(level) {
   if (stageEl && !document.getElementById('frase-' + level)) {
     const frase = document.createElement('div');
     frase.id = 'frase-' + level;
-    frase.style.cssText = 'font-family:"Breathing",sans-serif;font-size:24px;color:var(--glow);margin-top:8px;text-align:center;opacity:0;animation:fadeUp 0.8s 0.3s forwards;';
+    frase.style.cssText = 'font-family:"Breathing",sans-serif;font-size:clamp(28px,4vw,42px);background:linear-gradient(135deg,#c084fc,#f0abfc,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:12px;text-align:center;opacity:0;animation:fadeUp 0.8s 0.3s forwards;filter:drop-shadow(0 0 8px rgba(192,132,252,0.5));';
     frase.textContent = frases[level];
     stageEl.appendChild(frase);
   }
+
+  // Montar/atualizar frase completa abaixo das etapas
+  const unlocked = getUnlocked();
+  const allFrases = {1:'A liderança', 2:'é', 3:'construída', 4:'passo a passo'};
+  let fullFrase = unlocked.sort((a,b)=>a-b).map(l => allFrases[l]).join(' ');
+  let container = document.getElementById('frase-completa');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'frase-completa';
+    container.style.cssText = 'text-align:center;margin-top:32px;padding:16px 0;';
+    const stagesRow = document.getElementById('stages-row');
+    if (stagesRow) stagesRow.after(container);
+  }
+  container.innerHTML = `<span style="font-family:'Breathing',sans-serif;font-size:clamp(32px,5vw,56px);background:linear-gradient(135deg,#c084fc,#f0abfc,#ff6b9d,#f5c842);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 12px rgba(192,132,252,0.6));">${fullFrase}</span>`;
 
   // 4º encontro — golden glow
   if (level === 4) {
