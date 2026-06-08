@@ -823,6 +823,58 @@
     0%, 100% { box-shadow: 0 0 10px rgba(245,200,66,0.3), 0 0 20px rgba(245,200,66,0.1); }
     50%       { box-shadow: 0 0 28px rgba(245,200,66,0.8), 0 0 56px rgba(245,200,66,0.3); }
   }
+  /* ── EXPERIÊNCIA DE REVELAÇÃO PREMIUM ── */
+  #reveal-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0); pointer-events: none;
+    transition: background 0.4s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #reveal-overlay.active { background: rgba(0,0,0,0.55); pointer-events: all; }
+
+  #reveal-window {
+    position: relative;
+    max-width: min(520px, 92vw);
+    width: 100%;
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.45), 0 0 40px rgba(155,77,255,0.25);
+    overflow: hidden;
+  }
+  #reveal-window.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  #reveal-window img { width: 100%; height: auto; display: block; }
+
+  #reveal-close {
+    position: absolute; top: 12px; right: 14px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-size: 18px; line-height: 36px; text-align: center;
+    cursor: pointer; z-index: 10;
+    transition: background 0.2s;
+  }
+  #reveal-close:hover { background: rgba(107,33,212,0.6); }
+
+  #reveal-continue {
+    display: block; width: 100%;
+    padding: 16px;
+    background: rgba(107,33,212,0.5);
+    border: none; border-top: 1px solid rgba(155,77,255,0.3);
+    color: #fff; font-family: 'Poppins', sans-serif;
+    font-size: 14px; letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: background 0.3s;
+  }
+  #reveal-continue:hover { background: rgba(107,33,212,0.8); }
+
+  @keyframes mountainZoom {
+    from { transform: scale(1); }
+    to   { transform: scale(1.08); }
+  }
+  .mountain-zoomed { animation: mountainZoom 0.4s ease-out forwards; }
 </style>
 </head>
 <body>
@@ -1432,10 +1484,17 @@ function toggleFlip(level) {
   if (inner) inner.classList.toggle('flipped');
 }
 
+const JANELAS = {
+  1: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_1%C2%BA%20encontro.png',
+  2: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_2%C2%BA%20encontro.png',
+  3: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro.png',
+  4: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_4%C2%BA%20encontro.png',
+};
+
 function tryUnlock(level) {
-  const input = document.getElementById('input-' + level);
+  const input  = document.getElementById('input-' + level);
   const status = document.getElementById('status-' + level);
-  const card = document.getElementById('card-' + level);
+  const card   = document.getElementById('card-' + level);
   const normalize = s => s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const val = input ? normalize(input.value) : '';
 
@@ -1444,26 +1503,89 @@ function tryUnlock(level) {
     if (!unlocked.includes(level)) {
       unlocked.push(level);
       saveUnlocked(unlocked);
-      // Salvar no Google Sheets via JSONP
       if (currentDRT) {
         jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(currentDRT)}&level=${level}`)
           .catch(() => {});
       }
     }
-    status.textContent = '';
-    revealLevel(level);
+
+    // ── ETAPA 1: feedback (500ms) ──
+    if (input) input.disabled = true;
+    status.textContent = '✓ Senha validada';
+    status.style.color = 'rgba(134,239,172,0.9)';
+
+    setTimeout(() => {
+      // ── ETAPA 2: revelar montanha (1000ms) ──
+      revealLevel(level);
+
+      setTimeout(() => {
+        // ── ETAPA 3: zoom + escurecer (400ms) ──
+        openReveal(level);
+      }, 1000);
+    }, 500);
+
   } else {
-    card.classList.add('error-shake');
-    status.textContent = 'Senha incorreta';
+    if (card) card.classList.add('error-shake');
+    status.textContent = 'Frase incorreta';
     status.className = 'ucard-status err';
     setTimeout(() => {
-      card.classList.remove('error-shake');
+      if (card) card.classList.remove('error-shake');
       status.textContent = '';
       status.className = 'ucard-status';
     }, 1800);
     if (input) input.value = '';
   }
 }
+
+function openReveal(level) {
+  const overlay = document.getElementById('reveal-overlay');
+  const win     = document.getElementById('reveal-window');
+  const img     = document.getElementById('reveal-img');
+  if (!overlay || !win || !img) return;
+
+  // Carregar imagem do encontro
+  img.src = JANELAS[level];
+
+  // Zoom na montanha
+  const montanha = document.getElementById('stages-row');
+  if (montanha) montanha.classList.add('mountain-zoomed');
+
+  // Etapa 3: escurecer overlay (400ms)
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => {
+    overlay.classList.add('active');
+  });
+
+  // Etapa 4: abrir janela após 400ms (ease-out)
+  setTimeout(() => {
+    win.classList.add('visible');
+  }, 400);
+}
+
+function closeReveal() {
+  const overlay = document.getElementById('reveal-overlay');
+  const win     = document.getElementById('reveal-window');
+  if (!overlay || !win) return;
+
+  // Fade-out janela (300ms)
+  win.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+  win.style.opacity = '0';
+  win.style.transform = 'scale(0.98)';
+
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    win.classList.remove('visible');
+    win.style.opacity = '';
+    win.style.transform = '';
+    win.style.transition = '';
+    overlay.style.display = 'none';
+
+    // Remover zoom da montanha
+    const montanha = document.getElementById('stages-row');
+    if (montanha) montanha.classList.remove('mountain-zoomed');
+  }, 300);
+}
+
 
 // Permitir Enter no input
 for (let i = 1; i <= 4; i++) {
@@ -1516,5 +1638,14 @@ for (let i = 1; i <= 4; i++) {
   resize(); init(); draw();
 })();
 </script>
+<!-- EXPERIÊNCIA DE REVELAÇÃO PREMIUM -->
+<div id="reveal-overlay">
+  <div id="reveal-window">
+    <div id="reveal-close" onclick="closeReveal()">×</div>
+    <img id="reveal-img" src="" alt="Revelação do encontro">
+    <button id="reveal-continue" onclick="closeReveal()">Continuar →</button>
+  </div>
+</div>
+
 </body>
 </html>
