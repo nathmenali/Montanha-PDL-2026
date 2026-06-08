@@ -914,101 +914,83 @@
     <!-- PROGRESSÃO: montanha base + marca-páginas sobrepostos -->
     <div id="stages-row" style="display:none;">
 
-      <!-- Montanha base fixa + marca-páginas -->
-      <div style="position:relative;max-width:480px;margin:0 auto;">
+      <!-- Montanha base fixa + overlays coloridos -->
+      <div style="max-width:480px;margin:0 auto;">
 
-        <!-- Montanha base — sempre visível -->
-        <div id="montanha-base" style="width:100%;border-radius:12px;overflow:hidden;box-shadow:0 0 60px rgba(107,33,212,0.3);">
+        <!-- Container da montanha com sobreposições -->
+        <div style="position:relative;border-radius:12px;overflow:hidden;box-shadow:0 0 60px rgba(107,33,212,0.3);" id="montanha-base">
+
+          <!-- Montanha P&B — sempre visível embaixo -->
           <img src="https://nathmenali.github.io/Montanha-PDL-2026/ChatGPT%20Image%203%20de%20jun.%20de%202026%2C%2019_24_57.png"
             alt="Montanha" style="width:100%;height:auto;display:block;">
+
+          <!-- Overlay colorido 1 — aparece no desbloqueio 1 -->
+          <img id="overlay-1"
+            src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png"
+            alt="1º Encontro" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease;pointer-events:none;">
+
+          <!-- Overlay colorido 2 — aparece no desbloqueio 2 -->
+          <img id="overlay-2"
+            src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png"
+            alt="2º Encontro" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease;pointer-events:none;">
+
+          <!-- Overlay colorido 3 — aparece no desbloqueio 3 -->
+          <img id="overlay-3"
+            src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png"
+            alt="3º Encontro" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease;pointer-events:none;">
+
+          <!-- Overlay colorido 4 — aparece no desbloqueio 4 -->
+          <img id="overlay-4"
+            src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png"
+            alt="4º Encontro" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease;pointer-events:none;">
         </div>
 
-        <!-- Marca-páginas — aparecem por cima, um a cada desbloqueio -->
-        <div id="marcapaginas-grid" style="
-          display:flex;
-          gap:12px;
-          justify-content:center;
-          flex-wrap:wrap;
-          margin-top:24px;
-        ">
-          <!-- Marca-página 1 -->
+        <!-- Marca-páginas com flip — aparecem abaixo da montanha -->
+        <div id="marcapaginas-grid" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px;min-height:20px;">
+
           <div id="mp-1" style="display:none;flex-direction:column;align-items:center;gap:8px;">
-            <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#e0aaff;margin-bottom:4px;">1º Encontro · 23.06</div>
-            <div id="flip-1" style="
-              width:120px;
-              perspective:800px;
-              cursor:pointer;
-            " onclick="toggleFlip(1)" title="Toque para virar">
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#e0aaff;">1º · 23.06</div>
+            <div id="flip-1" style="width:100px;perspective:800px;cursor:pointer;" onclick="toggleFlip(1)" title="Toque para virar">
               <div class="flip-inner" id="flip-inner-1">
-                <div class="flip-face flip-front">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png"
-                    alt="1º Encontro" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
-                <div class="flip-face flip-back">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20Encontro_verso.png"
-                    alt="1º Encontro verso" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
+                <div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
+                <div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20Encontro_verso.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
               </div>
             </div>
-            <div style="font-size:11px;color:rgba(134,239,172,0.8);letter-spacing:1px;">Gestão do Tempo</div>
           </div>
 
-          <!-- Marca-página 2 -->
           <div id="mp-2" style="display:none;flex-direction:column;align-items:center;gap:8px;">
-            <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#e0aaff;margin-bottom:4px;">2º Encontro · 10.09</div>
-            <div id="flip-2" style="width:120px;perspective:800px;cursor:pointer;" onclick="toggleFlip(2)" title="Toque para virar">
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#e0aaff;">2º · 10.09</div>
+            <div id="flip-2" style="width:100px;perspective:800px;cursor:pointer;" onclick="toggleFlip(2)" title="Toque para virar">
               <div class="flip-inner" id="flip-inner-2">
-                <div class="flip-face flip-front">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png"
-                    alt="2º Encontro" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
-                <div class="flip-face flip-back">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20Encontro_verso.png"
-                    alt="2º Encontro verso" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
+                <div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
+                <div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20Encontro_verso.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
               </div>
             </div>
-            <div style="font-size:11px;color:rgba(134,239,172,0.8);letter-spacing:1px;">Feedback</div>
           </div>
 
-          <!-- Marca-página 3 -->
           <div id="mp-3" style="display:none;flex-direction:column;align-items:center;gap:8px;">
-            <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#e0aaff;margin-bottom:4px;">3º Encontro · 12.11</div>
-            <div id="flip-3" style="width:120px;perspective:800px;cursor:pointer;" onclick="toggleFlip(3)" title="Toque para virar">
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#e0aaff;">3º · 12.11</div>
+            <div id="flip-3" style="width:100px;perspective:800px;cursor:pointer;" onclick="toggleFlip(3)" title="Toque para virar">
               <div class="flip-inner" id="flip-inner-3">
-                <div class="flip-face flip-front">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png"
-                    alt="3º Encontro" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
-                <div class="flip-face flip-back">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20Encontro_verso.png"
-                    alt="3º Encontro verso" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
+                <div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
+                <div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20Encontro_verso.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
               </div>
             </div>
-            <div style="font-size:11px;color:rgba(134,239,172,0.8);letter-spacing:1px;">Gestão de Conflitos</div>
           </div>
 
-          <!-- Marca-página 4 -->
           <div id="mp-4" style="display:none;flex-direction:column;align-items:center;gap:8px;">
-            <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">4º Encontro · 02.12</div>
-            <div id="flip-4" style="width:120px;perspective:800px;cursor:pointer;" onclick="toggleFlip(4)" title="Toque para virar">
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">4º · 02.12</div>
+            <div id="flip-4" style="width:100px;perspective:800px;cursor:pointer;" onclick="toggleFlip(4)" title="Toque para virar">
               <div class="flip-inner" id="flip-inner-4">
-                <div class="flip-face flip-front">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png"
-                    alt="4º Encontro" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
-                <div class="flip-face flip-back">
-                  <img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20Encontro_verso.png"
-                    alt="4º Encontro verso" style="width:100%;height:auto;display:block;border-radius:6px;">
-                </div>
+                <div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
+                <div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20Encontro_verso.png" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
               </div>
             </div>
-            <div style="font-size:11px;color:var(--gold);letter-spacing:1px;">✦ Encerramento</div>
           </div>
-        </div><!-- fim marcapaginas-grid -->
 
-        <!-- Campos de senha — abaixo da montanha -->
+        </div><!-- fim marca-páginas -->
+
+        <!-- Campos de senha -->
         <div style="margin-top:32px;display:flex;flex-direction:column;gap:16px;">
 
           <div id="stage-level-1" style="display:flex;align-items:center;gap:12px;background:rgba(107,33,212,0.08);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:12px 16px;">
@@ -1398,18 +1380,22 @@ function revealLevel(level) {
   const wrap = document.getElementById('input-wrap-' + level);
   const sub  = document.getElementById('ssub-' + level);
   const mp   = document.getElementById('mp-' + level);
+  const overlay = document.getElementById('overlay-' + level);
 
-  // Mostrar marca-página sobre a montanha
-  if (mp) { mp.style.display = 'flex'; }
+  // Ativar overlay colorido sobre a montanha P&B (transição suave)
+  if (overlay) overlay.style.opacity = '1';
+
+  // Mostrar marca-página com flip abaixo da montanha
+  if (mp) mp.style.display = 'flex';
 
   // Esconder campo de senha, mostrar confirmação
-  if (wrap) { wrap.style.display = 'none'; }
+  if (wrap) wrap.style.display = 'none';
   if (sub)  { sub.textContent = '✓ Desbloqueado'; sub.style.color = 'rgba(134,239,172,0.9)'; }
 
   // 4º encontro — golden glow
   if (level === 4) {
     const mb = document.getElementById('montanha-base');
-    if (mb) mb.style.boxShadow = '0 0 60px rgba(245,200,66,0.4)';
+    if (mb) mb.style.boxShadow = '0 0 80px rgba(245,200,66,0.5)';
     if (sub) sub.style.color = 'var(--gold)';
   }
 
