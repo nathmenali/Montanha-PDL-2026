@@ -1383,24 +1383,10 @@ function revealLevel(level) {
   if (stageEl && !document.getElementById('frase-' + level)) {
     const frase = document.createElement('div');
     frase.id = 'frase-' + level;
-    frase.style.cssText = 'font-family:"Breathing",sans-serif;font-size:clamp(28px,4vw,42px);background:linear-gradient(135deg,#c084fc,#f0abfc,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:12px;text-align:center;opacity:0;animation:fadeUp 0.8s 0.3s forwards;filter:drop-shadow(0 0 8px rgba(192,132,252,0.5));';
+    frase.style.cssText = 'font-family:"Breathing",sans-serif;font-size:clamp(22px,3vw,32px);color:#f5c842;margin-top:4px;text-align:center;opacity:0;animation:fadeUp 0.8s 0.3s forwards;text-shadow:0 0 12px rgba(245,200,66,0.5);';
     frase.textContent = frases[level];
     stageEl.appendChild(frase);
   }
-
-  // Montar/atualizar frase completa abaixo das etapas
-  const unlocked = getUnlocked();
-  const allFrases = {1:'A liderança', 2:'é', 3:'construída', 4:'passo a passo'};
-  let fullFrase = unlocked.sort((a,b)=>a-b).map(l => allFrases[l]).join(' ');
-  let container = document.getElementById('frase-completa');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'frase-completa';
-    container.style.cssText = 'text-align:center;margin-top:32px;padding:16px 0;';
-    const stagesRow = document.getElementById('stages-row');
-    if (stagesRow) stagesRow.after(container);
-  }
-  container.innerHTML = `<span style="font-family:'Breathing',sans-serif;font-size:clamp(32px,5vw,56px);background:linear-gradient(135deg,#c084fc,#f0abfc,#ff6b9d,#f5c842);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 12px rgba(192,132,252,0.6));">${fullFrase}</span>`;
 
   // 4º encontro — golden glow
   if (level === 4) {
