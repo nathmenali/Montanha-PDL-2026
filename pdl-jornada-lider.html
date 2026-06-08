@@ -809,6 +809,20 @@
     transform: rotateY(180deg);
   }
   .flip-back img { width: 100%; height: auto; display: block; }
+
+  /* Brilho variável nos marca-páginas desbloqueados */
+  @keyframes mpGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(155,77,255,0.3), 0 0 20px rgba(155,77,255,0.1); }
+    50%       { box-shadow: 0 0 24px rgba(192,132,252,0.7), 0 0 48px rgba(155,77,255,0.3); }
+  }
+  .mp-glow { animation: mpGlow 2.5s ease-in-out infinite; border-radius: 6px; }
+  #mp-4 .mp-glow {
+    animation-name: mpGlowGold;
+  }
+  @keyframes mpGlowGold {
+    0%, 100% { box-shadow: 0 0 10px rgba(245,200,66,0.3), 0 0 20px rgba(245,200,66,0.1); }
+    50%       { box-shadow: 0 0 28px rgba(245,200,66,0.8), 0 0 56px rgba(245,200,66,0.3); }
+  }
 </style>
 </head>
 <body>
@@ -939,10 +953,9 @@
         <div class="stage-base-strip" id="sbase-1" style="opacity:0.25;"></div>
         <div class="stage-num" id="snum-1" style="opacity:0.25;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-1">
-          <input class="ucard-input" id="input-1" type="password" placeholder="Senha" maxlength="20"
+          <input class="ucard-input" id="input-1" type="text" placeholder="Digite a frase" maxlength="60"
             style="flex:1;max-width:140px;font-size:15px;">
-          <button class="ucard-eye" onclick="toggleEye(1)" tabindex="-1"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          
           <button class="ucard-btn" onclick="tryUnlock(1)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-1" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
@@ -959,10 +972,9 @@
         <div class="stage-base-strip" id="sbase-2" style="opacity:0.18;"></div>
         <div class="stage-num" id="snum-2" style="opacity:0.18;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-2">
-          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20"
+          <input class="ucard-input" id="input-2" type="text" placeholder="Digite a frase" maxlength="60"
             style="flex:1;max-width:140px;font-size:15px;">
-          <button class="ucard-eye" onclick="toggleEye(2)" tabindex="-1"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          
           <button class="ucard-btn" onclick="tryUnlock(2)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-2" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
@@ -979,10 +991,9 @@
         <div class="stage-base-strip" id="sbase-3" style="opacity:0.12;"></div>
         <div class="stage-num" id="snum-3" style="opacity:0.12;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-3">
-          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20"
+          <input class="ucard-input" id="input-3" type="text" placeholder="Digite a frase" maxlength="60"
             style="flex:1;max-width:140px;font-size:15px;">
-          <button class="ucard-eye" onclick="toggleEye(3)" tabindex="-1"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          
           <button class="ucard-btn" onclick="tryUnlock(3)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-3" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
@@ -999,10 +1010,9 @@
         <div class="stage-base-strip" id="sbase-4" style="opacity:0.07;"></div>
         <div class="stage-num" id="snum-4" style="opacity:0.07;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-4">
-          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20"
+          <input class="ucard-input" id="input-4" type="text" placeholder="Digite a frase" maxlength="60"
             style="flex:1;max-width:140px;font-size:15px;">
-          <button class="ucard-eye" onclick="toggleEye(4)" tabindex="-1"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          
           <button class="ucard-btn" onclick="tryUnlock(4)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-4" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
@@ -1101,7 +1111,7 @@ function adminReset() {
     if (card)     { card.classList.remove('unlocked'); if (i > 1) card.classList.add('locked-card'); }
     if (lockIcon) { lockIcon.textContent = '🔒'; lockIcon.style.color = ''; }
     if (wrap)     {
-      wrap.innerHTML = `<input class="ucard-input" id="input-${i}" type="password" placeholder="Senha" maxlength="20" ${i > 1 ? 'disabled' : ''}><button class="ucard-btn" onclick="tryUnlock(${i})" ${i > 1 ? 'disabled' : ''}>→</button>`;
+      wrap.innerHTML = `<input class="ucard-input" id="input-${i}" type="text" placeholder="Digite a frase" maxlength="60" ${i > 1 ? 'disabled' : ''}><button class="ucard-btn" onclick="tryUnlock(${i})" ${i > 1 ? 'disabled' : ''}>→</button>`;
       const inp = document.getElementById('input-' + i);
       if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(i); });
     }
@@ -1331,22 +1341,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function revealLevel(level) {
   const lockIcon = document.getElementById('lock-' + level);
-  const wrap = document.getElementById('input-wrap-' + level);
+  const wrap     = document.getElementById('input-wrap-' + level);
+  const acrylic  = document.getElementById('sacrylic-' + level);
+  const base     = document.getElementById('sbase-' + level);
+  const num      = document.getElementById('snum-' + level);
+  const title    = document.getElementById('stitle-' + level);
+  const sub      = document.getElementById('ssub-' + level);
 
-  // Marcar input como desbloqueado
+  // Marcar como desbloqueado
   if (wrap) {
     wrap.classList.add('active');
     wrap.innerHTML = '<span style="font-size:12px;color:rgba(134,239,172,0.9);letter-spacing:1px;padding:6px 0;">✓ Desbloqueado</span>';
   }
   if (lockIcon) { lockIcon.textContent = '✓'; lockIcon.style.color = 'rgba(134,239,172,0.9)'; }
 
-  // Stage reveal — remove blur/opacity
-  const acrylic = document.getElementById('sacrylic-' + level);
-  const base    = document.getElementById('sbase-' + level);
-  const num     = document.getElementById('snum-' + level);
-  const title   = document.getElementById('stitle-' + level);
-  const sub     = document.getElementById('ssub-' + level);
-
+  // Revelar acrílico
   if (acrylic) {
     acrylic.style.filter = 'none';
     acrylic.style.opacity = '1';
@@ -1354,38 +1363,40 @@ function revealLevel(level) {
     acrylic.style.cursor = 'pointer';
     acrylic.onclick = () => toggleFlip(level);
   }
-  if (base)    { base.style.opacity = '1'; }
-  if (num)     { num.style.opacity = '1'; num.textContent = 'Etapa ' + level; }
-  if (title)   { title.style.opacity = '1'; title.style.color = ''; }
-  if (sub)     { sub.style.opacity = '1'; sub.textContent = THEME_LABELS[level]; sub.style.color = 'var(--violet)'; }
+  if (base)  { base.style.opacity = '1'; }
+  if (num)   { num.style.opacity = '1'; num.textContent = 'Etapa ' + level; }
+  if (title) { title.style.opacity = '1'; title.style.color = ''; }
+  if (sub)   { sub.style.opacity = '1'; sub.textContent = THEME_LABELS[level]; sub.style.color = 'var(--violet)'; }
+
+  // Mostrar frase desbloqueada abaixo do acrílico
+  const frases = {1:'A liderança', 2:'é', 3:'construída', 4:'passo a passo'};
+  const stageEl = document.getElementById('stage-level-' + level);
+  if (stageEl && !document.getElementById('frase-' + level)) {
+    const frase = document.createElement('div');
+    frase.id = 'frase-' + level;
+    frase.style.cssText = 'font-family:"Breathing",sans-serif;font-size:24px;color:var(--glow);margin-top:8px;text-align:center;opacity:0;animation:fadeUp 0.8s 0.3s forwards;';
+    frase.textContent = frases[level];
+    stageEl.appendChild(frase);
+  }
 
   // 4º encontro — golden glow
-  if (level === 4 && acrylic) {
-    acrylic.style.boxShadow = '0 0 40px rgba(245,200,66,0.25)';
-    acrylic.style.borderColor = 'rgba(245,200,66,0.4)';
+  if (level === 4) {
+    if (acrylic) { acrylic.style.boxShadow = '0 0 40px rgba(245,200,66,0.25)'; acrylic.style.borderColor = 'rgba(245,200,66,0.4)'; }
     if (num) { num.style.color = 'var(--gold)'; num.textContent = '✦'; }
-    if (sub) { sub.style.color = 'var(--gold)'; }
+    if (sub) sub.style.color = 'var(--gold)';
   }
 
-  // Ao desbloquear o 1º encontro, revela também os cards de conceito
+  // 1º desbloqueio — revela cards de conceito
   if (level === 1) {
-    const cc2 = document.getElementById('concept-card-2');
-    const ci2 = document.getElementById('concept-icon-2');
-    const cn2 = document.getElementById('concept-content-2');
-    const cc3 = document.getElementById('concept-card-3');
-    const ci3 = document.getElementById('concept-icon-3');
-    const cn3 = document.getElementById('concept-content-3');
-    if (cc2) { cc2.style.borderColor = 'rgba(107,33,212,0.2)'; cc2.style.background = 'rgba(107,33,212,0.04)'; cc2.style.opacity = '1'; }
-    if (ci2) { ci2.style.filter = 'none'; }
-    if (cn2) { cn2.style.filter = 'none'; cn2.style.userSelect = 'auto'; }
-    if (cc3) { cc3.style.borderColor = 'rgba(107,33,212,0.2)'; cc3.style.background = 'rgba(107,33,212,0.04)'; cc3.style.opacity = '1'; }
-    if (ci3) { ci3.style.filter = 'none'; }
-    if (cn3) { cn3.style.filter = 'none'; cn3.style.userSelect = 'auto'; }
+    ['concept-card-2','concept-card-3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.borderColor='rgba(107,33,212,0.2)'; el.style.background='rgba(107,33,212,0.04)'; el.style.opacity='1'; }
+    });
+    ['concept-icon-2','concept-icon-3'].forEach(id => { const el=document.getElementById(id); if(el) el.style.filter='none'; });
+    ['concept-content-2','concept-content-3'].forEach(id => { const el=document.getElementById(id); if(el){ el.style.filter='none'; el.style.userSelect='auto'; } });
   }
 
-
-
-  // Final hint
+  // PDL completo
   const allUnlocked = getUnlocked();
   if (allUnlocked.length === 4) {
     const hint = document.getElementById('unlock-hint');
