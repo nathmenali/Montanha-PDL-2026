@@ -970,7 +970,7 @@
 <!-- JORNADA EM ETAPAS -->
 <section class="journey-section">
   <div class="journey-inner">
-    <div class="section-label">A Progressão</div>
+    <div class="section-label">Seu Progresso</div>
     <h2 class="section-title">Trilha de <em>Evolução</em></h2>
     <p style="font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Cada encontro abre o próximo nível</p>
     <p class="section-body" style="margin:0 auto 32px;text-align:center;max-width:600px;">
@@ -1042,10 +1042,10 @@
         <div class="stage-acrylic" id="sacrylic-3" style="cursor:default;">
           <div class="flip-inner" id="flip-3">
             <div class="flip-face flip-front">
-              <img id="img-front-3" src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_3%C2%BA%20encontro.png" alt="3º Encontro" style="width:100%;height:auto;display:block;">
+              <img id="img-front-3" src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_3%C2%B0%20encontro.png" alt="3º Encontro" style="width:100%;height:auto;display:block;">
             </div>
             <div class="flip-face flip-back">
-              <img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20Encontro_verso.png" alt="3º Encontro verso" style="width:100%;height:auto;display:block;">
+              <img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%B0%20Encontro_verso.png" alt="3º Encontro verso" style="width:100%;height:auto;display:block;">
             </div>
           </div>
         </div>
@@ -1428,7 +1428,7 @@ function revealLevel(level) {
     const coloredSrcs = {
       1: 'https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png',
       2: 'https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png',
-      3: 'https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png',
+      3: 'https://nathmenali.github.io/Montanha-PDL-2026/3%C2%B0%20encontro.png',
       4: 'https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png',
     };
     if (imgFront) imgFront.src = coloredSrcs[level];
@@ -1470,14 +1470,24 @@ function revealLevel(level) {
     if (sub) sub.style.color = 'var(--gold)';
   }
 
-  // 1º desbloqueio — revela cards de conceito
+  // Card conceito 2 — desbloqueia com frase 1
   if (level === 1) {
-    ['concept-card-2','concept-card-3'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) { el.style.borderColor='rgba(107,33,212,0.2)'; el.style.background='rgba(107,33,212,0.04)'; el.style.opacity='1'; }
-    });
-    ['concept-icon-2','concept-icon-3'].forEach(id => { const el=document.getElementById(id); if(el) el.style.filter='none'; });
-    ['concept-content-2','concept-content-3'].forEach(id => { const el=document.getElementById(id); if(el){ el.style.filter='none'; el.style.userSelect='auto'; } });
+    const c2 = document.getElementById('concept-card-2');
+    const i2 = document.getElementById('concept-icon-2');
+    const n2 = document.getElementById('concept-content-2');
+    if (c2) { c2.style.borderColor='rgba(107,33,212,0.2)'; c2.style.background='rgba(107,33,212,0.04)'; c2.style.opacity='1'; c2.style.cursor='default'; }
+    if (i2) i2.style.filter='none';
+    if (n2) { n2.style.filter='none'; n2.style.userSelect='auto'; }
+  }
+
+  // Card conceito 3 — desbloqueia com frase 4
+  if (level === 4) {
+    const c3 = document.getElementById('concept-card-3');
+    const i3 = document.getElementById('concept-icon-3');
+    const n3 = document.getElementById('concept-content-3');
+    if (c3) { c3.style.borderColor='rgba(107,33,212,0.2)'; c3.style.background='rgba(107,33,212,0.04)'; c3.style.opacity='1'; c3.style.cursor='default'; }
+    if (i3) i3.style.filter='none';
+    if (n3) { n3.style.filter='none'; n3.style.userSelect='auto'; }
   }
 
   // PDL completo
@@ -1510,7 +1520,7 @@ function toggleFlip(level) {
 const JANELAS = {
   1: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_1%C2%BA%20encontro.png',
   2: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_2%C2%BA%20encontro.png',
-  3: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro.png',
+  3: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%B0%20encontro.png',
   4: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_4%C2%BA%20encontro.png',
 };
 
