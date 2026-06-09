@@ -656,7 +656,7 @@
 
   /* ── CARROSSEL MOBILE ── */
   @media (max-width: 768px) {
-    .stages-row {
+    .stages-row.visible {
       display: flex !important;
       flex-direction: row;
       overflow-x: auto;
@@ -669,20 +669,19 @@
       margin-right: -20px;
       scrollbar-width: none;
     }
-    .stages-row::-webkit-scrollbar { display: none; }
+    .stages-row.visible::-webkit-scrollbar { display: none; }
 
-    .stages-row .stage {
-      flex: 0 0 64vw;
-      max-width: 220px;
+    .stages-row.visible .stage {
+      flex: 0 0 78vw;
+      max-width: 280px;
       scroll-snap-align: center;
     }
 
-    .stages-row::after {
+    .stages-row.visible::after {
       content: '';
       flex: 0 0 20px;
     }
 
-    /* Inputs mais compactos no carrossel */
     .stage-input-wrap { flex-direction: column; gap: 6px; }
     .ucard-input { max-width: 100% !important; font-size: 14px; }
   }
@@ -1372,7 +1371,10 @@ async function loginDRT() {
     document.getElementById('drt-login').style.display = 'none';
     // Mostrar progressão
     const stagesRow = document.getElementById('stages-row');
-    if (stagesRow) stagesRow.style.display = window.innerWidth <= 768 ? 'flex' : 'grid';
+    if (stagesRow) {
+      stagesRow.classList.add('visible');
+      stagesRow.style.display = window.innerWidth <= 768 ? 'flex' : 'grid';
+    }
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
       const w = document.getElementById('input-wrap-' + i);
@@ -1415,7 +1417,7 @@ function logoutDRT() {
   const logged = document.getElementById('drt-logged');
   if (logged) logged.remove();
   const stagesRow = document.getElementById('stages-row');
-  if (stagesRow) stagesRow.style.display = 'none';
+  if (stagesRow) { stagesRow.style.display = 'none'; stagesRow.classList.remove('visible'); }
   adminReset();
   showLoginScreen();
 }
