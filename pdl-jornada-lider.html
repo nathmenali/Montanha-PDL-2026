@@ -663,26 +663,28 @@
       overflow-y: visible;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      gap: 16px;
-      padding: 8px 24px 24px;
-      margin-left: -24px;
-      margin-right: -24px;
-      /* esconder scrollbar mas manter funcional */
+      gap: 12px;
+      padding: 8px 20px 24px;
+      margin-left: -20px;
+      margin-right: -20px;
       scrollbar-width: none;
     }
     .stages-row::-webkit-scrollbar { display: none; }
 
     .stages-row .stage {
-      flex: 0 0 72vw;
-      max-width: 280px;
+      flex: 0 0 64vw;
+      max-width: 220px;
       scroll-snap-align: center;
     }
 
-    /* Indicador de scroll */
     .stages-row::after {
       content: '';
-      flex: 0 0 24px;
+      flex: 0 0 20px;
     }
+
+    /* Inputs mais compactos no carrossel */
+    .stage-input-wrap { flex-direction: column; gap: 6px; }
+    .ucard-input { max-width: 100% !important; font-size: 14px; }
   }
   /* ── UNLOCK CARDS ── */
   .unlock-card {
@@ -1370,7 +1372,7 @@ async function loginDRT() {
     document.getElementById('drt-login').style.display = 'none';
     // Mostrar progressão
     const stagesRow = document.getElementById('stages-row');
-    if (stagesRow) stagesRow.style.display = 'grid';
+    if (stagesRow) stagesRow.style.display = window.innerWidth <= 768 ? 'flex' : 'grid';
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
       const w = document.getElementById('input-wrap-' + i);
