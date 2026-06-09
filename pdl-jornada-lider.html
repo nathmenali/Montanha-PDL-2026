@@ -317,19 +317,20 @@
   .stages-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    gap: clamp(6px, 1.5vw, 16px);
     margin-top: 64px;
     align-items: start;
   }
 
-  @media (max-width: 900px) {
-    .stages-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  }
-
   @media (max-width: 500px) {
-    .stages-row { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 32px; }
+    .stages-row { margin-top: 32px; gap: 6px; }
     .stage-label { gap: 2px; }
-    .stage-title { font-size: 11px; }
+    .stage-title { font-size: 10px !important; letter-spacing: 0 !important; }
+    .stage-subtitle { font-size: 9px !important; }
+    .stage-num { font-size: 10px !important; }
+    .ucard-input { font-size: 11px !important; padding: 6px 8px !important; }
+    .ucard-btn { padding: 0 8px !important; font-size: 14px !important; }
+    .stage-input-wrap { gap: 4px !important; }
   }
 
   .stage {
@@ -669,6 +670,29 @@
     .stage-input-wrap { flex-direction: column; gap: 6px; }
     .ucard-input { max-width: 100% !important; font-size: 13px; }
   }
+
+  /* ── CARROSSEL MOBILE ── */
+  @media (max-width: 640px) {
+    .stages-row.visible {
+      display: flex !important;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 12px;
+      padding: 8px 20px 24px;
+      margin-left: -20px;
+      margin-right: -20px;
+      scrollbar-width: none;
+    }
+    .stages-row.visible::-webkit-scrollbar { display: none; }
+    .stages-row.visible .stage {
+      flex: 0 0 75vw;
+      max-width: 260px;
+      scroll-snap-align: start;
+    }
+    .stages-row.visible::after { content: ''; flex: 0 0 20px; }
+  }
   /* ── UNLOCK CARDS ── */
   .unlock-card {
     border: 1px solid rgba(155, 77, 255, 0.3);
@@ -845,15 +869,18 @@
     background: rgba(0,0,0,0); pointer-events: none;
     transition: background 0.4s ease;
     display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
   }
   #reveal-overlay.active { background: rgba(0,0,0,0.55); pointer-events: all; }
 
   #reveal-window {
     position: relative;
-    width: 90vw;
+    width: 100%;
     max-width: 780px;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
     opacity: 0;
     transform: translateY(30px) scale(0.95);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
@@ -865,7 +892,14 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-  #reveal-window img { width: 100%; height: auto; display: block; }
+  #reveal-window img {
+    width: 100%;
+    height: auto;
+    display: block;
+    flex-shrink: 1;
+    min-height: 0;
+    object-fit: contain;
+  }
 
   #reveal-close {
     position: absolute; top: 12px; right: 14px;
@@ -1359,7 +1393,7 @@ async function loginDRT() {
     const stagesRow = document.getElementById('stages-row');
     if (stagesRow) {
       stagesRow.classList.add('visible');
-      stagesRow.style.display = 'grid';
+      stagesRow.style.display = window.innerWidth <= 640 ? 'flex' : 'grid';
     }
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
