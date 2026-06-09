@@ -322,6 +322,16 @@
     align-items: start;
   }
 
+  @media (max-width: 900px) {
+    .stages-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  }
+
+  @media (max-width: 500px) {
+    .stages-row { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 32px; }
+    .stage-label { gap: 2px; }
+    .stage-title { font-size: 11px; }
+  }
+
   .stage {
     display: flex;
     flex-direction: column;
@@ -654,36 +664,10 @@
     .ucard-num { font-size: 18px; }
   }
 
-  /* ── CARROSSEL MOBILE ── */
-  @media (max-width: 768px) {
-    .stages-row.visible {
-      display: flex !important;
-      flex-direction: row;
-      overflow-x: auto;
-      overflow-y: visible;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 12px;
-      padding: 8px 20px 24px;
-      margin-left: -20px;
-      margin-right: -20px;
-      scrollbar-width: none;
-    }
-    .stages-row.visible::-webkit-scrollbar { display: none; }
-
-    .stages-row.visible .stage {
-      flex: 0 0 78vw;
-      max-width: 280px;
-      scroll-snap-align: center;
-    }
-
-    .stages-row.visible::after {
-      content: '';
-      flex: 0 0 20px;
-    }
-
+  /* inputs compactos no mobile */
+  @media (max-width: 500px) {
     .stage-input-wrap { flex-direction: column; gap: 6px; }
-    .ucard-input { max-width: 100% !important; font-size: 14px; }
+    .ucard-input { max-width: 100% !important; font-size: 13px; }
   }
   /* ── UNLOCK CARDS ── */
   .unlock-card {
@@ -866,8 +850,10 @@
 
   #reveal-window {
     position: relative;
-    max-width: min(780px, 95vw);
-    width: 100%;
+    width: 90vw;
+    max-width: 780px;
+    max-height: 90vh;
+    overflow-y: auto;
     opacity: 0;
     transform: translateY(30px) scale(0.95);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
@@ -1373,7 +1359,7 @@ async function loginDRT() {
     const stagesRow = document.getElementById('stages-row');
     if (stagesRow) {
       stagesRow.classList.add('visible');
-      stagesRow.style.display = window.innerWidth <= 768 ? 'flex' : 'grid';
+      stagesRow.style.display = 'grid';
     }
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
