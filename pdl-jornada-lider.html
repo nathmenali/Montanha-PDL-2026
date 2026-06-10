@@ -303,21 +303,21 @@
   /* ── JORNADA STEPS ── */
   .journey-section {
     background: linear-gradient(180deg, transparent, rgba(107, 33, 212, 0.06), transparent);
-    padding: 120px 0;
+    padding: 120px 24px;
     position: relative;
     z-index: 1;
   }
 
   .journey-inner {
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }
 
   .stages-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
     margin-top: 64px;
     align-items: start;
   }
@@ -325,43 +325,18 @@
   .stage {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 16px;
   }
 
   .stage-acrylic {
     position: relative;
     width: 100%;
-    border-radius: 0;
+    border-radius: 6px 6px 0 0;
     overflow: hidden;
-    border: none;
+    border: 1px solid rgba(155, 77, 255, 0.15);
     transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
     cursor: default;
-  }
-
-  @media (max-width: 500px) {
-    .stages-row { margin-top: 32px; gap: 6px; }
-    .stage-label { gap: 2px; }
-    .stage-title { font-size: 10px !important; letter-spacing: 0 !important; }
-    .stage-subtitle { font-size: 9px !important; }
-    .stage-num { font-size: 10px !important; }
-    .ucard-input { font-size: 11px !important; padding: 6px 8px !important; }
-    .ucard-btn { padding: 0 8px !important; font-size: 14px !important; }
-    .stage-input-wrap { gap: 4px !important; }
-  }
-
-  .stage-acrylic img {
-    width: 100%;
-    height: auto;
-    max-height: 640px;
-    object-fit: contain;
-    display: block;
-  }
-
-  @media (max-width: 640px) {
-    .stage-acrylic img {
-      max-height: 260px;
-    }
   }
 
   .stage-acrylic svg {
@@ -392,7 +367,7 @@
     transition: opacity 0.6s ease, color 0.6s ease;
   }
 
-  .stage-base-strip { display: none; }
+  .stage-base-strip {
     height: 14px;
     background: linear-gradient(180deg, #1c1c1c, #080808);
     border-radius: 0 0 4px 4px;
@@ -678,35 +653,6 @@
     .unlock-card { padding: 16px 10px 12px; }
     .ucard-num { font-size: 18px; }
   }
-
-  /* inputs compactos no mobile */
-  @media (max-width: 500px) {
-    .stage-input-wrap { flex-direction: column; gap: 6px; }
-    .ucard-input { max-width: 100% !important; font-size: 13px; }
-  }
-
-  /* ── CARROSSEL MOBILE ── */
-  @media (max-width: 640px) {
-    .stages-row.visible {
-      display: flex !important;
-      flex-direction: row;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 12px;
-      padding: 8px 20px 24px;
-      margin-left: -20px;
-      margin-right: -20px;
-      scrollbar-width: none;
-    }
-    .stages-row.visible::-webkit-scrollbar { display: none; }
-    .stages-row.visible .stage {
-      flex: 0 0 75vw;
-      max-width: 260px;
-      scroll-snap-align: start;
-    }
-    .stages-row.visible::after { content: ''; flex: 0 0 20px; }
-  }
   /* ── UNLOCK CARDS ── */
   .unlock-card {
     border: 1px solid rgba(155, 77, 255, 0.3);
@@ -863,84 +809,6 @@
     transform: rotateY(180deg);
   }
   .flip-back img { width: 100%; height: auto; display: block; }
-
-  /* Brilho variável nos marca-páginas desbloqueados */
-  @keyframes mpGlow {
-    0%, 100% { box-shadow: 0 0 10px rgba(155,77,255,0.3), 0 0 20px rgba(155,77,255,0.1); }
-    50%       { box-shadow: 0 0 24px rgba(192,132,252,0.7), 0 0 48px rgba(155,77,255,0.3); }
-  }
-  .mp-glow { animation: mpGlow 2.5s ease-in-out infinite; border-radius: 6px; }
-  #mp-4 .mp-glow {
-    animation-name: mpGlowGold;
-  }
-  @keyframes mpGlowGold {
-    0%, 100% { box-shadow: 0 0 10px rgba(245,200,66,0.3), 0 0 20px rgba(245,200,66,0.1); }
-    50%       { box-shadow: 0 0 28px rgba(245,200,66,0.8), 0 0 56px rgba(245,200,66,0.3); }
-  }
-  /* ── EXPERIÊNCIA DE REVELAÇÃO PREMIUM ── */
-  #reveal-overlay {
-    position: fixed; inset: 0; z-index: 9000;
-    background: rgba(0,0,0,0); pointer-events: none;
-    transition: background 0.4s ease;
-    display: flex; align-items: center; justify-content: center;
-    padding: 16px;
-    box-sizing: border-box;
-  }
-  #reveal-overlay.active { background: rgba(0,0,0,0.55); pointer-events: all; }
-
-  #reveal-window {
-    position: relative;
-    width: 100%;
-    max-width: 780px;
-    max-height: calc(100vh - 32px);
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.45), 0 0 40px rgba(155,77,255,0.25);
-    overflow: hidden;
-  }
-  #reveal-window.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  #reveal-window img {
-    width: 100%;
-    height: auto;
-    display: block;
-    flex-shrink: 1;
-    min-height: 0;
-    object-fit: contain;
-  }
-
-  #reveal-close {
-    position: absolute; top: 12px; right: 14px;
-    width: 36px; height: 36px; border-radius: 50%;
-    background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
-    color: #fff; font-size: 18px; line-height: 36px; text-align: center;
-    cursor: pointer; z-index: 10;
-    transition: background 0.2s;
-  }
-  #reveal-close:hover { background: rgba(107,33,212,0.6); }
-
-  #reveal-continue {
-    display: block; width: 100%;
-    padding: 16px;
-    background: rgba(107,33,212,0.5);
-    border: none; border-top: 1px solid rgba(155,77,255,0.3);
-    color: #fff; font-family: 'Poppins', sans-serif;
-    font-size: 14px; letter-spacing: 3px; text-transform: uppercase;
-    cursor: pointer; transition: background 0.3s;
-  }
-  #reveal-continue:hover { background: rgba(107,33,212,0.8); }
-
-  @keyframes mountainZoom {
-    from { transform: scale(1); }
-    to   { transform: scale(1.08); }
-  }
-  .mountain-zoomed { animation: mountainZoom 0.4s ease-out forwards; }
 </style>
 </head>
 <body>
@@ -983,7 +851,7 @@
   <div class="section-label">O Conceito</div>
   <h2 class="section-title">Um símbolo concreto<br>do seu <em>desenvolvimento</em></h2>
   <p class="section-body">
-    Antes do primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
+    Você acabou de receber uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.
   </p>
 
   <div class="concept-grid">
@@ -991,24 +859,28 @@
       <div class="concept-item">
         <div class="concept-icon">⛰️</div>
         <div>
-          <h3>Trilha de Evolução</h3>
-          <p>Você acabou de receber uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
+          <h3>Acrílico Base</h3>
+          <p>Você recebe antes do 1º encontro uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
         </div>
       </div>
       <div class="concept-item" id="concept-card-2" style="border-color:rgba(155,77,255,0.08);background:rgba(107,33,212,0.02);cursor:default;transition:all 0.8s ease;">
-        <div class="concept-icon" style="filter:blur(2px);transition:filter 0.8s ease;" id="concept-icon-2">🔒</div>
-        <div style="filter:blur(4px);user-select:none;transition:filter 0.8s ease;" id="concept-content-2">
-          <h3>Marca-Páginas</h3>
-          <p>No primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.</p>
-          <p style="margin-top:12px;font-size:12px;color:#e0aaff;letter-spacing:1px;text-transform:uppercase;">🔒 Desbloqueado no 1º encontro · 23.06</p>
+        <div class="concept-icon" style="transition:filter 0.8s ease;" id="concept-icon-2">🔒</div>
+        <div style="transition:filter 0.8s ease;" id="concept-content-2">
+          <div style="filter:blur(4px);user-select:none;">
+            <h3>Marca-Páginas</h3>
+            <p>Cada encontro revela uma parte do percurso. Cada uma adiciona cor e ilumina um novo passo da trilha.</p>
+          </div>
+          <p style="margin-top:12px;font-size:12px;color:#e0aaff;letter-spacing:1px;text-transform:uppercase;filter:none;">🔒 Desbloqueado no 1º encontro · 23.06</p>
         </div>
       </div>
       <div class="concept-item" id="concept-card-3" style="border-color:rgba(155,77,255,0.06);background:rgba(107,33,212,0.01);cursor:default;opacity:0.5;transition:all 0.8s ease;">
-        <div class="concept-icon" style="filter:blur(2px);transition:filter 0.8s ease;" id="concept-icon-3">🚩</div>
-        <div style="filter:blur(4px);user-select:none;transition:filter 0.8s ease;" id="concept-content-3">
-          <h3>PDL Completo</h3>
-          <p>Ao final dos 4 encontros, seu acrílico estará completo — iluminado com todas as conquistas do líder mackenzista.</p>
-          <p style="margin-top:12px;font-size:12px;color:#e0aaff;letter-spacing:1px;text-transform:uppercase;">🔒 Desbloqueado no encerramento · 02.12</p>
+        <div class="concept-icon" style="transition:filter 0.8s ease;" id="concept-icon-3">🚩</div>
+        <div style="transition:filter 0.8s ease;" id="concept-content-3">
+          <div style="filter:blur(4px);user-select:none;">
+            <h3>PDL Completo</h3>
+            <p>Ao final dos 4 encontros, seu acrílico estará completo — iluminado com todas as conquistas do líder mackenzista.</p>
+          </div>
+          <p style="margin-top:12px;font-size:12px;color:#e0aaff;letter-spacing:1px;text-transform:uppercase;filter:none;opacity:1;">🔒 Desbloqueado no encerramento · 02.12</p>
         </div>
       </div>
     </div>
@@ -1032,115 +904,105 @@
 <!-- JORNADA EM ETAPAS -->
 <section class="journey-section">
   <div class="journey-inner">
-    <div class="section-label">Seu Progresso</div>
-    <h2 class="section-title">Trilha de <em>Evolução</em></h2>
-    <p style="font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Cada encontro abre a próxima etapa</p>
+    <div class="section-label">A Progressão</div>
+    <h2 class="section-title">Cada encontro<br><em>abre o próximo nível</em></h2>
     <p class="section-body" style="margin:0 auto 32px;text-align:center;max-width:600px;">
-      Ao participar de cada encontro do PDL, você recebe uma senha exclusiva. Insira abaixo para desbloquear a próxima etapa.
+      Ao participar de cada encontro do PDL, você recebe uma senha exclusiva. Insira abaixo para desbloquear o próximo nível.
     </p>
     <div id="unlock-section" style="max-width:480px;margin:0 auto 40px;"></div>
 
     <div class="stages-row" id="stages-row" style="display:none;">
 
-      <!-- Stage 1 -->
+      <!-- Stage 0: Base — sempre visível -->
+      <div class="stage">
+        <div class="stage-label">
+          <div class="stage-title">Antes do 1º Encontro</div>
+          <div class="stage-subtitle">Acrílico Base</div>
+        </div>
+        <div class="stage-acrylic">
+          <img src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem%20base.png"
+            alt="Montanha" style="width:100%;height:auto;display:block;">
+        </div>
+        <div class="stage-base-strip"></div>
+        <div class="stage-num">Etapa 0</div>
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c084fc;margin-top:4px;text-align:center;">Desbloqueado</div>
+      </div>
+
+      <!-- Stage 1 — BLOQUEADO / Gestão do Tempo -->
       <div class="stage" id="stage-level-1">
         <div class="stage-label">
           <div class="stage-title" id="stitle-1">1º Encontro<br>Gestão do Tempo</div>
           <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">23.06</div>
-          <div class="stage-subtitle" id="ssub-1"></div>
+          <div class="stage-subtitle" id="ssub-1">🔒 Bloqueado</div>
         </div>
-        <div class="stage-acrylic" id="sacrylic-1" style="cursor:default;">
-          <div class="flip-inner" id="flip-1">
-            <div class="flip-face flip-front">
-              <img id="img-front-1" src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_1%C2%BA%20encontro.png" alt="1º Encontro" style="width:100%;height:auto;display:block;">
-            </div>
-            <div class="flip-face flip-back">
-              <img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20Encontro_verso.png" alt="1º Encontro verso" style="width:100%;height:auto;display:block;">
-            </div>
-          </div>
-        </div>
-        <div class="stage-base-strip" id="sbase-1"></div>
-        <div class="stage-num" id="snum-1"></div>
+        <div class="stage-acrylic" id="sacrylic-1" style="filter:blur(5px);opacity:0.25;perspective:1000px;cursor:default;"><div class="flip-inner" id="flip-1"><div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png" alt="1º Encontro" style="width:100%;height:auto;display:block;"></div><div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20Encontro_verso.png" alt="1º Encontro verso" style="width:100%;height:auto;display:block;"></div></div></div>
+        <div class="stage-base-strip" id="sbase-1" style="opacity:0.25;"></div>
+        <div class="stage-num" id="snum-1" style="opacity:0.25;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-1">
-          <input class="ucard-input" id="input-1" type="text" placeholder="Digite a frase" maxlength="60" style="flex:1;max-width:140px;font-size:15px;">
+          <input class="ucard-input" id="input-1" type="password" placeholder="Senha" maxlength="20"
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(1)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
           <button class="ucard-btn" onclick="tryUnlock(1)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-1" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
-      <!-- Stage 2 -->
+      <!-- Stage 2 — BLOQUEADO / Feedback -->
       <div class="stage" id="stage-level-2">
         <div class="stage-label">
           <div class="stage-title" id="stitle-2">2º Encontro<br>Feedback</div>
           <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">10.09</div>
-          <div class="stage-subtitle" id="ssub-2"></div>
+          <div class="stage-subtitle" id="ssub-2">🔒 Bloqueado</div>
         </div>
-        <div class="stage-acrylic" id="sacrylic-2" style="cursor:default;">
-          <div class="flip-inner" id="flip-2">
-            <div class="flip-face flip-front">
-              <img id="img-front-2" src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_2%C2%BA%20encontro.png" alt="2º Encontro" style="width:100%;height:auto;display:block;">
-            </div>
-            <div class="flip-face flip-back">
-              <img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20Encontro_verso.png" alt="2º Encontro verso" style="width:100%;height:auto;display:block;">
-            </div>
-          </div>
-        </div>
-        <div class="stage-base-strip" id="sbase-2"></div>
-        <div class="stage-num" id="snum-2"></div>
+        <div class="stage-acrylic" id="sacrylic-2" style="filter:blur(5px);opacity:0.18;perspective:1000px;cursor:default;"><div class="flip-inner" id="flip-2"><div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png" alt="2º Encontro" style="width:100%;height:auto;display:block;"></div><div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20Encontro_verso.png" alt="2º Encontro verso" style="width:100%;height:auto;display:block;"></div></div></div>
+        <div class="stage-base-strip" id="sbase-2" style="opacity:0.18;"></div>
+        <div class="stage-num" id="snum-2" style="opacity:0.18;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-2">
-          <input class="ucard-input" id="input-2" type="text" placeholder="Digite a frase" maxlength="60" style="flex:1;max-width:140px;font-size:15px;">
+          <input class="ucard-input" id="input-2" type="password" placeholder="Senha" maxlength="20"
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(2)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
           <button class="ucard-btn" onclick="tryUnlock(2)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-2" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
-      <!-- Stage 3 -->
+      <!-- Stage 3 — BLOQUEADO / Gestão de Conflitos -->
       <div class="stage" id="stage-level-3">
         <div class="stage-label">
           <div class="stage-title" id="stitle-3">3º Encontro<br>Gestão de Conflitos</div>
           <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">12.11</div>
-          <div class="stage-subtitle" id="ssub-3"></div>
+          <div class="stage-subtitle" id="ssub-3">🔒 Bloqueado</div>
         </div>
-        <div class="stage-acrylic" id="sacrylic-3" style="cursor:default;">
-          <div class="flip-inner" id="flip-3">
-            <div class="flip-face flip-front">
-              <img id="img-front-3" src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_3%C2%B0%20encontro.png" alt="3º Encontro" style="width:100%;height:auto;display:block;">
-            </div>
-            <div class="flip-face flip-back">
-              <img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20Encontro_verso.png" alt="3º Encontro verso" style="width:100%;height:auto;display:block;">
-            </div>
-          </div>
-        </div>
-        <div class="stage-base-strip" id="sbase-3"></div>
-        <div class="stage-num" id="snum-3"></div>
+        <div class="stage-acrylic" id="sacrylic-3" style="filter:blur(5px);opacity:0.12;perspective:1000px;cursor:default;"><div class="flip-inner" id="flip-3"><div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png" alt="3º Encontro" style="width:100%;height:auto;display:block;"></div><div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20Encontro_verso.png" alt="3º Encontro verso" style="width:100%;height:auto;display:block;"></div></div></div>
+        <div class="stage-base-strip" id="sbase-3" style="opacity:0.12;"></div>
+        <div class="stage-num" id="snum-3" style="opacity:0.12;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-3">
-          <input class="ucard-input" id="input-3" type="text" placeholder="Digite a frase" maxlength="60" style="flex:1;max-width:140px;font-size:15px;">
+          <input class="ucard-input" id="input-3" type="password" placeholder="Senha" maxlength="20"
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(3)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
           <button class="ucard-btn" onclick="tryUnlock(3)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-3" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
       </div>
 
-      <!-- Stage 4 -->
+      <!-- Stage 4 — BLOQUEADO / Encerramento -->
       <div class="stage" id="stage-level-4">
         <div class="stage-label">
           <div class="stage-title" id="stitle-4">4º Encontro<br>Encerramento</div>
           <div style="font-size:13px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">02.12</div>
-          <div class="stage-subtitle" id="ssub-4"></div>
+          <div class="stage-subtitle" id="ssub-4">🔒 Bloqueado</div>
         </div>
-        <div class="stage-acrylic" id="sacrylic-4" style="cursor:default;">
-          <div class="flip-inner" id="flip-4">
-            <div class="flip-face flip-front">
-              <img id="img-front-4" src="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_4%C2%BA%20encontro.png" alt="4º Encontro" style="width:100%;height:auto;display:block;">
-            </div>
-            <div class="flip-face flip-back">
-              <img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20Encontro_verso.png" alt="4º Encontro verso" style="width:100%;height:auto;display:block;">
-            </div>
-          </div>
-        </div>
-        <div class="stage-base-strip" id="sbase-4"></div>
-        <div class="stage-num" id="snum-4"></div>
+        <div class="stage-acrylic" id="sacrylic-4" style="filter:blur(5px);opacity:0.07;perspective:1000px;cursor:default;"><div class="flip-inner" id="flip-4"><div class="flip-face flip-front"><img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png" alt="4º Encontro" style="width:100%;height:auto;display:block;"></div><div class="flip-face flip-back"><img src="https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20Encontro_verso.png" alt="4º Encontro verso" style="width:100%;height:auto;display:block;"></div></div></div>
+        <div class="stage-base-strip" id="sbase-4" style="opacity:0.07;"></div>
+        <div class="stage-num" id="snum-4" style="opacity:0.07;">🔒</div>
         <div class="stage-input-wrap" id="input-wrap-4">
-          <input class="ucard-input" id="input-4" type="text" placeholder="Digite a frase" maxlength="60" style="flex:1;max-width:140px;font-size:15px;">
+          <input class="ucard-input" id="input-4" type="password" placeholder="Senha" maxlength="20"
+            style="flex:1;max-width:140px;font-size:15px;">
+          <button class="ucard-eye" onclick="toggleEye(4)" tabindex="-1"
+            style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0 4px;-webkit-tap-highlight-color:transparent;" id="eye-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
           <button class="ucard-btn" onclick="tryUnlock(4)" style="padding:0 12px;min-height:38px;">→</button>
         </div>
         <div class="ucard-status" id="status-4" style="font-size:12px;margin-top:4px;min-height:16px;text-align:center;"></div>
@@ -1239,7 +1101,7 @@ function adminReset() {
     if (card)     { card.classList.remove('unlocked'); if (i > 1) card.classList.add('locked-card'); }
     if (lockIcon) { lockIcon.textContent = '🔒'; lockIcon.style.color = ''; }
     if (wrap)     {
-      wrap.innerHTML = `<input class="ucard-input" id="input-${i}" type="text" placeholder="Digite a frase" maxlength="60" ${i > 1 ? 'disabled' : ''}><button class="ucard-btn" onclick="tryUnlock(${i})" ${i > 1 ? 'disabled' : ''}>→</button>`;
+      wrap.innerHTML = `<input class="ucard-input" id="input-${i}" type="password" placeholder="Senha" maxlength="20" ${i > 1 ? 'disabled' : ''}><button class="ucard-btn" onclick="tryUnlock(${i})" ${i > 1 ? 'disabled' : ''}>→</button>`;
       const inp = document.getElementById('input-' + i);
       if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(i); });
     }
@@ -1405,10 +1267,7 @@ async function loginDRT() {
     document.getElementById('drt-login').style.display = 'none';
     // Mostrar progressão
     const stagesRow = document.getElementById('stages-row');
-    if (stagesRow) {
-      stagesRow.classList.add('visible');
-      stagesRow.style.display = window.innerWidth <= 640 ? 'flex' : 'grid';
-    }
+    if (stagesRow) stagesRow.style.display = 'grid';
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
       const w = document.getElementById('input-wrap-' + i);
@@ -1451,7 +1310,7 @@ function logoutDRT() {
   const logged = document.getElementById('drt-logged');
   if (logged) logged.remove();
   const stagesRow = document.getElementById('stages-row');
-  if (stagesRow) { stagesRow.style.display = 'none'; stagesRow.classList.remove('visible'); }
+  if (stagesRow) stagesRow.style.display = 'none';
   adminReset();
   showLoginScreen();
 }
@@ -1472,90 +1331,61 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function revealLevel(level) {
   const lockIcon = document.getElementById('lock-' + level);
-  const wrap     = document.getElementById('input-wrap-' + level);
-  const acrylic  = document.getElementById('sacrylic-' + level);
-  const base     = document.getElementById('sbase-' + level);
-  const num      = document.getElementById('snum-' + level);
-  const title    = document.getElementById('stitle-' + level);
-  const sub      = document.getElementById('ssub-' + level);
+  const wrap = document.getElementById('input-wrap-' + level);
 
-  // Marcar como desbloqueado
+  // Marcar input como desbloqueado
   if (wrap) {
     wrap.classList.add('active');
     wrap.innerHTML = '<span style="font-size:12px;color:rgba(134,239,172,0.9);letter-spacing:1px;padding:6px 0;">✓ Desbloqueado</span>';
   }
   if (lockIcon) { lockIcon.textContent = '✓'; lockIcon.style.color = 'rgba(134,239,172,0.9)'; }
 
-  // Revelar acrílico — trocar imagem base pela colorida
+  // Stage reveal — remove blur/opacity
+  const acrylic = document.getElementById('sacrylic-' + level);
+  const base    = document.getElementById('sbase-' + level);
+  const num     = document.getElementById('snum-' + level);
+  const title   = document.getElementById('stitle-' + level);
+  const sub     = document.getElementById('ssub-' + level);
+
   if (acrylic) {
-    // Trocar src da frente para a imagem colorida do encontro
-    const imgFront = document.getElementById('img-front-' + level);
-    const coloredSrcs = {
-      1: 'https://nathmenali.github.io/Montanha-PDL-2026/1%C2%BA%20encontro.png',
-      2: 'https://nathmenali.github.io/Montanha-PDL-2026/2%C2%BA%20encontro.png',
-      3: 'https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png',
-      4: 'https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png',
-    };
-    if (imgFront) imgFront.src = coloredSrcs[level];
     acrylic.style.filter = 'none';
     acrylic.style.opacity = '1';
     acrylic.style.borderColor = 'rgba(155,77,255,0.4)';
     acrylic.style.cursor = 'pointer';
     acrylic.onclick = () => toggleFlip(level);
-    // Badge de flip
-    if (!acrylic.querySelector('.flip-badge')) {
-      const badge = document.createElement('div');
-      badge.className = 'flip-badge';
-      badge.style.cssText = 'position:absolute;bottom:10px;right:10px;z-index:10;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.85);letter-spacing:1px;pointer-events:none;display:flex;align-items:center;gap:5px;';
-      badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg> virar';
-      acrylic.style.position = 'relative';
-      acrylic.appendChild(badge);
-    }
   }
-  if (base)  { base.style.opacity = '1'; }
-  if (num)   { num.style.opacity = '1'; num.textContent = 'Etapa ' + level; }
-  if (title) { title.style.opacity = '1'; title.style.color = ''; }
-  if (sub)   { sub.style.opacity = '1'; sub.textContent = THEME_LABELS[level]; sub.style.color = 'var(--violet)'; }
-
-  // Mostrar frase desbloqueada abaixo do acrílico
-  const frases = {1:'A liderança', 2:'é', 3:'construída', 4:'passo a passo'};
-  const stageEl = document.getElementById('stage-level-' + level);
-  if (stageEl && !document.getElementById('frase-' + level)) {
-    const frase = document.createElement('div');
-    frase.id = 'frase-' + level;
-    frase.style.cssText = 'font-family:"Breathing",sans-serif;font-size:clamp(22px,3vw,32px);color:#f5c842;margin-top:4px;text-align:center;opacity:0;animation:fadeUp 0.8s 0.3s forwards;text-shadow:0 0 12px rgba(245,200,66,0.5);';
-    frase.textContent = frases[level];
-    stageEl.appendChild(frase);
-  }
+  if (base)    { base.style.opacity = '1'; }
+  if (num)     { num.style.opacity = '1'; num.textContent = 'Etapa ' + level; }
+  if (title)   { title.style.opacity = '1'; title.style.color = ''; }
+  if (sub)     { sub.style.opacity = '1'; sub.textContent = THEME_LABELS[level]; sub.style.color = 'var(--violet)'; }
 
   // 4º encontro — golden glow
-  if (level === 4) {
-    if (acrylic) { acrylic.style.boxShadow = '0 0 40px rgba(245,200,66,0.25)'; acrylic.style.borderColor = 'rgba(245,200,66,0.4)'; }
+  if (level === 4 && acrylic) {
+    acrylic.style.boxShadow = '0 0 40px rgba(245,200,66,0.25)';
+    acrylic.style.borderColor = 'rgba(245,200,66,0.4)';
     if (num) { num.style.color = 'var(--gold)'; num.textContent = '✦'; }
-    if (sub) sub.style.color = 'var(--gold)';
+    if (sub) { sub.style.color = 'var(--gold)'; }
   }
 
-  // Card conceito 2 — desbloqueia com frase 1
+  // Ao desbloquear o 1º encontro, revela também os cards de conceito
   if (level === 1) {
-    const c2 = document.getElementById('concept-card-2');
-    const i2 = document.getElementById('concept-icon-2');
-    const n2 = document.getElementById('concept-content-2');
-    if (c2) { c2.style.borderColor='rgba(107,33,212,0.2)'; c2.style.background='rgba(107,33,212,0.04)'; c2.style.opacity='1'; c2.style.cursor='default'; }
-    if (i2) i2.style.filter='none';
-    if (n2) { n2.style.filter='none'; n2.style.userSelect='auto'; }
+    const cc2 = document.getElementById('concept-card-2');
+    const ci2 = document.getElementById('concept-icon-2');
+    const cn2 = document.getElementById('concept-content-2');
+    const cc3 = document.getElementById('concept-card-3');
+    const ci3 = document.getElementById('concept-icon-3');
+    const cn3 = document.getElementById('concept-content-3');
+    if (cc2) { cc2.style.borderColor = 'rgba(107,33,212,0.2)'; cc2.style.background = 'rgba(107,33,212,0.04)'; cc2.style.opacity = '1'; }
+    if (ci2) { ci2.style.filter = 'none'; }
+    if (cn2) { cn2.style.filter = 'none'; cn2.style.userSelect = 'auto'; }
+    if (cc3) { cc3.style.borderColor = 'rgba(107,33,212,0.2)'; cc3.style.background = 'rgba(107,33,212,0.04)'; cc3.style.opacity = '1'; }
+    if (ci3) { ci3.style.filter = 'none'; }
+    if (cn3) { cn3.style.filter = 'none'; cn3.style.userSelect = 'auto'; }
   }
 
-  // Card conceito 3 — desbloqueia com frase 4
-  if (level === 4) {
-    const c3 = document.getElementById('concept-card-3');
-    const i3 = document.getElementById('concept-icon-3');
-    const n3 = document.getElementById('concept-content-3');
-    if (c3) { c3.style.borderColor='rgba(107,33,212,0.2)'; c3.style.background='rgba(107,33,212,0.04)'; c3.style.opacity='1'; c3.style.cursor='default'; }
-    if (i3) i3.style.filter='none';
-    if (n3) { n3.style.filter='none'; n3.style.userSelect='auto'; }
-  }
 
-  // PDL completo
+
+  // Final hint
   const allUnlocked = getUnlocked();
   if (allUnlocked.length === 4) {
     const hint = document.getElementById('unlock-hint');
@@ -1582,17 +1412,10 @@ function toggleFlip(level) {
   if (inner) inner.classList.toggle('flipped');
 }
 
-const JANELAS = {
-  1: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_1%C2%BA%20encontro.png',
-  2: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_2%C2%BA%20encontro.png',
-  3: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro.png',
-  4: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_4%C2%BA%20encontro.png',
-};
-
 function tryUnlock(level) {
-  const input  = document.getElementById('input-' + level);
+  const input = document.getElementById('input-' + level);
   const status = document.getElementById('status-' + level);
-  const card   = document.getElementById('card-' + level);
+  const card = document.getElementById('card-' + level);
   const normalize = s => s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const val = input ? normalize(input.value) : '';
 
@@ -1601,89 +1424,26 @@ function tryUnlock(level) {
     if (!unlocked.includes(level)) {
       unlocked.push(level);
       saveUnlocked(unlocked);
+      // Salvar no Google Sheets via JSONP
       if (currentDRT) {
         jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(currentDRT)}&level=${level}`)
           .catch(() => {});
       }
     }
-
-    // ── ETAPA 1: feedback (500ms) ──
-    if (input) input.disabled = true;
-    status.textContent = '✓ Senha validada';
-    status.style.color = 'rgba(134,239,172,0.9)';
-
-    setTimeout(() => {
-      // ── ETAPA 2: revelar montanha (1000ms) ──
-      revealLevel(level);
-
-      setTimeout(() => {
-        // ── ETAPA 3: zoom + escurecer (400ms) ──
-        openReveal(level);
-      }, 1000);
-    }, 500);
-
+    status.textContent = '';
+    revealLevel(level);
   } else {
-    if (card) card.classList.add('error-shake');
-    status.textContent = 'Frase incorreta';
+    card.classList.add('error-shake');
+    status.textContent = 'Senha incorreta';
     status.className = 'ucard-status err';
     setTimeout(() => {
-      if (card) card.classList.remove('error-shake');
+      card.classList.remove('error-shake');
       status.textContent = '';
       status.className = 'ucard-status';
     }, 1800);
     if (input) input.value = '';
   }
 }
-
-function openReveal(level) {
-  const overlay = document.getElementById('reveal-overlay');
-  const win     = document.getElementById('reveal-window');
-  const img     = document.getElementById('reveal-img');
-  if (!overlay || !win || !img) return;
-
-  // Carregar imagem do encontro
-  img.src = JANELAS[level];
-
-  // Zoom na montanha
-  const montanha = document.getElementById('stages-row');
-  if (montanha) montanha.classList.add('mountain-zoomed');
-
-  // Etapa 3: escurecer overlay (400ms)
-  overlay.style.display = 'flex';
-  requestAnimationFrame(() => {
-    overlay.classList.add('active');
-  });
-
-  // Etapa 4: abrir janela após 400ms (ease-out)
-  setTimeout(() => {
-    win.classList.add('visible');
-  }, 400);
-}
-
-function closeReveal() {
-  const overlay = document.getElementById('reveal-overlay');
-  const win     = document.getElementById('reveal-window');
-  if (!overlay || !win) return;
-
-  // Fade-out janela (300ms)
-  win.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-  win.style.opacity = '0';
-  win.style.transform = 'scale(0.98)';
-
-  setTimeout(() => {
-    overlay.classList.remove('active');
-    win.classList.remove('visible');
-    win.style.opacity = '';
-    win.style.transform = '';
-    win.style.transition = '';
-    overlay.style.display = 'none';
-
-    // Remover zoom da montanha
-    const montanha = document.getElementById('stages-row');
-    if (montanha) montanha.classList.remove('mountain-zoomed');
-  }, 300);
-}
-
 
 // Permitir Enter no input
 for (let i = 1; i <= 4; i++) {
@@ -1736,14 +1496,5 @@ for (let i = 1; i <= 4; i++) {
   resize(); init(); draw();
 })();
 </script>
-<!-- EXPERIÊNCIA DE REVELAÇÃO PREMIUM -->
-<div id="reveal-overlay">
-  <div id="reveal-window">
-    <div id="reveal-close" onclick="closeReveal()">×</div>
-    <img id="reveal-img" src="" alt="Revelação do encontro">
-    <button id="reveal-continue" onclick="closeReveal()">Continuar →</button>
-  </div>
-</div>
-
 </body>
 </html>
