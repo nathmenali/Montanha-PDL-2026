@@ -355,7 +355,14 @@
   .stage-acrylic img {
     width: 100%;
     height: auto;
+    max-height: 80vh;
+    object-fit: cover;
+    object-position: center top;
     display: block;
+  }
+
+  @media (max-width: 640px) {
+    .stage-acrylic img { max-height: 50vh; }
   }
 
   @media (max-width: 640px) {
