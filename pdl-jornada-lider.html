@@ -334,6 +334,22 @@
     width: 100%;
     border-radius: 0;
     overflow: hidden;
+    border: none;
+    transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
+    cursor: default;
+  }
+
+  .stage-acrylic img {
+    width: 100%;
+    height: auto;
+    max-height: 640px;
+    object-fit: contain;
+    display: block;
+  }
+
+  @media (max-width: 640px) {
+    .stage-acrylic img { max-height: 260px; }
+  }    overflow: hidden;
     border: 1px solid rgba(155, 77, 255, 0.15);
     transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
     cursor: default;
@@ -852,7 +868,7 @@
   <div class="section-label">O Conceito</div>
   <h2 class="section-title">Um símbolo concreto<br>do seu <em>desenvolvimento</em></h2>
   <p class="section-body">
-    Você acabou de receber uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.
+    No primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
   </p>
 
   <div class="concept-grid">
