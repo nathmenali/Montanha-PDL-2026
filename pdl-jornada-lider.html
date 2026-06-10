@@ -282,6 +282,8 @@
   }
 
   .panel-base {
+    display: none;
+  }
     height: 24px;
     background: linear-gradient(180deg, #1a1a1a, #0a0a0a);
     border-radius: 0 0 4px 4px;
@@ -303,13 +305,13 @@
   /* ── JORNADA STEPS ── */
   .journey-section {
     background: linear-gradient(180deg, transparent, rgba(107, 33, 212, 0.06), transparent);
-    padding: 120px 24px;
+    padding: 120px 0;
     position: relative;
     z-index: 1;
   }
 
   .journey-inner {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     text-align: center;
   }
@@ -317,7 +319,7 @@
   .stages-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: clamp(4px, 0.8vw, 8px);
+    gap: 0;
     margin-top: 64px;
     align-items: start;
   }
@@ -336,14 +338,14 @@
   .stage {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: 16px;
   }
 
   .stage-acrylic {
     position: relative;
     width: 100%;
-    border-radius: 6px 6px 0 0;
+    border-radius: 0;
     overflow: hidden;
     border: none;
     transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
@@ -393,11 +395,7 @@
   }
 
   .stage-base-strip {
-    height: 14px;
-    background: linear-gradient(180deg, #1c1c1c, #080808);
-    border-radius: 0 0 4px 4px;
-    width: 100%;
-    transition: opacity 0.9s ease;
+    display: none;
   }
 
   .stage-num {
@@ -983,7 +981,7 @@
   <div class="section-label">O Conceito</div>
   <h2 class="section-title">Um símbolo concreto<br>do seu <em>desenvolvimento</em></h2>
   <p class="section-body">
-    Antes do primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
+    No primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
   </p>
 
   <div class="concept-grid">
@@ -992,7 +990,7 @@
         <div class="concept-icon">⛰️</div>
         <div>
           <h3>Acrílico Base</h3>
-          <p>Você recebe antes do 1º encontro uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
+          <p>Você acabou de receber uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
         </div>
       </div>
       <div class="concept-item" id="concept-card-2" style="border-color:rgba(155,77,255,0.08);background:rgba(107,33,212,0.02);cursor:default;transition:all 0.8s ease;">
