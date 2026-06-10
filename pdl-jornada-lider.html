@@ -317,7 +317,7 @@
   .stages-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: clamp(4px, 0.8vw, 8px);
+    gap: clamp(6px, 1.5vw, 16px);
     margin-top: 64px;
     align-items: start;
   }
@@ -345,7 +345,7 @@
     width: 100%;
     border-radius: 6px 6px 0 0;
     overflow: hidden;
-    border: none;
+    border: 1px solid rgba(155, 77, 255, 0.15);
     transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
     cursor: default;
   }
@@ -353,15 +353,7 @@
   .stage-acrylic img {
     width: 100%;
     height: auto;
-    max-height: 640px;
-    object-fit: contain;
     display: block;
-  }
-
-  @media (max-width: 640px) {
-    .stage-acrylic img {
-      max-height: 260px;
-    }
   }
 
   .stage-acrylic svg {
@@ -983,7 +975,7 @@
   <div class="section-label">O Conceito</div>
   <h2 class="section-title">Um símbolo concreto<br>do seu <em>desenvolvimento</em></h2>
   <p class="section-body">
-    No primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
+    Antes do primeiro encontro, você recebe uma peça em acrílico. Ela não é decorativa — é o ponto de partida visual do seu percurso no PDL. O que vem depois, você descobrirá em breve.
   </p>
 
   <div class="concept-grid">
@@ -992,7 +984,7 @@
         <div class="concept-icon">⛰️</div>
         <div>
           <h3>Acrílico Base</h3>
-          <p>Você acabou de receber uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
+          <p>Você recebe antes do 1º encontro uma peça em acrílico com a imagem de uma montanha em preto e branco. Simples, direta e intencional: ela marca o início do que está por vir.</p>
         </div>
       </div>
       <div class="concept-item" id="concept-card-2" style="border-color:rgba(155,77,255,0.08);background:rgba(107,33,212,0.02);cursor:default;transition:all 0.8s ease;">
