@@ -359,12 +359,6 @@
     display: block;
   }
 
-  @media (max-width: 640px) {
-    .stage-acrylic img {
-      max-height: 260px;
-    }
-  }
-
   .stage-acrylic svg {
     display: block;
     width: 100%;
@@ -907,7 +901,7 @@
     width: 100%;
     height: auto;
     display: block;
-    flex-shrink: 1;
+    flex: 1 1 auto;
     min-height: 0;
     object-fit: contain;
   }
@@ -925,6 +919,7 @@
   #reveal-continue {
     display: block; width: 100%;
     padding: 16px;
+    flex-shrink: 0;
     background: rgba(107,33,212,0.5);
     border: none; border-top: 1px solid rgba(155,77,255,0.3);
     color: #fff; font-family: 'Poppins', sans-serif;
