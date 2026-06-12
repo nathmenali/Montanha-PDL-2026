@@ -1460,6 +1460,25 @@ function enableCard(level) {
 // Iniciar com tela de login
 window.addEventListener('DOMContentLoaded', () => {
   showLoginScreen();
+
+  // Forçar autoplay do vídeo de background no mobile
+  const bgVideo = document.getElementById('bg-video');
+  if (bgVideo) {
+    // Tenta iniciar assim que os metadados carregam
+    bgVideo.addEventListener('loadedmetadata', () => {
+      bgVideo.play().catch(() => {});
+    });
+    // Tenta iniciar na primeira interação do usuário (fallback iOS/Android)
+    const playOnInteraction = () => {
+      bgVideo.play().catch(() => {});
+      document.removeEventListener('touchstart', playOnInteraction);
+      document.removeEventListener('click', playOnInteraction);
+    };
+    document.addEventListener('touchstart', playOnInteraction, { once: true });
+    document.addEventListener('click', playOnInteraction, { once: true });
+    // Tenta iniciar imediatamente também
+    bgVideo.play().catch(() => {});
+  }
 });
 
 function revealLevel(level) {
