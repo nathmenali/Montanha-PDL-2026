@@ -1718,19 +1718,14 @@ function showMeuXPAuto(drt, data) {
   const _etapas = [data.e1, data.e2, data.e3, data.e4].filter(v => v === true || v === 'TRUE' || v === 'true').length;
   const _etapasEl = document.getElementById('rxp-etapas');
   if (_etapasEl) _etapasEl.textContent = `${_etapas} de 4`;
+  // Preencher top-bar sempre
+  const nome = data.nome || `DRT ${drt}`;
+  document.getElementById('topbar-nome').textContent = nome;
+  document.getElementById('topbar-drt').textContent = `DRT ${drt}`;
   if (_rankingCache.length) {
     const pos = _rankingCache.findIndex(r => String(r.drt) === String(drt));
     const posText = pos >= 0 ? `${pos+1}º` : '—';
     document.getElementById('rxp-posicao').textContent = posText;
-    // Top bar
-    const nome = data.nome || `DRT ${drt}`;
-    const topBar = document.getElementById('top-bar');
-    if (topBar) {
-      document.getElementById('topbar-nome').textContent = nome;
-      document.getElementById('topbar-drt').textContent = `DRT ${drt}`;
-      document.getElementById('topbar-posicao').textContent = posText;
-      topBar.style.display = 'flex';
-    }
   }
 }
 
