@@ -1367,7 +1367,7 @@
 
   <!-- TABS -->
   <div style="display:flex;gap:4px;margin-top:40px;">
-    <button class="rank-tab active" onclick="rankTab('meu-xp')" id="rtab-meu-xp">⭐ Minha Evolução</button>
+    
   </div>
 
   <div style="border:1px solid rgba(155,77,255,0.2);border-radius:0 12px 12px 12px;background:rgba(107,33,212,0.08);padding:32px;">
@@ -1664,7 +1664,9 @@ async function overlayLogin() {
     overlay.style.opacity = '0';
     setTimeout(() => overlay.style.display = 'none', 500);
 
-    // Menu agora integrado no top-bar
+    // Mostrar top-bar com menu
+    const topBar = document.getElementById('top-bar');
+    if (topBar) topBar.style.display = 'flex';
 
     // Mostrar progresso das etapas
     const stagesRow = document.getElementById('stages-row');
