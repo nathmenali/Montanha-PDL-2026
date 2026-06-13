@@ -734,10 +734,19 @@
     }
     .stage-acrylic img {
       width: 100% !important;
-      height: 55vw !important;
+      height: auto !important;
       max-height: none !important;
+      object-fit: contain;
+    }
+    /* Força altura uniforme em todos os cards no mobile */
+    .stages-row.visible .stage-acrylic {
+      aspect-ratio: 9 / 16;
+    }
+    .stages-row.visible .stage-acrylic img {
+      width: 100% !important;
+      height: 100% !important;
       object-fit: cover !important;
-      object-position: center center;
+      object-position: center top !important;
     }
     .stage-label {
       font-size: 13px !important;
