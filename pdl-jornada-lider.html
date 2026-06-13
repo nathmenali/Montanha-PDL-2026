@@ -706,13 +706,13 @@
     }
     .stages-row.visible::-webkit-scrollbar { display: none; }
     .stages-row.visible .stage {
-      flex: 0 0 55vw;
-      max-width: 200px;
+      flex: 0 0 44vw;
+      max-width: 44vw;
       scroll-snap-align: start;
     }
     .stages-row.visible {
-      gap: 6px !important;
-      padding: 0 8px !important;
+      gap: 2px !important;
+      padding: 0 4px !important;
     }
     /* XP cards grid mobile */
     #rpanel-meu-xp > div > div[style*="grid-template-columns:repeat(2,1fr)"] {
@@ -733,9 +733,10 @@
       width: auto !important;
     }
     .stage-acrylic img {
-      max-height: 40vh;
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
       object-fit: contain;
-      object-position: center center;
     }
     .stage-label {
       font-size: 13px !important;
