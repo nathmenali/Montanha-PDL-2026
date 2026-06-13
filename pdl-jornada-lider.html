@@ -736,17 +736,10 @@
       width: 100% !important;
       height: auto !important;
       max-height: none !important;
-      object-fit: contain;
+      object-fit: contain !important;
     }
-    /* Força altura uniforme em todos os cards no mobile */
     .stages-row.visible .stage-acrylic {
-      aspect-ratio: 9 / 16;
-    }
-    .stages-row.visible .stage-acrylic img {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      object-position: center top !important;
+      aspect-ratio: unset !important;
     }
     .stage-label {
       font-size: 13px !important;
@@ -2466,6 +2459,21 @@ async function axpLancar(category) {
     btn.disabled = false;
   }
 }
+
+// ── EQUALIZAR ALTURA IMAGEM 3 (mobile) ──
+function equalizeStageImages() {
+  if (window.innerWidth > 640) return;
+  const imgs = [1,2,4].map(i => document.getElementById('img-front-' + i)).filter(Boolean);
+  const img3 = document.getElementById('img-front-3');
+  if (!img3 || !imgs.length) return;
+  // Pega a média das alturas das outras imagens
+  const heights = imgs.map(img => img.offsetHeight).filter(h => h > 0);
+  if (!heights.length) return;
+  const avgH = Math.round(heights.reduce((a,b) => a+b, 0) / heights.length);
+  if (avgH > 0) img3.style.height = avgH + 'px';
+}
+window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
+window.addEventListener('resize', equalizeStageImages);
 
 // ── SWIPE HINT (mobile only) ──
 function closeSwipeHint() {
