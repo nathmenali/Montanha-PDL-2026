@@ -2460,18 +2460,21 @@ async function axpLancar(category) {
   }
 }
 
-// ── EQUALIZAR ALTURA IMAGEM 3 (mobile) ──
+// ── EQUALIZAR ALTURA IMAGENS (mobile) ──
 function equalizeStageImages() {
   if (window.innerWidth > 640) return;
-  const imgs = [1,2,4].map(i => document.getElementById('img-front-' + i)).filter(Boolean);
-  const img3 = document.getElementById('img-front-3');
-  if (!img3 || !imgs.length) return;
-  // Pega a média das alturas das outras imagens
+  const imgs = [1,2,3,4].map(i => document.getElementById('img-front-' + i)).filter(Boolean);
+  if (!imgs.length) return;
+  // Remove altura forçada primeiro
+  imgs.forEach(img => img.style.height = '');
+  // Pega a menor altura natural
   const heights = imgs.map(img => img.offsetHeight).filter(h => h > 0);
   if (!heights.length) return;
-  const avgH = Math.round(heights.reduce((a,b) => a+b, 0) / heights.length);
-  if (avgH > 0) img3.style.height = avgH + 'px';
+  const minH = Math.min(...heights);
+  if (minH > 0) imgs.forEach(img => img.style.height = minH + 'px');
 }
+window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
+window.addEventListener('resize', equalizeStageImages);
 window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
 window.addEventListener('resize', equalizeStageImages);
 
