@@ -1740,6 +1740,9 @@ async function overlayLogin(autoLoginDRT) {
     overlay.style.opacity = '0';
     setTimeout(() => overlay.style.display = 'none', 500);
 
+    // Scroll ao topo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     // Mostrar top-bar com menu
     const topBar = document.getElementById('top-bar');
     if (topBar) topBar.style.display = 'flex';
