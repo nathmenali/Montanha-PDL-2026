@@ -349,6 +349,7 @@
     border-radius: 0;
     overflow: hidden;
     border: none;
+    background: #1a1030;
     transition: filter 0.9s ease, opacity 0.9s ease, border-color 0.4s, box-shadow 0.4s;
     cursor: default;
   }
@@ -1032,6 +1033,10 @@
     color: var(--violet);
   }
 </style>
+<link rel="preload" as="image" href="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_1%C2%BA%20encontro.png">
+<link rel="preload" as="image" href="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_2%C2%BA%20encontro.png">
+<link rel="preload" as="image" href="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_3%C2%B0%20encontro.png">
+<link rel="preload" as="image" href="https://nathmenali.github.io/Montanha-PDL-2026/Imagem-base_4%C2%BA%20encontro.png">
 </head>
 <body>
 
@@ -1426,7 +1431,7 @@
 <!-- RANKING & XP -->
 <section id="ranking-section" style="position:relative;z-index:1;padding:100px 24px;max-width:900px;margin:0 auto;">
 
-  <div class="section-label">Gamificação</div>
+  <div class="section-label">Indicadores de desenvolvimento</div>
   <h2 class="section-title">Minha <em>Evolução</em></h2>
 
   <!-- TABS -->
@@ -1694,7 +1699,7 @@ const THEME_LABELS = {
 };
 
 // DRT da sessão atual
-let currentDRT = null;
+let currentDRT = sessionStorage.getItem('pdl_drt') || null;
 let _unlocked = [];
 
 function getUnlocked() { return _unlocked.slice(); }
@@ -1708,10 +1713,10 @@ document.getElementById('overlay-drt-input').addEventListener('input', e => {
   e.target.value = e.target.value.replace(/\D/g, '');
 });
 
-async function overlayLogin() {
+async function overlayLogin(autoLoginDRT) {
   const input  = document.getElementById('overlay-drt-input');
   const status = document.getElementById('overlay-drt-status');
-  const drt    = input.value.trim();
+  const drt    = autoLoginDRT || input.value.trim();
   if (!drt) { status.textContent = 'Digite seu DRT para continuar.'; return; }
 
   status.textContent = 'Carregando...';
@@ -1721,8 +1726,7 @@ async function overlayLogin() {
   try {
     const data = await jsonp(`${API_URL}?action=get&drt=${encodeURIComponent(drt)}`);
     currentDRT = drt;
-
-    // Fechar overlay
+    sessionStorage.setItem('pdl_drt', drt);
     const overlay = document.getElementById('page-login-overlay');
     overlay.style.transition = 'opacity 0.5s';
     overlay.style.opacity = '0';
@@ -1914,6 +1918,7 @@ function showLoggedUser(drt) {
 
 function logoutDRT() {
   currentDRT = null;
+  sessionStorage.removeItem('pdl_drt');
   _unlocked = [];
   const logged = document.getElementById('drt-logged');
   if (logged) logged.remove();
@@ -2478,21 +2483,29 @@ window.addEventListener('resize', equalizeStageImages);
 function closeSwipeHint() {
   const hint = document.getElementById('swipe-hint');
   if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; setTimeout(() => hint.style.display = 'none', 300); }
-  sessionStorage.setItem('swipeHintSeen', '1');
 }
 
-if (window.innerWidth <= 640 && !sessionStorage.getItem('swipeHintSeen')) {
+if (window.innerWidth <= 640) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const hint = document.getElementById('swipe-hint');
-        if (hint) hint.style.display = 'block';
+        if (hint && hint.style.display === 'none' || hint && !hint._shown) {
+          hint.style.display = 'block';
+          hint.style.opacity = '1';
+          hint._shown = true;
+        }
         observer.disconnect();
       }
     });
   }, { threshold: 0.3 });
   const target = document.getElementById('stages-row');
   if (target) observer.observe(target);
+}
+
+// Auto-login se recarregou a página na mesma sessão
+if (currentDRT) {
+  overlayLogin(currentDRT);
 }
 
 // Carregar ranking ao abrir a página
