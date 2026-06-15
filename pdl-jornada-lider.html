@@ -1525,8 +1525,6 @@
       <div style="display:flex;flex-direction:column;gap:8px;">
         <button onclick="adminReset()" style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:6px;color:rgba(252,165,165,0.9);font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">🔄 Resetar todos os desbloqueios</button>
         <button onclick="adminUnlockAll()" style="background:rgba(22,101,52,0.15);border:1px solid rgba(134,239,172,0.25);border-radius:6px;color:rgba(134,239,172,0.8);font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">✦ Desbloquear tudo</button>
-        <button onclick="adminResetRanking()" style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:6px;color:rgba(252,165,165,0.9);font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">⚠️ Zerar todo o ranking (XP)</button>
-        <button onclick="adminFinalizeRanking()" style="background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.4);border-radius:6px;color:rgba(245,200,66,0.9);font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">🚩 Finalizar e revelar ganhadores</button>
         <button onclick="adminToggleRanking()" style="background:rgba(107,33,212,0.15);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:#c084fc;font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">📊 Ver Ranking Completo</button>
       </div>
 
@@ -2288,6 +2286,26 @@ async function adminLoadRanking() {
     el.innerHTML = '<div style="color:rgba(255,120,120,0.8);padding:12px;">Erro ao carregar.</div>';
   }
 }
+
+// ── PRELOAD DE IMAGENS ──
+(function preloadImages() {
+  const base = 'https://nathmenali.github.io/Montanha-PDL-2026/';
+  const imgs = [
+    'Imagem-base_1%C2%BA%20encontro.png',
+    'Imagem-base_2%C2%BA%20encontro.png',
+    'Imagem-base_3%C2%B0%20encontro.png',
+    'Imagem-base_4%C2%BA%20encontro.png',
+    '1%C2%BA%20encontro.png',
+    '2%C2%BA%20encontro.png',
+    '3%C2%BA%20encontro.png',
+    '4%C2%BA%20encontro.png',
+    '1%C2%BA%20Encontro_verso.png',
+    '2%C2%BA%20Encontro_verso.png',
+    '3%C2%BA%20Encontro_verso.png',
+    '4%C2%BA%20Encontro_verso.png',
+  ];
+  imgs.forEach(src => { const i = new Image(); i.src = base + src; });
+})();
 
 // ── RANKING & XP ──
 let _rankingCache = [];
