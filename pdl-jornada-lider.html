@@ -1467,19 +1467,19 @@
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;">
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Participação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença nos encontros presenciais</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Participação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença nos encontros presenciais (15 XP)</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-presencial">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Engajamento</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença no encontro mediado</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Engajamento</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença no encontro mediado (10 XP)</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-mediado">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Aplicação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Ferramenta aplicada com relato de impacto</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Aplicação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Ferramenta aplicada com relato de impacto (15 XP)</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-ferramenta">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Constância</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Engajamento ao longo de todo o programa</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Constância</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Engajamento ao longo de todo o programa (10 XP)</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-constancia">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
         </div>
@@ -1553,18 +1553,28 @@
           <div style="font-size:15px;font-weight:500;margin-bottom:2px;" id="axp-name">—</div>
           <div style="font-size:15px;color:rgba(255,255,255,0.85);margin-bottom:12px;" id="axp-drt-label">—</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-            <button onclick="axpLancar('presencial')" class="axp-btn" id="axp-btn-presencial">🎯 Presencial +10</button>
+            <button onclick="axpLancar('presencial', 15)" class="axp-btn" id="axp-btn-presencial">🎯 Presencial +15</button>
             <button onclick="axpLancar('mediado')" class="axp-btn" id="axp-btn-mediado">💬 Mediado +10</button>
-            <button onclick="axpLancar('ferramenta')" class="axp-btn" id="axp-btn-ferramenta">🛠️ Ferramenta +10</button>
+            <div style="display:flex;flex-direction:column;gap:6px;grid-column:span 1;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="font-size:13px;color:rgba(255,255,255,0.85);">🛠️ Ferramenta</span>
+                <input id="ferramenta-xp-value" type="number" min="0" max="15" value="15" style="width:52px;background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:#fff;font-size:14px;padding:4px 6px;text-align:center;outline:none;">
+                <span style="font-size:12px;color:rgba(255,255,255,0.5);">/ 15 XP</span>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button onclick="axpLancarFerramenta()" class="axp-btn" id="axp-btn-ferramenta" style="flex:1;">+ Lançar</button>
+                <button onclick="axpRemoverFerramenta()" class="axp-btn axp-btn-remove" style="flex:1;">− Remover</button>
+              </div>
+            </div>
             <button onclick="axpLancar('constancia')" class="axp-btn" id="axp-btn-constancia">🌱 Constância +10</button>
           </div>
           <!-- Remover XP -->
           <div style="margin-top:10px;border-top:1px solid rgba(155,77,255,0.1);padding-top:10px;">
             <p style="font-size:15px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:6px;">Remover XP</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-              <button onclick="axpRemover('presencial')" class="axp-btn axp-btn-remove">🎯 Presencial −10</button>
+              <button onclick="axpRemover('presencial', 15)" class="axp-btn axp-btn-remove">🎯 Presencial −10</button>
               <button onclick="axpRemover('mediado')" class="axp-btn axp-btn-remove">💬 Mediado −10</button>
-              <button onclick="axpRemover('ferramenta')" class="axp-btn axp-btn-remove">🛠️ Ferramenta −10</button>
+              <button onclick="axpRemover('presencial', 15)" class="axp-btn axp-btn-remove">🎯 Presencial −15</button>
               <button onclick="axpRemover('constancia')" class="axp-btn axp-btn-remove">🌱 Constância −10</button>
             </div>
           </div>
@@ -2413,16 +2423,36 @@ function logoutMeuXP() {
 
 document.getElementById('rxp-drt').addEventListener('keydown', e => { if(e.key==='Enter') loadMeuXP(); });
 
-async function axpRemover(category) {
+async function axpLancarFerramenta() {
+  const val = parseInt(document.getElementById('ferramenta-xp-value').value);
+  if (isNaN(val) || val < 0 || val > 15) {
+    document.getElementById('axp-msg').textContent = 'Valor entre 0 e 15.';
+    return;
+  }
+  await axpLancar('ferramenta', val);
+}
+
+async function axpRemoverFerramenta() {
+  const val = parseInt(document.getElementById('ferramenta-xp-value').value);
+  if (isNaN(val) || val < 0 || val > 15) {
+    document.getElementById('axp-msg').textContent = 'Valor entre 0 e 15.';
+    return;
+  }
+  await axpRemover('ferramenta', val);
+}
+
+async function axpRemover(category, amount) {
   if (!_axpDRT) return;
+  const xpMap = { presencial: 15, mediado: 10, ferramenta: 15, constancia: 10 };
+  const xp = amount || xpMap[category] || 10;
   const msg = document.getElementById('axp-msg');
-  if (!confirm(`Remover 10 XP de "${category}" para este líder?`)) return;
+  if (!confirm(`Remover ${xp} XP de "${category}" para este líder?`)) return;
   msg.textContent = 'Removendo...';
   msg.style.color = 'var(--muted)';
   try {
-    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=-10`);
+    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=-${xp}`);
     if (data.ok) {
-      msg.textContent = `−10 XP removido. Total: ${data.xp_total} XP`;
+      msg.textContent = `−${xp} XP removido. Total: ${data.xp_total} XP`;
       msg.style.color = 'rgba(252,165,165,0.9)';
     } else {
       msg.textContent = 'Erro ao remover.';
@@ -2507,16 +2537,18 @@ async function axpSelectLeader(drt, nome) {
 
 async function axpLancar(category) {
   if (!_axpDRT) return;
+  const xpMap = { presencial: 15, mediado: 10, ferramenta: 15, constancia: 10 };
+  const amount = xpMap[category] || 10;
   const btn = document.getElementById('axp-btn-' + category);
   const msg = document.getElementById('axp-msg');
   btn.disabled = true;
   msg.textContent = 'Lançando...';
   msg.style.color = 'var(--muted)';
   try {
-    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=10`);
+    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=${amount}`);
     if (data.ok) {
       btn.classList.add('done');
-      msg.textContent = `+10 XP lançado! Total: ${data.xp_total} XP`;
+      msg.textContent = `+${amount} XP lançado! Total: ${data.xp_total} XP`;
       msg.style.color = 'rgba(134,239,172,0.9)';
     } else {
       msg.textContent = 'Erro ao lançar.';
