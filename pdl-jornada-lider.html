@@ -1467,19 +1467,19 @@
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;">
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Participação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença nos encontros presenciais (15 XP)</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Participação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença nos encontros presenciais</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-presencial">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Engajamento</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença no encontro mediado (10 XP)</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Engajamento</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Presença no encontro mediado</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-mediado">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Aplicação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Ferramenta aplicada com relato de impacto (15 XP)</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Aplicação</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Ferramenta aplicada com relato de impacto</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-ferramenta">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
           <div style="background:rgba(107,33,212,0.06);border:1px solid rgba(155,77,255,0.2);border-radius:10px;padding:16px;">
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Constância</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Engajamento ao longo de todo o programa (10 XP)</div>
+            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:2px;">Constância</div><div style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:4px;">Engajamento ao longo de todo o programa</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--violet);" id="rxp-constancia">0 <span style="font-family:'DM Sans';font-size:15px;color:rgba(255,255,255,0.85);">XP</span></div>
           </div>
         </div>
@@ -2119,6 +2119,7 @@ function tryUnlock(level) {
       saveUnlocked(unlocked);
       if (currentDRT) {
         jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(currentDRT)}&level=${level}`)
+          .then(() => refreshMeuXP())  // ← atualiza XP após desbloquear
           .catch(() => {});
       }
     }
@@ -2550,6 +2551,7 @@ async function axpLancar(category) {
       btn.classList.add('done');
       msg.textContent = `+${amount} XP lançado! Total: ${data.xp_total} XP`;
       msg.style.color = 'rgba(134,239,172,0.9)';
+      if (String(_axpDRT) === String(currentDRT)) refreshMeuXP();
     } else {
       msg.textContent = 'Erro ao lançar.';
       msg.style.color = 'rgba(255,120,120,0.8)';
@@ -2560,6 +2562,24 @@ async function axpLancar(category) {
     msg.style.color = 'rgba(255,120,120,0.8)';
     btn.disabled = false;
   }
+}
+
+// ── REFRESH MEU XP (atualiza sem recarregar) ──
+async function refreshMeuXP() {
+  if (!currentDRT) return;
+  try {
+    const data = await jsonp(`${API_URL}?action=getXP&drt=${encodeURIComponent(currentDRT)}`);
+    const rxpData = document.getElementById('rxp-data');
+    if (!rxpData || rxpData.style.display === 'none') return;
+    document.getElementById('rxp-total').textContent = data.xp_total || 0;
+    document.getElementById('rxp-presencial').innerHTML = `${data.xp_presencial||0} <span style="font-family:'DM Sans';font-size:13px;color:rgba(255,255,255,0.85);">XP</span>`;
+    document.getElementById('rxp-mediado').innerHTML = `${data.xp_mediado||0} <span style="font-family:'DM Sans';font-size:13px;color:rgba(255,255,255,0.85);">XP</span>`;
+    document.getElementById('rxp-ferramenta').innerHTML = `${data.xp_ferramenta||0} <span style="font-family:'DM Sans';font-size:13px;color:rgba(255,255,255,0.85);">XP</span>`;
+    document.getElementById('rxp-constancia').innerHTML = `${data.xp_constancia||0} <span style="font-family:'DM Sans';font-size:13px;color:rgba(255,255,255,0.85);">XP</span>`;
+    const etapas = [data.e1, data.e2, data.e3, data.e4].filter(v => v === true || v === 'TRUE' || v === 'true').length;
+    const etapasEl = document.getElementById('rxp-etapas');
+    if (etapasEl) etapasEl.textContent = `${etapas} de 4`;
+  } catch(e) {}
 }
 
 // ── EQUALIZAR ALTURA IMAGENS (mobile) ──
