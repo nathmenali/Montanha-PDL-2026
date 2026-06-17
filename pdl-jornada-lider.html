@@ -1510,7 +1510,7 @@
               <div>
                 <div style="font-size:13px;font-weight:600;color:#fff;">Aplicação</div>
                 <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Ferramenta aplicada com relato de impacto</div>
-                <div style="font-size:12px;color:#fff;line-height:1.6;margin-top:6px;">Considera a aplicação prática dos aprendizados, registrada no Caderno de Aplicação e Impacto e compartilhada nos encontros do programa.</div>
+                <div style="font-size:12px;color:#fff;line-height:1.6;margin-top:6px;">Considera a aplicação prática dos aprendizados, registrada no <a href="https://forms.cloud.microsoft/r/EvZS1DLg7E" target="_blank" style="color:var(--violet);text-decoration:underline;">Caderno de Aplicação e Impacto</a> e compartilhada nos encontros do programa.</div>
               </div>
             </div>
 
@@ -1556,7 +1556,10 @@
   <div id="admin-panel" style="display:none;margin-top:20px;max-width:320px;margin-left:auto;margin-right:auto;background:rgba(107,33,212,0.08);border:1px solid rgba(155,77,255,0.25);border-radius:12px;padding:24px;text-align:center;">
     <p style="font-size:15px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:16px;">Acesso Administrativo</p>
     <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
-      <input id="admin-input" type="password" placeholder="Senha admin" style="background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:8px 12px;outline:none;flex:1;">
+      <div style="position:relative;flex:1;">
+        <input id="admin-input" type="password" placeholder="Senha admin" style="background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:8px 36px 8px 12px;outline:none;width:100%;box-sizing:border-box;">
+        <button onclick="toggleAdminPwd()" type="button" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;color:rgba(255,255,255,0.6);">👁️</button>
+      </div>
       <button onclick="adminLogin()" style="background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--glow);font-size:16px;padding:0 14px;cursor:pointer;">→</button>
     </div>
     <div id="admin-status" style="font-size:15px;color:rgba(255,120,120,0.8);min-height:16px;"></div>
@@ -2604,6 +2607,11 @@ async function axpLancar(category) {
     msg.style.color = 'rgba(255,120,120,0.8)';
     btn.disabled = false;
   }
+}
+
+function toggleAdminPwd() {
+  const input = document.getElementById('admin-input');
+  input.type = input.type === 'password' ? 'text' : 'password';
 }
 
 // ── REFRESH MEU XP (atualiza sem recarregar) ──
