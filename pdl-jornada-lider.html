@@ -1558,7 +1558,7 @@
     <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
       <div style="position:relative;flex:1;">
         <input id="admin-input" type="password" placeholder="Senha admin" style="background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:8px 36px 8px 12px;outline:none;width:100%;box-sizing:border-box;">
-        <button onclick="toggleAdminPwd()" type="button" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;color:rgba(255,255,255,0.6);">👁️</button>
+        <button onclick="toggleAdminPwd()" type="button" id="admin-pwd-eye" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;color:rgba(255,255,255,0.6);">👁️</button>
       </div>
       <button onclick="adminLogin()" style="background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:var(--glow);font-size:16px;padding:0 14px;cursor:pointer;">→</button>
     </div>
@@ -2611,7 +2611,10 @@ async function axpLancar(category) {
 
 function toggleAdminPwd() {
   const input = document.getElementById('admin-input');
-  input.type = input.type === 'password' ? 'text' : 'password';
+  const eye = document.getElementById('admin-pwd-eye');
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  eye.textContent = isHidden ? '🙈' : '👁️';
 }
 
 // ── REFRESH MEU XP (atualiza sem recarregar) ──
