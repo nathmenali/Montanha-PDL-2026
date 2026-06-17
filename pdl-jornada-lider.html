@@ -1510,7 +1510,8 @@
               <div>
                 <div style="font-size:13px;font-weight:600;color:#fff;">Aplicação</div>
                 <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Ferramenta aplicada com relato de impacto</div>
-                <div style="font-size:12px;color:#fff;line-height:1.6;margin-top:6px;">Considera a aplicação prática dos aprendizados, registrada no <a href="https://forms.cloud.microsoft/r/EvZS1DLg7E" target="_blank" style="color:var(--violet);text-decoration:underline;">Caderno de Aplicação e Impacto</a> e compartilhada nos encontros do programa.</div>
+                <div style="font-size:12px;color:#fff;line-height:1.6;margin-top:6px;">Considera a aplicação prática dos aprendizados, registrada no Caderno de Aplicação e Impacto e compartilhada nos encontros do programa.</div>
+                <a href="https://forms.cloud.microsoft/r/EvZS1DLg7E" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.4);border-radius:8px;color:#fff;font-size:12px;padding:6px 12px;text-decoration:none;">📋 Acessar Caderno de Aplicação e Impacto</a>
               </div>
             </div>
 
@@ -2581,10 +2582,10 @@ async function axpSelectLeader(drt, nome) {
   });
 }
 
-async function axpLancar(category) {
+async function axpLancar(category, customAmount) {
   if (!_axpDRT) return;
   const xpMap = { presencial: 15, mediado: 10, ferramenta: 15, constancia: 10 };
-  const amount = xpMap[category] || 10;
+  const amount = (customAmount !== undefined && customAmount !== null) ? customAmount : (xpMap[category] || 10);
   const btn = document.getElementById('axp-btn-' + category);
   const msg = document.getElementById('axp-msg');
   btn.disabled = true;
