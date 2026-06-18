@@ -2736,10 +2736,10 @@ function toggleAdminPwd() {
 }
 
 function switchTab(tab) {
-  ['evolucao', 'premios'].forEach(t => {
-    document.getElementById('rpanel-' + t).style.display = t === tab ? 'block' : 'none';
-    document.getElementById('rtab-' + t).classList.toggle('active', t === tab);
-  });
+  document.getElementById('rpanel-meu-xp').style.display = tab === 'evolucao' ? 'block' : 'none';
+  document.getElementById('rpanel-premios').style.display = tab === 'premios' ? 'block' : 'none';
+  document.getElementById('rtab-evolucao').classList.toggle('active', tab === 'evolucao');
+  document.getElementById('rtab-premios').classList.toggle('active', tab === 'premios');
 }
 
 // ── REFRESH MEU XP (atualiza sem recarregar) ──
