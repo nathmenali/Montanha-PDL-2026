@@ -1871,6 +1871,7 @@ async function overlayLogin(autoLoginDRT) {
       const w = document.getElementById('input-wrap-' + i);
       if (w) w.classList.add('active');
     }
+    checkDeadlines();
     showLoggedUser(drt);
 
     // Restaurar etapas desbloqueadas
@@ -2017,6 +2018,7 @@ async function loginDRT() {
       const w = document.getElementById('input-wrap-' + i);
       if (w) w.classList.add('active');
     }
+    checkDeadlines();
 
     showLoggedUser(drt);
 
@@ -2704,6 +2706,27 @@ async function refreshMeuXP() {
     const etapasEl = document.getElementById('rxp-etapas');
     if (etapasEl) etapasEl.textContent = `${etapas} de 4`;
   } catch(e) {}
+}
+
+// ── VERIFICAR PRAZOS AO CARREGAR ──
+function checkDeadlines() {
+  const now = new Date();
+  [1, 2, 3, 4].forEach(level => {
+    const deadline = STAGE_DEADLINES[level];
+    if (!deadline || now <= deadline) return;
+    const wrap = document.getElementById('input-wrap-' + level);
+    const status = document.getElementById('status-' + level);
+    if (!wrap) return;
+    // Só bloqueia se não estiver já desbloqueado
+    if (wrap.querySelector('.ucard-input') || (wrap.classList.contains('active') && !wrap.innerHTML.includes('Desbloqueado'))) {
+      wrap.innerHTML = '';
+      const msg = document.createElement('div');
+      msg.style.cssText = 'font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:1px;padding:8px 10px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:8px;text-align:center;width:100%;box-sizing:border-box;';
+      msg.textContent = '⏱ Prazo encerrado para esta etapa';
+      wrap.appendChild(msg);
+    }
+    if (status) { status.textContent = ''; }
+  });
 }
 
 // ── EQUALIZAR ALTURA IMAGENS (mobile) ──
