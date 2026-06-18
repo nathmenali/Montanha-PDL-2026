@@ -1794,6 +1794,14 @@ document.getElementById('admin-input').addEventListener('keydown', e => {
 // ── CONFIGURAÇÃO ──
 const API_URL = 'https://script.google.com/macros/s/AKfycbxjigh9kz4rp-Vmlc7Rd2y5N6X0X63d3HWK10hwKQgzJJ94AV_0V2NTZAvzKGGqlHw/exec';
 
+// Data/hora limite para inserção de frase (após esse momento, não aceita mais)
+const STAGE_DEADLINES = {
+  1: new Date('2026-06-18T10:00:00'),
+  2: new Date('2026-06-18T10:00:00'),
+  3: new Date('2026-06-18T10:00:00'),
+  4: new Date('2026-06-18T10:00:00'),
+};
+
 const PASSWORDS = {
   1: 'a liderança',
   2: 'é',
@@ -2210,6 +2218,15 @@ function tryUnlock(level) {
   const val = input ? normalize(input.value) : '';
 
   if (val === normalize(PASSWORDS[level])) {
+    // Verificar se passou do prazo
+    const deadline = STAGE_DEADLINES[level];
+    if (deadline && new Date() > deadline) {
+      status.textContent = '⏱ Prazo encerrado para esta etapa';
+      status.className = 'ucard-status err';
+      setTimeout(() => { status.textContent = ''; status.className = 'ucard-status'; }, 3000);
+      if (input) input.value = '';
+      return;
+    }
     const unlocked = getUnlocked();
     if (!unlocked.includes(level)) {
       unlocked.push(level);
