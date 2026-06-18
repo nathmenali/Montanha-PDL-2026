@@ -1245,9 +1245,7 @@
   <p class="hero-tagline">
     Quatro encontros. Uma trajetória construída por você, evento a evento, do ponto de partida ao topo.
   </p>
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-  </div>
+  
 </section>
 
 <div class="divider"></div>
@@ -1528,7 +1526,7 @@
                 <div style="font-size:13px;font-weight:600;color:#fff;">Aplicação</div>
                 <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Ferramenta aplicada com relato de impacto</div>
                 <div style="font-size:12px;color:#fff;line-height:1.6;margin-top:6px;">Considera a aplicação prática dos aprendizados, registrada no Caderno de Aplicação e Impacto e compartilhada nos encontros do programa.</div>
-                <a href="https://forms.cloud.microsoft/r/EvZS1DLg7E" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.4);border-radius:8px;color:#fff;font-size:12px;padding:6px 12px;text-decoration:none;">📋 Acessar Caderno de Aplicação e Impacto</a>
+                <a href="https://forms.cloud.microsoft/r/HQi6iz3zAd" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:rgba(107,33,212,0.4);border:1px solid rgba(155,77,255,0.4);border-radius:8px;color:#fff;font-size:12px;padding:6px 12px;text-decoration:none;">📋 Acessar Caderno de Aplicação e Impacto</a>
               </div>
             </div>
 
@@ -1586,8 +1584,6 @@
     <div id="admin-actions" style="display:none;margin-top:16px;display:none;">
       <p style="font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:12px;">Desbloqueios ativos: <strong id="admin-count" style="color:var(--glow);">—</strong></p>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <button onclick="adminReset()" style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:6px;color:rgba(252,165,165,0.9);font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">🔄 Resetar todos os desbloqueios</button>
-        <button onclick="adminUnlockAll()" style="background:rgba(22,101,52,0.15);border:1px solid rgba(134,239,172,0.25);border-radius:6px;color:rgba(134,239,172,0.8);font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">✦ Desbloquear tudo</button>
         <button onclick="adminToggleRanking()" style="background:rgba(107,33,212,0.15);border:1px solid rgba(155,77,255,0.3);border-radius:6px;color:#c084fc;font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;">📊 Ver Ranking Completo</button>
       </div>
 
@@ -1635,10 +1631,17 @@
           <div style="margin-top:10px;border-top:1px solid rgba(155,77,255,0.1);padding-top:10px;">
             <p style="font-size:15px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:6px;">Remover XP</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-              <button onclick="axpRemover('presencial', 15)" class="axp-btn axp-btn-remove">🎯 Presencial −10</button>
-              <button onclick="axpRemover('mediado')" class="axp-btn axp-btn-remove">💬 Mediado −10</button>
               <button onclick="axpRemover('presencial', 15)" class="axp-btn axp-btn-remove">🎯 Presencial −15</button>
+              <button onclick="axpRemover('mediado')" class="axp-btn axp-btn-remove">💬 Mediado −10</button>
               <button onclick="axpRemover('constancia')" class="axp-btn axp-btn-remove">🌱 Constância −10</button>
+            </div>
+          </div>
+          <!-- Desbloqueios do líder -->
+          <div style="margin-top:10px;border-top:1px solid rgba(155,77,255,0.1);padding-top:10px;">
+            <p style="font-size:15px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:6px;">Desbloqueios</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <button onclick="adminResetDRT()" style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:6px;color:rgba(252,165,165,0.9);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px;cursor:pointer;">🔄 Resetar desbloqueios</button>
+              <button onclick="adminUnlockAllDRT()" style="background:rgba(22,101,52,0.15);border:1px solid rgba(134,239,172,0.25);border-radius:6px;color:rgba(134,239,172,0.8);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px;cursor:pointer;">✦ Desbloquear tudo</button>
             </div>
           </div>
           <div id="axp-msg" style="font-size:15px;margin-top:8px;min-height:16px;text-align:center;"></div>
@@ -1680,6 +1683,32 @@ function adminLogin() {
   } else {
     document.getElementById('admin-status').textContent = 'Senha incorreta';
     document.getElementById('admin-input').value = '';
+  }
+}
+
+async function adminResetDRT() {
+  if (!_axpDRT) return;
+  if (!confirm(`Resetar todos os desbloqueios de ${_axpDRT}?`)) return;
+  try {
+    const data = await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=reset`);
+    document.getElementById('axp-msg').textContent = 'Desbloqueios resetados!';
+    document.getElementById('axp-msg').style.color = 'rgba(252,165,165,0.9)';
+  } catch(e) {
+    document.getElementById('axp-msg').textContent = 'Erro ao resetar.';
+  }
+}
+
+async function adminUnlockAllDRT() {
+  if (!_axpDRT) return;
+  if (!confirm(`Desbloquear todas as etapas para ${_axpDRT}?`)) return;
+  try {
+    for (let i = 1; i <= 4; i++) {
+      await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=${i}`);
+    }
+    document.getElementById('axp-msg').textContent = 'Todas as etapas desbloqueadas!';
+    document.getElementById('axp-msg').style.color = 'rgba(134,239,172,0.9)';
+  } catch(e) {
+    document.getElementById('axp-msg').textContent = 'Erro ao desbloquear.';
   }
 }
 
