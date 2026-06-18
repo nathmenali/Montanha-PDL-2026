@@ -1451,7 +1451,8 @@
 
   <!-- TABS -->
   <div style="display:flex;gap:4px;margin-top:40px;">
-    
+    <button class="rank-tab active" id="rtab-evolucao" onclick="switchTab('evolucao')">⭐ Minha Evolução</button>
+    <button class="rank-tab" id="rtab-premios" onclick="switchTab('premios')">🏆 Premiação</button>
   </div>
 
   <div style="border:1px solid rgba(155,77,255,0.2);border-radius:0 12px 12px 12px;background:rgba(107,33,212,0.08);padding:32px;box-sizing:border-box;overflow:hidden;">
@@ -1544,6 +1545,50 @@
         <div style="text-align:center;">
           
         </div>
+      </div>
+    </div>
+
+    <!-- PREMIAÇÃO -->
+    <div id="rpanel-premios" style="display:none;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.7;max-width:520px;margin:0 auto;">
+          Os três líderes com maior pontuação ao final do programa serão reconhecidos com prêmios especiais.<br>
+          <span style="color:rgba(192,132,252,0.8);font-size:13px;">A pontuação final considera participação, engajamento, aplicação e constância ao longo de todo o PDL 2026.</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:480px;margin:0 auto;">
+
+        <!-- 1º lugar -->
+        <div style="display:flex;align-items:center;gap:16px;background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.25);border-radius:14px;padding:20px 24px;">
+          <div style="font-size:36px;flex-shrink:0;">🥇</div>
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,200,66,0.7);margin-bottom:4px;">1º lugar</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#f5c842;line-height:1;">R$ 2.000,00</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
+          </div>
+        </div>
+
+        <!-- 2º lugar -->
+        <div style="display:flex;align-items:center;gap:16px;background:rgba(192,192,192,0.07);border:1px solid rgba(192,192,192,0.2);border-radius:14px;padding:20px 24px;">
+          <div style="font-size:36px;flex-shrink:0;">🥈</div>
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(192,192,192,0.7);margin-bottom:4px;">2º lugar</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#c0c0c0;line-height:1;">R$ 1.500,00</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
+          </div>
+        </div>
+
+        <!-- 3º lugar -->
+        <div style="display:flex;align-items:center;gap:16px;background:rgba(180,120,60,0.07);border:1px solid rgba(180,120,60,0.2);border-radius:14px;padding:20px 24px;">
+          <div style="font-size:36px;flex-shrink:0;">🥉</div>
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(180,120,60,0.7);margin-bottom:4px;">3º lugar</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#b4783c;line-height:1;">R$ 1.000,00</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -2688,6 +2733,13 @@ function toggleAdminPwd() {
   const isHidden = input.type === 'password';
   input.type = isHidden ? 'text' : 'password';
   eye.textContent = isHidden ? '🙈' : '👁️';
+}
+
+function switchTab(tab) {
+  ['evolucao', 'premios'].forEach(t => {
+    document.getElementById('rpanel-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('rtab-' + t).classList.toggle('active', t === tab);
+  });
 }
 
 // ── REFRESH MEU XP (atualiza sem recarregar) ──
