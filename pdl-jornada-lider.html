@@ -2080,6 +2080,14 @@ function enableCard(level) {
   const inp = document.getElementById('input-' + level);
   const wrap = document.getElementById('input-wrap-' + level);
   const btn = wrap ? wrap.querySelector('.ucard-btn') : null;
+
+  // Verificar prazo antes de habilitar
+  const deadline = STAGE_DEADLINES[level];
+  if (deadline && new Date() > deadline && wrap && !wrap.classList.contains('unlocked')) {
+    wrap.innerHTML = '<span style="font-size:14px;color:rgba(255,180,80,0.9);letter-spacing:1px;padding:6px 0;">⏱ Prazo encerrado para esta etapa</span>';
+    return;
+  }
+
   if (inp) inp.disabled = false;
   if (btn) btn.disabled = false;
   if (wrap) wrap.classList.add('active');
@@ -2218,15 +2226,9 @@ function tryUnlock(level) {
   const val = input ? normalize(input.value) : '';
 
   if (val === normalize(PASSWORDS[level])) {
-    // Verificar se passou do prazo
+    // Verificar se passou do prazo (segurança extra)
     const deadline = STAGE_DEADLINES[level];
-    if (deadline && new Date() > deadline) {
-      status.textContent = '⏱ Prazo encerrado para esta etapa';
-      status.className = 'ucard-status err';
-      setTimeout(() => { status.textContent = ''; status.className = 'ucard-status'; }, 3000);
-      if (input) input.value = '';
-      return;
-    }
+    if (deadline && new Date() > deadline) return;
     const unlocked = getUnlocked();
     if (!unlocked.includes(level)) {
       unlocked.push(level);
