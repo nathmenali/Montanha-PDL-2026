@@ -1551,43 +1551,86 @@
     <!-- PREMIAÇÃO -->
     <div id="rpanel-premios" style="display:none;">
       <div style="text-align:center;margin-bottom:32px;">
-        <p style="font-size:16px;color:#ffffff;line-height:1.8;max-width:560px;margin:0 auto 10px;">Os três líderes com maior pontuação ao final do programa serão reconhecidos com prêmios especiais.</p>
-        <p style="font-size:15px;color:rgba(192,132,252,0.9);line-height:1.8;max-width:560px;margin:0 auto;">A pontuação final considera participação, engajamento, aplicação e constância ao longo de todo o PDL 2026.</p>
+        <p class="premio-titulo" style="font-size:16px;color:#ffffff;line-height:1.8;max-width:560px;margin:0 auto 10px;">Os três líderes com maior pontuação ao final do programa serão reconhecidos com prêmios especiais.</p>
+        <p class="premio-subtitulo" style="font-size:15px;color:rgba(192,132,252,0.9);line-height:1.8;max-width:560px;margin:0 auto;">A pontuação final considera participação, engajamento, aplicação e constância ao longo de todo o PDL 2026.</p>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:16px;max-width:480px;margin:0 auto;">
+<style>
+  @media (min-width: 641px) {
+    .premio-titulo {
+      font-size: 20px !important;
+      max-width: 680px !important;
+      line-height: 1.5 !important;
+      margin: 0 auto 14px !important;
+    }
+    .premio-subtitulo {
+      font-size: 17px !important;
+      max-width: 780px !important;
+      line-height: 1.5 !important;
+      white-space: nowrap;
+    }
+  }
+</style>
+
+      <div class="premio-cards-wrap" style="display:flex;flex-direction:column;gap:16px;max-width:480px;margin:0 auto;">
 
         <!-- 1º lugar -->
-        <div style="display:flex;align-items:center;gap:16px;background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.25);border-radius:14px;padding:20px 24px;">
-          <img src="https://nathmenali.github.io/Montanha-PDL-2026/Primeiro%20lugar.png" alt="1º lugar" style="width:88px;height:88px;object-fit:contain;flex-shrink:0;">
-          <div>
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,200,66,0.9);margin-bottom:4px;font-weight:700;">1º lugar</div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#f5c842;line-height:1;">R$ 2.000,00</div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
+        <div class="premio-card" style="display:flex;align-items:center;gap:16px;background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.25);border-radius:14px;padding:20px 24px;">
+          <img class="premio-medalha" src="https://nathmenali.github.io/Montanha-PDL-2026/Primeiro%20lugar.png" alt="1º lugar" style="width:88px;height:88px;object-fit:contain;flex-shrink:0;">
+          <div class="premio-texto">
+            <div class="premio-label" style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,200,66,0.9);margin-bottom:4px;font-weight:700;">1º lugar</div>
+            <div class="premio-valor" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#f5c842;line-height:1;">R$ 2.000,00</div>
+            <div class="premio-sub" style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
           </div>
         </div>
 
         <!-- 2º lugar -->
-        <div style="display:flex;align-items:center;gap:16px;background:rgba(192,192,192,0.07);border:1px solid rgba(192,192,192,0.2);border-radius:14px;padding:20px 24px;">
-          <img src="https://nathmenali.github.io/Montanha-PDL-2026/Segundo%20lugar.png" alt="2º lugar" style="width:88px;height:88px;object-fit:contain;flex-shrink:0;">
-          <div>
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(192,192,192,0.9);margin-bottom:4px;font-weight:700;">2º lugar</div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#c0c0c0;line-height:1;">R$ 1.500,00</div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
+        <div class="premio-card" style="display:flex;align-items:center;gap:16px;background:rgba(192,192,192,0.07);border:1px solid rgba(192,192,192,0.2);border-radius:14px;padding:20px 24px;">
+          <img class="premio-medalha" src="https://nathmenali.github.io/Montanha-PDL-2026/Segundo%20lugar.png" alt="2º lugar" style="width:88px;height:88px;object-fit:contain;flex-shrink:0;">
+          <div class="premio-texto">
+            <div class="premio-label" style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(192,192,192,0.9);margin-bottom:4px;font-weight:700;">2º lugar</div>
+            <div class="premio-valor" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#c0c0c0;line-height:1;">R$ 1.500,00</div>
+            <div class="premio-sub" style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
           </div>
         </div>
 
         <!-- 3º lugar -->
-        <div style="display:flex;align-items:center;gap:16px;background:rgba(180,120,60,0.07);border:1px solid rgba(180,120,60,0.2);border-radius:14px;padding:20px 24px;">
-          <img src="https://nathmenali.github.io/Montanha-PDL-2026/Terceiro%20lugar.png" alt="3º lugar" style="width:88px;height:88px;object-fit:contain;flex-shrink:0;">
-          <div>
-            <div style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(180,120,60,0.9);margin-bottom:4px;font-weight:700;">3º lugar</div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#b4783c;line-height:1;">R$ 1.000,00</div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
+        <div class="premio-card" style="display:flex;align-items:center;gap:16px;background:rgba(180,120,60,0.07);border:1px solid rgba(180,120,60,0.2);border-radius:14px;padding:20px 24px;">
+          <img class="premio-medalha" src="https://nathmenali.github.io/Montanha-PDL-2026/Terceiro%20lugar.png" alt="3º lugar" style="width:88px;height:88px;object-fit:contain;flex-shrink:0;">
+          <div class="premio-texto">
+            <div class="premio-label" style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(180,120,60,0.9);margin-bottom:4px;font-weight:700;">3º lugar</div>
+            <div class="premio-valor" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#b4783c;line-height:1;">R$ 1.000,00</div>
+            <div class="premio-sub" style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;">Voucher exclusivo</div>
           </div>
         </div>
 
       </div>
+
+<style>
+  @media (min-width: 641px) {
+    .premio-cards-wrap {
+      max-width: 420px !important;
+    }
+    .premio-medalha {
+      width: 112px !important;
+      height: 112px !important;
+    }
+    .premio-texto {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .premio-valor {
+      font-size: 36px !important;
+      font-weight: 700;
+      text-shadow: 0 0 18px currentColor;
+    }
+    .premio-sub {
+      font-size: 14px !important;
+      color: rgba(255,255,255,0.85) !important;
+    }
+  }
+</style>
     </div>
 
   </div>
