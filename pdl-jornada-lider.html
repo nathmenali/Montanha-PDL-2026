@@ -926,14 +926,14 @@
   }
   /* ── EXPERIÊNCIA DE REVELAÇÃO PREMIUM ── */
   #reveal-overlay {
-    position: fixed; inset: 0; z-index: 9000;
+    position: fixed; inset: 0; z-index: 10500;
     background: rgba(0,0,0,0); pointer-events: none;
     transition: background 0.4s ease;
     display: flex; align-items: center; justify-content: center;
     padding: 16px;
     box-sizing: border-box;
   }
-  #reveal-overlay.active { background: rgba(0,0,0,0.85); pointer-events: all; }
+  #reveal-overlay.active { background: rgba(0,0,0,0.85); pointer-events: all; touch-action: none; }
 
   #reveal-window {
     position: relative;
@@ -959,6 +959,7 @@
     min-height: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
     scrollbar-width: thin;
     scrollbar-color: rgba(155,77,255,0.5) rgba(0,0,0,0.3);
   }
@@ -2452,6 +2453,15 @@ function openReveal(level) {
   const isMobileScreen = window.innerWidth <= 640;
   img.src = isMobileScreen ? JANELAS_MOBILE[level] : JANELAS[level];
 
+  // Travar scroll da página de fundo enquanto a janela está aberta,
+  // preservando a posição para restaurar ao fechar.
+  _revealScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${_revealScrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+
   // Zoom na montanha
   const montanha = document.getElementById('stages-row');
   if (montanha) montanha.classList.add('mountain-zoomed');
@@ -2467,6 +2477,8 @@ function openReveal(level) {
     win.classList.add('visible');
   }, 400);
 }
+
+let _revealScrollY = 0;
 
 function closeReveal() {
   const overlay = document.getElementById('reveal-overlay');
@@ -2489,6 +2501,14 @@ function closeReveal() {
     // Remover zoom da montanha
     const montanha = document.getElementById('stages-row');
     if (montanha) montanha.classList.remove('mountain-zoomed');
+
+    // Restaurar scroll da página de fundo
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, _revealScrollY);
   }, 300);
 }
 
