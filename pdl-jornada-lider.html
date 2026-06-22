@@ -938,7 +938,7 @@
   #reveal-window {
     position: relative;
     width: 100%;
-    max-width: 480px;
+    max-width: 760px;
     max-height: calc(100vh - 32px);
     display: flex;
     flex-direction: column;
@@ -954,13 +954,22 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-  #reveal-window img {
-    width: 100%;
+  #reveal-window .reveal-scroll {
     flex: 1 1 auto;
     min-height: 0;
-    object-fit: contain;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(155,77,255,0.5) rgba(0,0,0,0.3);
+  }
+  #reveal-window .reveal-scroll::-webkit-scrollbar { width: 8px; }
+  #reveal-window .reveal-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  #reveal-window .reveal-scroll::-webkit-scrollbar-thumb { background: rgba(155,77,255,0.5); border-radius: 4px; }
+  #reveal-window .reveal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(155,77,255,0.8); }
+  #reveal-window img {
+    width: 100%;
+    height: auto;
     display: block;
-    max-height: calc(100vh - 100px);
   }
 
   #reveal-close {
@@ -984,6 +993,10 @@
     cursor: pointer; transition: background 0.3s;
   }
   #reveal-continue:hover { background: rgba(107,33,212,0.8); }
+
+  @media (min-width: 769px) {
+    #reveal-window { max-width: 920px; }
+  }
 
   @keyframes mountainZoom {
     from { transform: scale(1); }
@@ -2273,13 +2286,26 @@ function revealLevel(level) {
     acrylic.style.borderColor = 'rgba(155,77,255,0.4)';
     acrylic.style.cursor = 'pointer';
     acrylic.onclick = () => toggleFlip(level);
+    acrylic.style.position = 'relative';
+    // Botão para reabrir a janela de revelação do encontro
+    if (!acrylic.querySelector('.reveal-reopen-btn')) {
+      const reopenBtn = document.createElement('button');
+      reopenBtn.className = 'reveal-reopen-btn';
+      reopenBtn.type = 'button';
+      reopenBtn.setAttribute('aria-label', 'Reabrir conteúdo do encontro');
+      reopenBtn.style.cssText = 'position:absolute;top:10px;right:10px;z-index:11;width:30px;height:30px;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.9);cursor:pointer;transition:background 0.2s;';
+      reopenBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>';
+      reopenBtn.onmouseover = () => reopenBtn.style.background = 'rgba(107,33,212,0.7)';
+      reopenBtn.onmouseout  = () => reopenBtn.style.background = 'rgba(0,0,0,0.55)';
+      reopenBtn.onclick = (ev) => { ev.stopPropagation(); openReveal(level); };
+      acrylic.appendChild(reopenBtn);
+    }
     // Badge de flip
     if (!acrylic.querySelector('.flip-badge')) {
       const badge = document.createElement('div');
       badge.className = 'flip-badge';
       badge.style.cssText = 'position:absolute;bottom:10px;right:10px;z-index:10;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 10px;font-size:15px;color:rgba(255,255,255,0.85);letter-spacing:1px;pointer-events:none;display:flex;align-items:center;gap:5px;';
       badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg> virar';
-      acrylic.style.position = 'relative';
       acrylic.appendChild(badge);
     }
   }
@@ -2515,7 +2541,9 @@ for (let i = 1; i <= 4; i++) {
 <div id="reveal-overlay">
   <div id="reveal-window">
     <div id="reveal-close" onclick="closeReveal()">×</div>
-    <img id="reveal-img" src="" alt="Revelação do encontro">
+    <div class="reveal-scroll">
+      <img id="reveal-img" src="" alt="Revelação do encontro">
+    </div>
     <button id="reveal-continue" onclick="closeReveal()">Continuar →</button>
   </div>
 </div>
