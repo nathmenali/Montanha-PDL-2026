@@ -1710,9 +1710,9 @@
         <div id="admin-ranking-content" style="font-size:13px;color:#fff;max-height:300px;overflow-y:auto;"></div>
       </div>
 
-      <!-- LANÇAR XP -->
+      <!-- GERENCIAR DRT -->
       <div style="margin-top:20px;border-top:1px solid rgba(155,77,255,0.15);padding-top:16px;">
-        <p style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:12px;">Lançar XP</p>
+        <p style="font-size:16px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:600;margin-bottom:14px;">Gerenciar DRT</p>
         <div style="display:flex;gap:6px;margin-bottom:6px;">
           <input id="axp-search" type="text" placeholder="Buscar por nome ou DRT..." maxlength="50"
             style="flex:1;background:rgba(0,0,0,0.3);border:1px solid rgba(155,77,255,0.25);border-radius:6px;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;padding:8px 10px;outline:none;"
@@ -1725,6 +1725,9 @@
         <div id="axp-leader" style="display:none;">
           <div style="font-size:15px;font-weight:500;margin-bottom:2px;" id="axp-name">—</div>
           <div style="font-size:15px;color:rgba(255,255,255,0.85);margin-bottom:12px;" id="axp-drt-label">—</div>
+
+          <!-- Lançar XP -->
+          <p style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:12px;">Lançar XP</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
             <button onclick="axpLancar('presencial', 15)" class="axp-btn" id="axp-btn-presencial">🎯 Presencial +15</button>
             <button onclick="axpLancar('mediado')" class="axp-btn" id="axp-btn-mediado">💬 Mediado +10</button>
@@ -2018,7 +2021,11 @@ async function overlayLogin(autoLoginDRT) {
     const verify = await apiPost({ action: 'verifyPassword', drt: drt, password: password });
 
     if (!verify.ok) {
-      overlaySetStatus('DRT ou senha incorretos. Tente novamente.', true);
+      if (verify.error === 'drt_nao_encontrado') {
+        overlaySetStatus('DRT não encontrado. Verifique o número digitado.', true);
+      } else {
+        overlaySetStatus('DRT ou senha incorretos. Tente novamente.', true);
+      }
       overlaySetLoading(false);
       return;
     }
