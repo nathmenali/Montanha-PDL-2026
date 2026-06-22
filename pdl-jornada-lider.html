@@ -29,6 +29,10 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html, body {
+    overscroll-behavior-y: none;
+  }
+
   body {
     background: var(--void);
     color: var(--text);
@@ -698,11 +702,10 @@
       flex-direction: row;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
+      scroll-padding-left: 4px;
       -webkit-overflow-scrolling: touch;
-      gap: 12px;
-      padding: 8px 20px 24px;
-      margin-left: -20px;
-      margin-right: -20px;
+      gap: 2px;
+      padding: 8px 4px 24px;
       scrollbar-width: none;
     }
     .stages-row.visible::-webkit-scrollbar { display: none; }
@@ -710,10 +713,6 @@
       flex: 0 0 44vw;
       max-width: 44vw;
       scroll-snap-align: start;
-    }
-    .stages-row.visible {
-      gap: 2px !important;
-      padding: 0 4px !important;
     }
     /* XP cards grid mobile */
     #rpanel-meu-xp > div > div[style*="grid-template-columns:repeat(2,1fr)"] {
@@ -960,6 +959,7 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
+    overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: rgba(155,77,255,0.5) rgba(0,0,0,0.3);
   }
@@ -2018,6 +2018,7 @@ async function overlayCompleteLogin(drt) {
     if (stagesRow) {
       stagesRow.classList.add('visible');
       stagesRow.style.display = window.innerWidth <= 640 ? 'flex' : 'grid';
+      stagesRow.scrollLeft = 0;
     }
     for (let i = 1; i <= 4; i++) {
       const w = document.getElementById('input-wrap-' + i);
@@ -2162,6 +2163,7 @@ async function loginDRT() {
     if (stagesRow) {
       stagesRow.classList.add('visible');
       stagesRow.style.display = window.innerWidth <= 640 ? 'flex' : 'grid';
+      stagesRow.scrollLeft = 0;
     }
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
