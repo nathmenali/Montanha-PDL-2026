@@ -2385,6 +2385,12 @@ const JANELAS = {
   3: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro.png',
   4: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_4%C2%BA%20encontro.png',
 };
+const JANELAS_MOBILE = {
+  1: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_1%C2%BA%20encontro%20(mobile).png',
+  2: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_2%C2%BA%20encontro%20(mobile).png',
+  3: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro%20(mobile).png',
+  4: 'https://nathmenali.github.io/Montanha-PDL-2026/janela_4%C2%BA%20encontro%20(mobile).png',
+};
 
 function tryUnlock(level) {
   const input  = document.getElementById('input-' + level);
@@ -2442,8 +2448,9 @@ function openReveal(level) {
   const img     = document.getElementById('reveal-img');
   if (!overlay || !win || !img) return;
 
-  // Carregar imagem do encontro
-  img.src = JANELAS[level];
+  // Carregar imagem do encontro (versão mobile em telas pequenas)
+  const isMobileScreen = window.innerWidth <= 640;
+  img.src = isMobileScreen ? JANELAS_MOBILE[level] : JANELAS[level];
 
   // Zoom na montanha
   const montanha = document.getElementById('stages-row');
