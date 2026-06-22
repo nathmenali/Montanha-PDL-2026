@@ -1985,6 +1985,7 @@ async function overlayCompleteLogin(drt) {
 
     currentDRT = drt;
     sessionStorage.setItem('pdl_drt', drt);
+    startInactivityTimer();
     const overlay = document.getElementById('page-login-overlay');
     overlay.style.transition = 'opacity 0.5s';
     overlay.style.opacity = '0';
@@ -2179,6 +2180,7 @@ function showLoggedUser(drt) {
 }
 
 function logoutDRT() {
+  stopInactivityTimer();
   currentDRT = null;
   sessionStorage.removeItem('pdl_drt');
   _unlocked = [];
@@ -2918,6 +2920,29 @@ if (window.innerWidth <= 640) {
   const target = document.getElementById('stages-row');
   if (target) observer.observe(target);
 }
+
+// ── LOGOUT AUTOMÁTICO POR INATIVIDADE ──
+const INACTIVITY_LIMIT_MS = 30 * 60 * 1000; // 30 minutos
+let _inactivityTimer = null;
+
+function startInactivityTimer() {
+  stopInactivityTimer();
+  _inactivityTimer = setTimeout(() => {
+    if (currentDRT) logoutDRT();
+  }, INACTIVITY_LIMIT_MS);
+}
+
+function stopInactivityTimer() {
+  if (_inactivityTimer) { clearTimeout(_inactivityTimer); _inactivityTimer = null; }
+}
+
+function resetInactivityTimer() {
+  if (currentDRT) startInactivityTimer();
+}
+
+['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart', 'click'].forEach(evt => {
+  document.addEventListener(evt, resetInactivityTimer, { passive: true });
+});
 
 // Auto-login se recarregou a página na mesma sessão
 if (currentDRT) {
