@@ -1834,16 +1834,10 @@ function adminReset() {
   saveUnlocked([]);
 
   // Resetar estágios visuais
-  const blurs = { 1: 0.25, 2: 0.18, 3: 0.12, 4: 0.07 };
   for (let i = 1; i <= 4; i++) {
     const card    = document.getElementById('card-' + i);
     const lockIcon= document.getElementById('lock-' + i);
     const wrap    = document.getElementById('input-wrap-' + i);
-    const acrylic = document.getElementById('sacrylic-' + i);
-    const base    = document.getElementById('sbase-' + i);
-    const num     = document.getElementById('snum-' + i);
-    const title   = document.getElementById('stitle-' + i);
-    const sub     = document.getElementById('ssub-' + i);
 
     // Card de senha
     if (card)     { card.classList.remove('unlocked'); if (i > 1) card.classList.add('locked-card'); }
@@ -1853,14 +1847,8 @@ function adminReset() {
       const inp = document.getElementById('input-' + i);
       if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(i); });
     }
-
-    // Estágio visual
-    if (acrylic) { acrylic.style.filter = `blur(5px)`; acrylic.style.opacity = blurs[i]; acrylic.style.boxShadow = ''; acrylic.style.borderColor = ''; }
-    if (base)    { base.style.opacity = blurs[i]; }
-    if (num)     { num.style.opacity = blurs[i]; num.textContent = '🔒'; num.style.color = ''; }
-    if (title)   { title.style.opacity = blurs[i]; title.style.color = ''; }
-    if (sub)     { sub.style.opacity = blurs[i]; sub.textContent = '🔒 Bloqueado'; sub.style.color = ''; }
   }
+  applyLockedStagesVisual();
 
   // Resetar cards de conceito
   const resets = [
@@ -2259,7 +2247,28 @@ function enableCard(level) {
 window.addEventListener('DOMContentLoaded', () => {
   // Login agora é feito pelo overlay da página — não exibe o login interno
   // showLoginScreen(); ← substituído pelo overlay
+
+  // Aplica o estado visual de "bloqueado" (blur + opacidade) nos 4 estágios
+  // desde o primeiro carregamento da página — sem isso, eles apareciam
+  // nítidos até o primeiro logout, o que parecia um erro de carregamento.
+  applyLockedStagesVisual();
 });
+
+function applyLockedStagesVisual() {
+  for (let i = 1; i <= 4; i++) {
+    const acrylic = document.getElementById('sacrylic-' + i);
+    const base    = document.getElementById('sbase-' + i);
+    const num     = document.getElementById('snum-' + i);
+    const title   = document.getElementById('stitle-' + i);
+    const sub     = document.getElementById('ssub-' + i);
+
+    if (acrylic) { acrylic.style.filter = 'none'; acrylic.style.opacity = '1'; acrylic.style.boxShadow = ''; acrylic.style.borderColor = ''; }
+    if (base)    { base.style.opacity = '1'; }
+    if (num)     { num.style.opacity = '1'; num.textContent = '🔒'; num.style.color = ''; }
+    if (title)   { title.style.opacity = '1'; title.style.color = ''; }
+    if (sub)     { sub.style.opacity = '1'; sub.textContent = '🔒 Bloqueado'; sub.style.color = ''; }
+  }
+}
 
 function revealLevel(level) {
   const lockIcon = document.getElementById('lock-' + level);
@@ -2945,14 +2954,41 @@ function checkDeadlines() {
 // encontro. Reaplicado em múltiplos momentos porque mudanças de conteúdo
 // (revealLevel) e de altura das imagens (equalizeStageImages) podem causar
 // reflow e deslocar o scroll horizontal em alguns navegadores (ex: Safari iOS).
+// ── CARROSSEL MOBILE: garantir que sempre abre no 1º encontro ──
+// Em vez de "chutar" vários setTimeout (frágil e inconsistente), usamos um
+// ResizeObserver: ele dispara de forma confiável sempre que o carrossel
+// ganha ou muda de layout real (ex: quando deixa de ser display:none,
+// quando as imagens mudam de altura em equalizeStageImages, etc). A cada
+// disparo, forçamos a posição para o início — assim não há janela de tempo
+// em que outro código possa deixar o scroll fora do 1º item.
+let _stagesResizeObserver = null;
+
+function ensureStagesScrollWatcher() {
+  const stagesRow = document.getElementById('stages-row');
+  if (!stagesRow || _stagesResizeObserver) return;
+  _stagesResizeObserver = new ResizeObserver(() => {
+    if (!stagesRow.classList.contains('visible')) return;
+    if (getComputedStyle(stagesRow).display !== 'flex') return;
+    // Só força para o início se a etapa 1 não estiver perto do começo —
+    // evita "puxar de volta" o carrossel caso o usuário já tenha navegado
+    // manualmente para outro encontro.
+    if (!stagesRow._userScrolled && stagesRow.scrollLeft > 4) {
+      stagesRow.scrollTo({ left: 0, behavior: 'instant' });
+    }
+    maybeShowSwipeHint();
+  });
+  _stagesResizeObserver.observe(stagesRow);
+  // Marca como "navegação manual" assim que o usuário interagir, para o
+  // observer parar de corrigir a posição depois disso.
+  stagesRow.addEventListener('scroll', () => { stagesRow._userScrolled = true; }, { passive: true });
+}
+
 function resetStagesScroll() {
   const stagesRow = document.getElementById('stages-row');
   if (!stagesRow) return;
-  stagesRow.scrollLeft = 0;
-  requestAnimationFrame(() => { stagesRow.scrollLeft = 0; });
-  setTimeout(() => { stagesRow.scrollLeft = 0; }, 50);
-  setTimeout(() => { stagesRow.scrollLeft = 0; }, 300);
-  setTimeout(() => { stagesRow.scrollLeft = 0; }, 700);
+  stagesRow._userScrolled = false;
+  stagesRow.scrollTo({ left: 0, behavior: 'instant' });
+  ensureStagesScrollWatcher();
 }
 
 function equalizeStageImages() {
@@ -2967,7 +3003,6 @@ function equalizeStageImages() {
   const minH = Math.min(...heights);
   if (minH > 0) imgs.forEach(img => img.style.height = minH + 'px');
   resetStagesScroll();
-  setTimeout(maybeShowSwipeHint, 750);
 }
 window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
 window.addEventListener('resize', equalizeStageImages);
@@ -2986,7 +3021,8 @@ function maybeShowSwipeHint() {
   const carrosselPronto = currentDRT
     && stagesRow
     && stagesRow.classList.contains('visible')
-    && getComputedStyle(stagesRow).display === 'flex';
+    && getComputedStyle(stagesRow).display === 'flex'
+    && stagesRow.scrollLeft <= 4; // só faz sentido mostrar "deslize" se estiver no início
   if (!carrosselPronto) return;
   // Só mostra se a trilha já estiver visível na tela do usuário.
   const rect = stagesRow.getBoundingClientRect();
