@@ -2296,7 +2296,17 @@ function revealLevel(level) {
       3: 'https://nathmenali.github.io/Montanha-PDL-2026/3%C2%BA%20encontro.png',
       4: 'https://nathmenali.github.io/Montanha-PDL-2026/4%C2%BA%20encontro.png',
     };
-    if (imgFront) imgFront.src = coloredSrcs[level];
+    if (imgFront) {
+      imgFront.src = coloredSrcs[level];
+      // A imagem colorida pode ter dimensões naturais diferentes da
+      // preto-e-branco. Quando ela terminar de carregar, o layout do
+      // carrossel pode sofrer reflow — então reaplicamos o ajuste de
+      // alturas e a posição de scroll exatamente nesse momento (e só
+      // nesse momento, sem ficar vigiando depois).
+      imgFront.addEventListener('load', () => {
+        equalizeStageImages();
+      }, { once: true });
+    }
     acrylic.style.filter = 'none';
     acrylic.style.opacity = '1';
     acrylic.style.borderColor = 'rgba(155,77,255,0.4)';
@@ -2961,10 +2971,24 @@ function checkDeadlines() {
 function resetStagesScroll() {
   const stagesRow = document.getElementById('stages-row');
   if (!stagesRow) return;
+  stagesRow._userScrolled = false;
+  stagesRow._programmaticScroll = true;
   stagesRow.scrollLeft = 0;
   // Garante que o layout (display:flex) já foi processado pelo navegador
   // antes de fixar a posição — sem repetir indefinidamente depois disso.
-  requestAnimationFrame(() => { stagesRow.scrollLeft = 0; });
+  requestAnimationFrame(() => {
+    stagesRow.scrollLeft = 0;
+    setTimeout(() => { stagesRow._programmaticScroll = false; }, 50);
+  });
+  // Registra a partir de agora qualquer rolagem manual feita pelo usuário,
+  // para nenhum ajuste futuro de layout "puxar de volta" o carrossel.
+  // Ignora os eventos de scroll causados pelo próprio reset programático.
+  if (!stagesRow._scrollListenerAdded) {
+    stagesRow._scrollListenerAdded = true;
+    stagesRow.addEventListener('scroll', () => {
+      if (!stagesRow._programmaticScroll) stagesRow._userScrolled = true;
+    }, { passive: true });
+  }
 }
 
 function equalizeStageImages() {
@@ -2978,7 +3002,11 @@ function equalizeStageImages() {
   if (!heights.length) return;
   const minH = Math.min(...heights);
   if (minH > 0) imgs.forEach(img => img.style.height = minH + 'px');
-  resetStagesScroll();
+  // Só reposiciona o carrossel se o usuário ainda não tiver navegado nele
+  // manualmente — sem isso, qualquer reflow tardio (ex: imagem carregando)
+  // "puxava de volta" o carrossel mesmo depois da pessoa já ter deslizado.
+  const stagesRow = document.getElementById('stages-row');
+  if (stagesRow && !stagesRow._userScrolled) resetStagesScroll();
 }
 window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
 window.addEventListener('resize', equalizeStageImages);
