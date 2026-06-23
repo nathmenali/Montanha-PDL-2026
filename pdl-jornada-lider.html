@@ -1902,10 +1902,10 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxjigh9kz4rp-Vmlc7Rd2y5
 
 // Data/hora limite para inserção de frase (após esse momento, não aceita mais)
 const STAGE_DEADLINES = {
-  1: new Date('2026-06-23T18:00:00'),
-  2: new Date('2026-09-10T18:00:00'),
-  3: new Date('2026-11-12T18:00:00'),
-  4: new Date('2026-12-02T18:00:00'),
+  1: new Date('2026-06-23T23:59:00'),
+  2: new Date('2026-09-10T23:59:00'),
+  3: new Date('2026-11-12T23:59:00'),
+  4: new Date('2026-12-02T23:59:00'),
 };
 
 const PASSWORDS = {
@@ -2955,40 +2955,16 @@ function checkDeadlines() {
 // (revealLevel) e de altura das imagens (equalizeStageImages) podem causar
 // reflow e deslocar o scroll horizontal em alguns navegadores (ex: Safari iOS).
 // ── CARROSSEL MOBILE: garantir que sempre abre no 1º encontro ──
-// Em vez de "chutar" vários setTimeout (frágil e inconsistente), usamos um
-// ResizeObserver: ele dispara de forma confiável sempre que o carrossel
-// ganha ou muda de layout real (ex: quando deixa de ser display:none,
-// quando as imagens mudam de altura em equalizeStageImages, etc). A cada
-// disparo, forçamos a posição para o início — assim não há janela de tempo
-// em que outro código possa deixar o scroll fora do 1º item.
-let _stagesResizeObserver = null;
-
-function ensureStagesScrollWatcher() {
-  const stagesRow = document.getElementById('stages-row');
-  if (!stagesRow || _stagesResizeObserver) return;
-  _stagesResizeObserver = new ResizeObserver(() => {
-    if (!stagesRow.classList.contains('visible')) return;
-    if (getComputedStyle(stagesRow).display !== 'flex') return;
-    // Só força para o início se a etapa 1 não estiver perto do começo —
-    // evita "puxar de volta" o carrossel caso o usuário já tenha navegado
-    // manualmente para outro encontro.
-    if (!stagesRow._userScrolled && stagesRow.scrollLeft > 4) {
-      stagesRow.scrollTo({ left: 0, behavior: 'instant' });
-    }
-    maybeShowSwipeHint();
-  });
-  _stagesResizeObserver.observe(stagesRow);
-  // Marca como "navegação manual" assim que o usuário interagir, para o
-  // observer parar de corrigir a posição depois disso.
-  stagesRow.addEventListener('scroll', () => { stagesRow._userScrolled = true; }, { passive: true });
-}
-
+// Define a posição inicial uma única vez, sem nenhum observador "vigiando"
+// e corrigindo depois — isso causava o carrossel "puxar de volta" para uma
+// posição errada enquanto o usuário tentava navegar manualmente.
 function resetStagesScroll() {
   const stagesRow = document.getElementById('stages-row');
   if (!stagesRow) return;
-  stagesRow._userScrolled = false;
-  stagesRow.scrollTo({ left: 0, behavior: 'instant' });
-  ensureStagesScrollWatcher();
+  stagesRow.scrollLeft = 0;
+  // Garante que o layout (display:flex) já foi processado pelo navegador
+  // antes de fixar a posição — sem repetir indefinidamente depois disso.
+  requestAnimationFrame(() => { stagesRow.scrollLeft = 0; });
 }
 
 function equalizeStageImages() {
@@ -3021,8 +2997,7 @@ function maybeShowSwipeHint() {
   const carrosselPronto = currentDRT
     && stagesRow
     && stagesRow.classList.contains('visible')
-    && getComputedStyle(stagesRow).display === 'flex'
-    && stagesRow.scrollLeft <= 4; // só faz sentido mostrar "deslize" se estiver no início
+    && getComputedStyle(stagesRow).display === 'flex';
   if (!carrosselPronto) return;
   // Só mostra se a trilha já estiver visível na tela do usuário.
   const rect = stagesRow.getBoundingClientRect();
