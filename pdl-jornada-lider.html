@@ -2018,7 +2018,6 @@ async function overlayCompleteLogin(drt) {
     if (stagesRow) {
       stagesRow.classList.add('visible');
       stagesRow.style.display = window.innerWidth <= 640 ? 'flex' : 'grid';
-      stagesRow.scrollLeft = 0;
     }
     for (let i = 1; i <= 4; i++) {
       const w = document.getElementById('input-wrap-' + i);
@@ -2037,6 +2036,10 @@ async function overlayCompleteLogin(drt) {
         }
       });
     }
+
+    // Garante que o carrossel mobile sempre abre no 1º encontro, mesmo após
+    // o reflow causado por revealLevel() e pelo equalize de imagens.
+    resetStagesScroll();
 
     // Carregar XP automaticamente na seção de ranking
     showMeuXPAuto(drt, data);
@@ -2163,7 +2166,6 @@ async function loginDRT() {
     if (stagesRow) {
       stagesRow.classList.add('visible');
       stagesRow.style.display = window.innerWidth <= 640 ? 'flex' : 'grid';
-      stagesRow.scrollLeft = 0;
     }
     // Mostrar inputs de todos os stages
     for (let i = 1; i <= 4; i++) {
@@ -2184,6 +2186,8 @@ async function loginDRT() {
         }
       });
     }
+
+    resetStagesScroll();
 
   } catch(err) {
     status.textContent = 'Erro ao conectar. Tente novamente.';
@@ -2937,6 +2941,20 @@ function checkDeadlines() {
 }
 
 // ── EQUALIZAR ALTURA IMAGENS (mobile) ──
+// Garante que o carrossel mobile da trilha sempre comece mostrando o 1º
+// encontro. Reaplicado em múltiplos momentos porque mudanças de conteúdo
+// (revealLevel) e de altura das imagens (equalizeStageImages) podem causar
+// reflow e deslocar o scroll horizontal em alguns navegadores (ex: Safari iOS).
+function resetStagesScroll() {
+  const stagesRow = document.getElementById('stages-row');
+  if (!stagesRow) return;
+  stagesRow.scrollLeft = 0;
+  requestAnimationFrame(() => { stagesRow.scrollLeft = 0; });
+  setTimeout(() => { stagesRow.scrollLeft = 0; }, 50);
+  setTimeout(() => { stagesRow.scrollLeft = 0; }, 300);
+  setTimeout(() => { stagesRow.scrollLeft = 0; }, 700);
+}
+
 function equalizeStageImages() {
   if (window.innerWidth > 640) return;
   const imgs = [1,2,3,4].map(i => document.getElementById('img-front-' + i)).filter(Boolean);
@@ -2948,9 +2966,9 @@ function equalizeStageImages() {
   if (!heights.length) return;
   const minH = Math.min(...heights);
   if (minH > 0) imgs.forEach(img => img.style.height = minH + 'px');
+  resetStagesScroll();
+  setTimeout(maybeShowSwipeHint, 750);
 }
-window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
-window.addEventListener('resize', equalizeStageImages);
 window.addEventListener('load', () => setTimeout(equalizeStageImages, 500));
 window.addEventListener('resize', equalizeStageImages);
 
@@ -2960,22 +2978,36 @@ function closeSwipeHint() {
   if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; setTimeout(() => hint.style.display = 'none', 300); }
 }
 
+function maybeShowSwipeHint() {
+  if (window.innerWidth > 640) return;
+  const hint = document.getElementById('swipe-hint');
+  const stagesRow = document.getElementById('stages-row');
+  if (!hint || hint._shown) return;
+  const carrosselPronto = currentDRT
+    && stagesRow
+    && stagesRow.classList.contains('visible')
+    && getComputedStyle(stagesRow).display === 'flex';
+  if (!carrosselPronto) return;
+  // Só mostra se a trilha já estiver visível na tela do usuário.
+  const rect = stagesRow.getBoundingClientRect();
+  const onScreen = rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.15;
+  if (!onScreen) return;
+  hint.style.display = 'block';
+  hint.style.opacity = '1';
+  hint._shown = true;
+  if (_swipeHintObserver) _swipeHintObserver.disconnect();
+}
+
+let _swipeHintObserver = null;
 if (window.innerWidth <= 640) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const hint = document.getElementById('swipe-hint');
-        if (hint && hint.style.display === 'none' || hint && !hint._shown) {
-          hint.style.display = 'block';
-          hint.style.opacity = '1';
-          hint._shown = true;
-        }
-        observer.disconnect();
-      }
-    });
+  _swipeHintObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) maybeShowSwipeHint(); });
   }, { threshold: 0.3 });
   const target = document.getElementById('stages-row');
-  if (target) observer.observe(target);
+  if (target) _swipeHintObserver.observe(target);
+  // Também reavalia ao rolar a página, cobrindo o caso em que a trilha já
+  // estava na tela no momento do login (sem novo evento de interseção).
+  window.addEventListener('scroll', maybeShowSwipeHint, { passive: true });
 }
 
 // ── LOGOUT AUTOMÁTICO POR INATIVIDADE ──
