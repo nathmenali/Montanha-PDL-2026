@@ -1377,7 +1377,7 @@
       <div class="stage" id="stage-level-2">
         <div class="stage-label">
           <div class="stage-title" id="stitle-2">2º Encontro<br>Feedback</div>
-          <div style="font-size:15px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">10.09</div>
+          <div style="font-size:15px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">19.08</div>
           <div class="stage-subtitle" id="ssub-2">Trilha de Evolução</div>
         </div>
         <div class="stage-acrylic" id="sacrylic-2" style="cursor:default;">
@@ -1903,7 +1903,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxjigh9kz4rp-Vmlc7Rd2y5
 // Data/hora limite para inserção de frase (após esse momento, não aceita mais)
 const STAGE_DEADLINES = {
   1: new Date('2026-06-23T23:59:00'),
-  2: new Date('2026-09-10T23:59:00'),
+  2: new Date('2026-08-19T23:59:00'),
   3: new Date('2026-11-12T23:59:00'),
   4: new Date('2026-12-02T23:59:00'),
 };
@@ -2252,7 +2252,33 @@ window.addEventListener('DOMContentLoaded', () => {
   // desde o primeiro carregamento da página — sem isso, eles apareciam
   // nítidos até o primeiro logout, o que parecia um erro de carregamento.
   applyLockedStagesVisual();
+  applyConceptCardsByDate();
 });
+
+// Desbloqueia os cards de conceito ("Marcos da Evolução" e "PDL Completo")
+// por data corrida — não depende de login nem de o líder ter desbloqueado
+// a etapa individualmente.
+function applyConceptCardsByDate() {
+  const now = new Date();
+
+  if (now >= STAGE_DEADLINES[1]) {
+    const c2 = document.getElementById('concept-card-2');
+    const i2 = document.getElementById('concept-icon-2');
+    const n2 = document.getElementById('concept-content-2');
+    if (c2) { c2.style.borderColor='rgba(107,33,212,0.2)'; c2.style.background='rgba(107,33,212,0.04)'; c2.style.opacity='1'; c2.style.cursor='default'; }
+    if (i2) i2.style.filter='none';
+    if (n2) { n2.style.filter='none'; n2.style.userSelect='auto'; }
+  }
+
+  if (now >= STAGE_DEADLINES[4]) {
+    const c3 = document.getElementById('concept-card-3');
+    const i3 = document.getElementById('concept-icon-3');
+    const n3 = document.getElementById('concept-content-3');
+    if (c3) { c3.style.borderColor='rgba(107,33,212,0.2)'; c3.style.background='rgba(107,33,212,0.04)'; c3.style.opacity='1'; c3.style.cursor='default'; }
+    if (i3) i3.style.filter='none';
+    if (n3) { n3.style.filter='none'; n3.style.userSelect='auto'; }
+  }
+}
 
 function applyLockedStagesVisual() {
   for (let i = 1; i <= 4; i++) {
@@ -2358,25 +2384,10 @@ function revealLevel(level) {
     if (sub) sub.style.color = 'var(--gold)';
   }
 
-  // Card conceito 2 — desbloqueia com frase 1
-  if (level === 1) {
-    const c2 = document.getElementById('concept-card-2');
-    const i2 = document.getElementById('concept-icon-2');
-    const n2 = document.getElementById('concept-content-2');
-    if (c2) { c2.style.borderColor='rgba(107,33,212,0.2)'; c2.style.background='rgba(107,33,212,0.04)'; c2.style.opacity='1'; c2.style.cursor='default'; }
-    if (i2) i2.style.filter='none';
-    if (n2) { n2.style.filter='none'; n2.style.userSelect='auto'; }
-  }
-
-  // Card conceito 3 — desbloqueia com frase 4
-  if (level === 4) {
-    const c3 = document.getElementById('concept-card-3');
-    const i3 = document.getElementById('concept-icon-3');
-    const n3 = document.getElementById('concept-content-3');
-    if (c3) { c3.style.borderColor='rgba(107,33,212,0.2)'; c3.style.background='rgba(107,33,212,0.04)'; c3.style.opacity='1'; c3.style.cursor='default'; }
-    if (i3) i3.style.filter='none';
-    if (n3) { n3.style.filter='none'; n3.style.userSelect='auto'; }
-  }
+  // Cards de conceito ("Marcos da Evolução" e "PDL Completo") agora
+  // desbloqueiam por data corrida (ver applyConceptCardsByDate), não mais
+  // pelo desbloqueio individual da etapa 1/4.
+  applyConceptCardsByDate();
 
   // PDL completo
   const allUnlocked = getUnlocked();
