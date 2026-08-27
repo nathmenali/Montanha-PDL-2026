@@ -2968,36 +2968,48 @@ async function axpLancar(category, customAmount) {
   btn.disabled = true;
   msg.textContent = 'Lançando...';
   msg.style.color = 'var(--muted)';
+
+  // "Presencial" é um caso especial: o próprio desbloqueio (action=unlock)
+  // já soma os 15 XP presencial no backend. Por isso NÃO chamamos addXP
+  // aqui também — senão o XP dobra (visto no teste: 15+15 virou 30 por
+  // encontro). Presencial sempre usa o valor fixo de 15, ligado ao unlock.
+  if (category === 'presencial') {
+    try {
+      const data = await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=${_axpEncontro}&origem=admin`);
+      if (data.ok) {
+        btn.classList.add('done');
+        msg.textContent = `+15 XP lançado (${_axpEncontro}º encontro)! Total: ${data.xp_total ?? '—'} XP · ${_axpEncontro}º encontro desbloqueado`;
+        msg.style.color = 'rgba(134,239,172,0.9)';
+        if (String(_axpDRT) === String(currentDRT)) {
+          const unlocked = getUnlocked();
+          if (!unlocked.includes(_axpEncontro)) {
+            unlocked.push(_axpEncontro);
+            saveUnlocked(unlocked);
+          }
+          revealLevel(_axpEncontro);
+          openReveal(_axpEncontro);
+          refreshMeuXP();
+        }
+      } else {
+        msg.textContent = 'Erro ao lançar.';
+        msg.style.color = 'rgba(255,120,120,0.8)';
+        btn.disabled = false;
+      }
+    } catch(e) {
+      msg.textContent = 'Erro de conexão.';
+      msg.style.color = 'rgba(255,120,120,0.8)';
+      btn.disabled = false;
+    }
+    return;
+  }
+
   try {
     const encontroParam = CATEGORIAS_COM_ENCONTRO.includes(category) ? `&encontro=${_axpEncontro}` : '';
     const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=${amount}${encontroParam}&origem=admin`);
     if (data.ok) {
       btn.classList.add('done');
       const encontroLabel = _axpEncontro ? ` (${_axpEncontro}º encontro)` : '';
-      let unlockNote = '';
-
-      // Lançamento de XP presencial = presença validada manualmente pelo
-      // admin. Isso simula o próprio líder desbloqueando aquele encontro,
-      // liberando a imagem/etapa automaticamente para ele.
-      if (category === 'presencial' && amount > 0 && _axpEncontro) {
-        try {
-          await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=${_axpEncontro}&origem=admin`);
-          unlockNote = ` · ${_axpEncontro}º encontro desbloqueado`;
-          if (String(_axpDRT) === String(currentDRT)) {
-            const unlocked = getUnlocked();
-            if (!unlocked.includes(_axpEncontro)) {
-              unlocked.push(_axpEncontro);
-              saveUnlocked(unlocked);
-            }
-            revealLevel(_axpEncontro);
-            openReveal(_axpEncontro);
-          }
-        } catch(unlockErr) {
-          unlockNote = ' · (erro ao desbloquear a etapa, tente de novo)';
-        }
-      }
-
-      msg.textContent = `+${amount} XP lançado${encontroLabel}! Total: ${data.xp_total} XP${unlockNote}`;
+      msg.textContent = `+${amount} XP lançado${encontroLabel}! Total: ${data.xp_total} XP`;
       msg.style.color = 'rgba(134,239,172,0.9)';
       if (String(_axpDRT) === String(currentDRT)) refreshMeuXP();
     } else {
