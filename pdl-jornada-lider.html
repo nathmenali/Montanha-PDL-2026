@@ -2898,6 +2898,7 @@ async function adminResetRanking() {
 
 // ── ADMIN XP LAUNCH ──
 let _axpDRT = null;
+let _axpSearchResults = [];
 let _axpSearchTimer = null;
 let _axpEncontro = null;
 
@@ -2924,13 +2925,26 @@ async function axpSearch(q) {
     try {
       const data = await jsonp(`${API_URL}?action=searchDRT&query=${encodeURIComponent(q)}`);
       if (!data.results || !data.results.length) { results.style.display = 'none'; return; }
-      results.innerHTML = data.results.map(r =>
-        `<div class="axp-result-item" onclick="axpSelectLeader('${r.drt}','${r.nome.replace(/'/g,"\\'")}')"
+      // Guardamos os resultados numa variável em vez de embutir nome/DRT
+      // direto no atributo onclick: se o nome tiver aspas ou caracteres
+      // especiais, isso quebrava o HTML e o clique parava de funcionar
+      // silenciosamente (a lista aparecia certinha, mas nada acontecia
+      // ao clicar). Usando data-index, o clique nunca depende do
+      // conteúdo do nome.
+      _axpSearchResults = data.results;
+      results.innerHTML = data.results.map((r, idx) =>
+        `<div class="axp-result-item" data-index="${idx}"
           style="padding:10px 12px;cursor:pointer;border-bottom:1px solid rgba(155,77,255,0.08);font-size:15px;transition:background 0.15s;"
           onmouseover="this.style.background='rgba(107,33,212,0.2)'" onmouseout="this.style.background=''">
           ${r.nome} <span style="font-size:15px;color:rgba(255,255,255,0.85);margin-left:6px;">${r.drt}</span>
         </div>`
       ).join('');
+      results.querySelectorAll('.axp-result-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const r = _axpSearchResults[parseInt(el.dataset.index)];
+          if (r) axpSelectLeader(r.drt, r.nome);
+        });
+      });
       results.style.display = 'block';
     } catch(e) {}
   }, 400);
