@@ -1024,6 +1024,25 @@
   }
   .axp-btn:hover { background: rgba(107,33,212,0.35); border-color: var(--violet); }
   .axp-btn.done  { background: rgba(22,101,52,0.2); border-color: rgba(134,239,172,0.3); color: rgba(134,239,172,0.9); }
+  .axp-encontro-btn {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(155,77,255,0.25);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.7);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .axp-encontro-btn:hover { border-color: var(--violet); color: #fff; }
+  .axp-encontro-btn.selected {
+    background: rgba(107,33,212,0.5);
+    border-color: var(--glow);
+    color: #fff;
+    box-shadow: 0 0 0 1px var(--glow) inset;
+  }
   @keyframes flagWave {
     from { transform: rotate(-8deg); }
     to   { transform: rotate(8deg); }
@@ -1403,7 +1422,7 @@
       <div class="stage" id="stage-level-3">
         <div class="stage-label">
           <div class="stage-title" id="stitle-3">3º Encontro<br>Gestão de Conflitos</div>
-          <div style="font-size:15px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">12.11</div>
+          <div style="font-size:15px;color:#e0aaff;letter-spacing:2px;margin-top:4px;font-weight:500;">18.11</div>
           <div class="stage-subtitle" id="ssub-3">Trilha de Evolução</div>
         </div>
         <div class="stage-acrylic" id="sacrylic-3" style="cursor:default;">
@@ -1727,6 +1746,15 @@
           <div style="font-size:15px;font-weight:500;margin-bottom:2px;" id="axp-name">—</div>
           <div style="font-size:15px;color:rgba(255,255,255,0.85);margin-bottom:12px;" id="axp-drt-label">—</div>
 
+          <!-- Seletor de Encontro -->
+          <p style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:8px;">Encontro</p>
+          <div id="axp-encontro-selector" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px;">
+            <button type="button" onclick="axpSelectEncontro(1)" class="axp-encontro-btn" id="axp-encontro-1">1º</button>
+            <button type="button" onclick="axpSelectEncontro(2)" class="axp-encontro-btn" id="axp-encontro-2">2º</button>
+            <button type="button" onclick="axpSelectEncontro(3)" class="axp-encontro-btn" id="axp-encontro-3">3º</button>
+            <button type="button" onclick="axpSelectEncontro(4)" class="axp-encontro-btn" id="axp-encontro-4">4º</button>
+          </div>
+
           <!-- Lançar XP -->
           <p style="font-size:15px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:12px;">Lançar XP</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
@@ -1743,6 +1771,7 @@
                 <button onclick="axpRemoverFerramenta()" class="axp-btn axp-btn-remove" style="flex:1;">− Remover</button>
               </div>
             </div>
+
             <button onclick="axpLancar('constancia')" class="axp-btn" id="axp-btn-constancia">🌱 Constância +10</button>
           </div>
           <!-- Remover XP -->
@@ -1808,7 +1837,7 @@ async function adminResetDRT() {
   if (!_axpDRT) return;
   if (!confirm(`Resetar todos os desbloqueios de ${_axpDRT}?`)) return;
   try {
-    const data = await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=reset`);
+    const data = await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=reset&origem=admin`);
     document.getElementById('axp-msg').textContent = 'Desbloqueios resetados!';
     document.getElementById('axp-msg').style.color = 'rgba(252,165,165,0.9)';
   } catch(e) {
@@ -1821,7 +1850,7 @@ async function adminUnlockAllDRT() {
   if (!confirm(`Desbloquear todas as etapas para ${_axpDRT}?`)) return;
   try {
     for (let i = 1; i <= 4; i++) {
-      await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=${i}`);
+      await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=${i}&origem=admin`);
     }
     document.getElementById('axp-msg').textContent = 'Todas as etapas desbloqueadas!';
     document.getElementById('axp-msg').style.color = 'rgba(134,239,172,0.9)';
@@ -1904,7 +1933,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxjigh9kz4rp-Vmlc7Rd2y5
 const STAGE_DEADLINES = {
   1: new Date('2026-06-23T23:59:00'),
   2: new Date('2026-08-27T23:59:00'),
-  3: new Date('2026-11-12T23:59:00'),
+  3: new Date('2026-11-18T23:59:00'),
   4: new Date('2026-12-02T23:59:00'),
 };
 
@@ -2784,6 +2813,10 @@ function logoutMeuXP() {
 
 document.getElementById('rxp-drt').addEventListener('keydown', e => { if(e.key==='Enter') loadMeuXP(); });
 
+// Categorias cujo lançamento exige informar a qual encontro se refere.
+// "constancia" fica de fora por ser uma métrica transversal do ciclo todo.
+const CATEGORIAS_COM_ENCONTRO = ['presencial', 'mediado', 'ferramenta'];
+
 async function axpLancarFerramenta() {
   const val = parseInt(document.getElementById('ferramenta-xp-value').value);
   if (isNaN(val) || val < 0 || val > 15) {
@@ -2804,14 +2837,21 @@ async function axpRemoverFerramenta() {
 
 async function axpRemover(category, amount) {
   if (!_axpDRT) return;
+  if (CATEGORIAS_COM_ENCONTRO.includes(category) && !_axpEncontro) {
+    document.getElementById('axp-msg').textContent = 'Selecione o encontro antes de remover.';
+    document.getElementById('axp-msg').style.color = 'rgba(255,120,120,0.8)';
+    return;
+  }
   const xpMap = { presencial: 15, mediado: 10, ferramenta: 15, constancia: 10 };
   const xp = amount || xpMap[category] || 10;
   const msg = document.getElementById('axp-msg');
-  if (!confirm(`Remover ${xp} XP de "${category}" para este líder?`)) return;
+  const encontroLabel = _axpEncontro ? ` (${_axpEncontro}º encontro)` : '';
+  if (!confirm(`Remover ${xp} XP de "${category}"${encontroLabel} para este líder?`)) return;
   msg.textContent = 'Removendo...';
   msg.style.color = 'var(--muted)';
   try {
-    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=-${xp}`);
+    const encontroParam = CATEGORIAS_COM_ENCONTRO.includes(category) ? `&encontro=${_axpEncontro}` : '';
+    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=-${xp}${encontroParam}&origem=admin`);
     if (data.ok) {
       msg.textContent = `−${xp} XP removido. Total: ${data.xp_total} XP`;
       msg.style.color = 'rgba(252,165,165,0.9)';
@@ -2859,6 +2899,22 @@ async function adminResetRanking() {
 // ── ADMIN XP LAUNCH ──
 let _axpDRT = null;
 let _axpSearchTimer = null;
+let _axpEncontro = null;
+
+function axpSelectEncontro(n) {
+  _axpEncontro = n;
+  [1,2,3,4].forEach(i => {
+    document.getElementById('axp-encontro-' + i).classList.toggle('selected', i === n);
+  });
+  // Reseta o estado visual "lançado" dos botões de categoria que dependem
+  // de encontro, já que agora se referem a um encontro diferente.
+  CATEGORIAS_COM_ENCONTRO.forEach(c => {
+    const btn = document.getElementById('axp-btn-' + c);
+    if (btn) { btn.classList.remove('done'); btn.disabled = false; }
+  });
+  const msg = document.getElementById('axp-msg');
+  if (msg) msg.textContent = '';
+}
 
 async function axpSearch(q) {
   clearTimeout(_axpSearchTimer);
@@ -2882,6 +2938,8 @@ async function axpSearch(q) {
 
 async function axpSelectLeader(drt, nome) {
   _axpDRT = drt;
+  _axpEncontro = null;
+  [1,2,3,4].forEach(i => document.getElementById('axp-encontro-' + i).classList.remove('selected'));
   document.getElementById('axp-results').style.display = 'none';
   document.getElementById('axp-search').value = nome + ' · ' + drt;
   document.getElementById('axp-name').textContent = nome;
@@ -2898,6 +2956,11 @@ async function axpSelectLeader(drt, nome) {
 
 async function axpLancar(category, customAmount) {
   if (!_axpDRT) return;
+  if (CATEGORIAS_COM_ENCONTRO.includes(category) && !_axpEncontro) {
+    document.getElementById('axp-msg').textContent = 'Selecione o encontro antes de lançar.';
+    document.getElementById('axp-msg').style.color = 'rgba(255,120,120,0.8)';
+    return;
+  }
   const xpMap = { presencial: 15, mediado: 10, ferramenta: 15, constancia: 10 };
   const amount = (customAmount !== undefined && customAmount !== null) ? customAmount : (xpMap[category] || 10);
   const btn = document.getElementById('axp-btn-' + category);
@@ -2906,10 +2969,35 @@ async function axpLancar(category, customAmount) {
   msg.textContent = 'Lançando...';
   msg.style.color = 'var(--muted)';
   try {
-    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=${amount}`);
+    const encontroParam = CATEGORIAS_COM_ENCONTRO.includes(category) ? `&encontro=${_axpEncontro}` : '';
+    const data = await jsonp(`${API_URL}?action=addXP&drt=${encodeURIComponent(_axpDRT)}&category=${category}&amount=${amount}${encontroParam}&origem=admin`);
     if (data.ok) {
       btn.classList.add('done');
-      msg.textContent = `+${amount} XP lançado! Total: ${data.xp_total} XP`;
+      const encontroLabel = _axpEncontro ? ` (${_axpEncontro}º encontro)` : '';
+      let unlockNote = '';
+
+      // Lançamento de XP presencial = presença validada manualmente pelo
+      // admin. Isso simula o próprio líder desbloqueando aquele encontro,
+      // liberando a imagem/etapa automaticamente para ele.
+      if (category === 'presencial' && amount > 0 && _axpEncontro) {
+        try {
+          await jsonp(`${API_URL}?action=unlock&drt=${encodeURIComponent(_axpDRT)}&level=${_axpEncontro}&origem=admin`);
+          unlockNote = ` · ${_axpEncontro}º encontro desbloqueado`;
+          if (String(_axpDRT) === String(currentDRT)) {
+            const unlocked = getUnlocked();
+            if (!unlocked.includes(_axpEncontro)) {
+              unlocked.push(_axpEncontro);
+              saveUnlocked(unlocked);
+            }
+            revealLevel(_axpEncontro);
+            openReveal(_axpEncontro);
+          }
+        } catch(unlockErr) {
+          unlockNote = ' · (erro ao desbloquear a etapa, tente de novo)';
+        }
+      }
+
+      msg.textContent = `+${amount} XP lançado${encontroLabel}! Total: ${data.xp_total} XP${unlockNote}`;
       msg.style.color = 'rgba(134,239,172,0.9)';
       if (String(_axpDRT) === String(currentDRT)) refreshMeuXP();
     } else {
