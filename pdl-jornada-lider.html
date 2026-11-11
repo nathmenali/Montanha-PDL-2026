@@ -973,6 +973,40 @@
     display: block;
   }
 
+  #reveal-track {
+    display: flex; width: 100%;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    align-items: flex-start;
+  }
+  #reveal-track::-webkit-scrollbar { display: none; }
+  #reveal-track .reveal-slide { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+  #reveal-dots {
+    display: none; justify-content: center; align-items: center; gap: 8px;
+    padding: 10px 0; background: #000; flex-shrink: 0;
+  }
+  #reveal-dots.show { display: flex; }
+  #reveal-dots .dot {
+    width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
+    background: rgba(255,255,255,0.35); cursor: pointer; transition: background .2s, transform .2s;
+  }
+  #reveal-dots .dot.active { background: #9B4DFF; transform: scale(1.25); }
+  .reveal-arrow {
+    display: none; position: absolute; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.3);
+    color: #fff; font-size: 20px; line-height: 38px; text-align: center;
+    cursor: pointer; z-index: 10; padding: 0; transition: background .2s, opacity .2s;
+  }
+  .reveal-arrow:hover { background: rgba(107,33,212,0.7); }
+  .reveal-arrow.show { display: block; }
+  .reveal-arrow.hidden { opacity: 0; pointer-events: none; }
+  #reveal-prev { left: 10px; }
+  #reveal-next { right: 10px; }
+
   #reveal-close {
     position: absolute; top: 12px; right: 14px;
     width: 36px; height: 36px; border-radius: 50%;
@@ -2519,15 +2553,57 @@ function tryUnlock(level) {
   }
 }
 
+// Níveis com mais de uma imagem viram carrossel (3º encontro = 2 livros).
+// Ajuste aqui os nomes dos arquivos das imagens do livro 2.
+const JANELAS_EXTRA = {
+  3: ['https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro_2.png'],
+};
+const JANELAS_MOBILE_EXTRA = {
+  3: ['https://nathmenali.github.io/Montanha-PDL-2026/janela_3%C2%BA%20encontro%20(mobile)_2.png'],
+};
+let _revealIdx = 0, _revealCount = 1;
+
+function revealUpdateUI() {
+  const dots = document.querySelectorAll('#reveal-dots .dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === _revealIdx));
+  const prev = document.getElementById('reveal-prev');
+  const next = document.getElementById('reveal-next');
+  if (prev) prev.classList.toggle('hidden', _revealIdx === 0);
+  if (next) next.classList.toggle('hidden', _revealIdx >= _revealCount - 1);
+}
+function revealGoTo(i) {
+  const track = document.getElementById('reveal-track');
+  if (!track) return;
+  i = Math.max(0, Math.min(_revealCount - 1, i));
+  track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+  _revealIdx = i; revealUpdateUI();
+}
+function revealGo(d) { revealGoTo(_revealIdx + d); }
+
 function openReveal(level) {
   const overlay = document.getElementById('reveal-overlay');
   const win     = document.getElementById('reveal-window');
-  const img     = document.getElementById('reveal-img');
-  if (!overlay || !win || !img) return;
+  const track   = document.getElementById('reveal-track');
+  if (!overlay || !win || !track) return;
 
-  // Carregar imagem do encontro (versão mobile em telas pequenas)
+  // Carregar imagem(ns) do encontro (versão mobile em telas pequenas)
   const isMobileScreen = window.innerWidth <= 640;
-  img.src = isMobileScreen ? JANELAS_MOBILE[level] : JANELAS[level];
+  const srcs = [isMobileScreen ? JANELAS_MOBILE[level] : JANELAS[level]]
+    .concat((isMobileScreen ? JANELAS_MOBILE_EXTRA : JANELAS_EXTRA)[level] || []);
+  track.innerHTML = srcs.map((u, i) =>
+    `<div class="reveal-slide"><img src="${u}" alt="Revelação do encontro ${i + 1}"></div>`).join('');
+  track.scrollLeft = 0;
+  _revealIdx = 0; _revealCount = srcs.length;
+  const multi = srcs.length > 1;
+  const dotsEl = document.getElementById('reveal-dots');
+  dotsEl.innerHTML = multi ? srcs.map((_, i) => `<button class="dot" aria-label="Slide ${i + 1}" onclick="revealGoTo(${i})"></button>`).join('') : '';
+  dotsEl.classList.toggle('show', multi);
+  ['reveal-prev', 'reveal-next'].forEach(id => document.getElementById(id).classList.toggle('show', multi));
+  track.onscroll = () => {
+    const i = Math.round(track.scrollLeft / track.clientWidth);
+    if (i !== _revealIdx) { _revealIdx = i; revealUpdateUI(); }
+  };
+  revealUpdateUI();
 
   // Travar scroll da página de fundo enquanto a janela está aberta,
   // preservando a posição para restaurar ao fechar.
@@ -2645,8 +2721,11 @@ for (let i = 1; i <= 4; i++) {
   <div id="reveal-window">
     <div id="reveal-close" onclick="closeReveal()">×</div>
     <div class="reveal-scroll">
-      <img id="reveal-img" src="" alt="Revelação do encontro">
+      <div id="reveal-track"></div>
     </div>
+    <button id="reveal-prev" class="reveal-arrow" onclick="revealGo(-1)" aria-label="Anterior">‹</button>
+    <button id="reveal-next" class="reveal-arrow" onclick="revealGo(1)" aria-label="Próximo">›</button>
+    <div id="reveal-dots"></div>
     <button id="reveal-continue" onclick="closeReveal()">Continuar →</button>
   </div>
 </div>
