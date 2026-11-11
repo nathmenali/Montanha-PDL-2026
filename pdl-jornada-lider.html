@@ -973,6 +973,14 @@
     display: block;
   }
 
+  .reveal-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  .reveal-stage .reveal-scroll { flex: 1 1 auto; }
+  /* Carrossel: imagens se ajustam por inteiro ao tamanho da janela */
+  #reveal-window.multi { height: calc(100vh - 32px); height: calc(100dvh - 32px); max-height: 900px; }
+  #reveal-window.multi .reveal-scroll { overflow-y: hidden; display: flex; }
+  #reveal-window.multi #reveal-track { height: 100%; align-items: stretch; }
+  #reveal-window.multi .reveal-slide { display: flex; align-items: center; justify-content: center; height: 100%; }
+  #reveal-window.multi .reveal-slide img { width: 100%; height: 100%; object-fit: contain; }
   #reveal-track {
     display: flex; width: 100%;
     overflow-x: auto; overflow-y: hidden;
@@ -2595,6 +2603,7 @@ function openReveal(level) {
   track.scrollLeft = 0;
   _revealIdx = 0; _revealCount = srcs.length;
   const multi = srcs.length > 1;
+  win.classList.toggle('multi', multi);
   const dotsEl = document.getElementById('reveal-dots');
   dotsEl.innerHTML = multi ? srcs.map((_, i) => `<button class="dot" aria-label="Slide ${i + 1}" onclick="revealGoTo(${i})"></button>`).join('') : '';
   dotsEl.classList.toggle('show', multi);
@@ -2720,11 +2729,13 @@ for (let i = 1; i <= 4; i++) {
 <div id="reveal-overlay">
   <div id="reveal-window">
     <div id="reveal-close" onclick="closeReveal()">×</div>
+    <div class="reveal-stage">
     <div class="reveal-scroll">
       <div id="reveal-track"></div>
     </div>
     <button id="reveal-prev" class="reveal-arrow" onclick="revealGo(-1)" aria-label="Anterior">‹</button>
     <button id="reveal-next" class="reveal-arrow" onclick="revealGo(1)" aria-label="Próximo">›</button>
+    </div>
     <div id="reveal-dots"></div>
     <button id="reveal-continue" onclick="closeReveal()">Continuar →</button>
   </div>
